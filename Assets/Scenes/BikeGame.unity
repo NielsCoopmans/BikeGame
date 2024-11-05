@@ -31872,7 +31872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: leanSmoothing
-      value: 0.502
+      value: 0.000001
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: turnSmoothing
