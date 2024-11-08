@@ -14,9 +14,10 @@ public class BicycleVehicle : MonoBehaviour
     private bool isSerialRunning = false;
 
     private string lastReceivedData = ""; // Store the last received value.
+    private float lastFireTime = -5f;
 
     float horizontalInput;
-    float verticalInput;
+    float vereticallInput;
     float steeringInput;
 
     private readonly object lockObject = new object(); // For thread-safe access to data
@@ -24,9 +25,11 @@ public class BicycleVehicle : MonoBehaviour
     public Transform handle;
     bool braking;
 
+    public Gun gun;
+
     public Vector3 COG;
 
-    [SerializeField] internal float movementSpeed = 10f;
+    [SerializeField] float movementSpeed = 10f;
     [SerializeField] float brakeSpeed = 5f;
 
     float steeringAngle;
@@ -107,55 +110,65 @@ public class BicycleVehicle : MonoBehaviour
 
     //data komt nu van seperate thread waardoor programma niet elke frame ligt te wachten op input
     public void GetInput()
-    {
-        string[] dataParts;
+{
+    string[] dataParts;
 
-        lock (lockObject)
+    lock (lockObject)
+    {
+        // Make a local copy of the last received data
+        dataParts = lastReceivedData.Trim().Split(',');
+    }
+
+    if (dataParts.Length >= 3)
+    {
+        // Parse steering input(a)
+        if (float.TryParse(dataParts[0], out float parsedSteering))
         {
-            // Make a local copy of the last received data
-            dataParts = lastReceivedData.Trim().Split(',');
+            steeringInput = -parsedSteering;
+        }
+        else
+        {
+            Debug.LogWarning("Steering data could not be parsed to a float.");
         }
 
-        if (dataParts.Length >= 3)
+        // Parse horn input and fire bullet if cooldown has passed
+        if (float.TryParse(dataParts[1], out float horn))
         {
-            // Parse steering input(a)
-            if (float.TryParse(dataParts[0], out float parsedSteering))
+            if (horn == 1 && (Time.time - lastFireTime) >= 2f)
             {
-                steeringInput = -parsedSteering;
-            }
-            else
-            {
-                Debug.LogWarning("Steering data could not be parsed to a float.");
-            }
-
-            // Parse speed input(c)
-            if (float.TryParse(dataParts[2], out float parsedSpeed))
-            {
-                float newSpeed = parsedSpeed / 10f;
-                verticalInput = Mathf.Clamp(newSpeed, 0f, 5f);
-            
-            }
-            else
-            {
-                verticalInput = Input.GetAxis("Vertical");
-                Debug.LogWarning("Speed data could not be parsed.");
+                gun.FireBullet();
+                lastFireTime = Time.time; // Update the last fire time to the current time
             }
         }
         else
         {
-            Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
-            // Use keyboard input when no serial data is available
-            steeringInput = Input.GetAxis("Horizontal"); // Arrow keys for left/right steering
-            verticalInput = Input.GetAxis("Vertical"); // Arrow keys for forward/backward speed
+            Debug.LogWarning("Horn data could not be parsed to a float.");
         }
 
-        //horizontalInput = Input.GetAxis("Horizontal");
-        braking = Input.GetKey(KeyCode.Space);
+        // Parse speed input(c)
+        if (float.TryParse(dataParts[2], out float parsedSpeed))
+        {
+            float newSpeed = parsedSpeed /8f;
+            vereticallInput = Mathf.Clamp(newSpeed, 0f, 15f);
+        }
+        else
+        {
+            vereticallInput = Input.GetAxis("Vertical");
+            Debug.LogWarning("Speed data could not be parsed.");
+        }
+    }
+    else
+    {
+        Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
+        horizontalInput = Input.GetAxis("Horizontal");
     }
 
+    horizontalInput = Input.GetAxis("Horizontal");
+    braking = Input.GetKey(KeyCode.Space);
+}
     public void HandleEngine()
     {
-        float speed = verticalInput * movementSpeed * Time.deltaTime;
+        float speed = vereticallInput * movementSpeed * Time.deltaTime;
 
         if (braking)
         {
@@ -167,30 +180,11 @@ public class BicycleVehicle : MonoBehaviour
 
     public void HandleSteering()
     {
-        /*currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
+        currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
         currentSteeringAngle = Mathf.Clamp(currentSteeringAngle, -maxSteeringAngle, maxSteeringAngle);
 
         targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
 
-        transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime);*/
-        // Apply steering input based on either serial or keyboard input
-        if (steeringInput < 0) // Left turn (Q)
-        {
-            currentSteeringAngle = -maxSteeringAngle;
-        }
-        else if (steeringInput > 0) // Right turn (D)
-        {
-            currentSteeringAngle = maxSteeringAngle;
-        }
-        else // No steering (neither Q nor D pressed)
-        {
-            currentSteeringAngle = 0f;
-        }
-
-        // Calculate the target laying angle based on the steering
-        targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
-
-        // Apply the rotation to the bike's Y-axis to simulate steering
         transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime);
     }
 
