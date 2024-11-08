@@ -17,6 +17,7 @@ public class BicycleVehicle : MonoBehaviour
     private float lastFireTime = -5f;
 
     float horizontalInput;
+    private float VerticalInput;
     float verticalInput;
     float steeringInput;
 
