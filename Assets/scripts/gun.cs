@@ -29,7 +29,7 @@ public class Gun : MonoBehaviour
         // Optionally, add a reload mechanic or bullet regeneration here
     }
 
-    void FireBullet()
+    public void FireBullet()
     {
         // Instantiate the bullet and set its velocity
         var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
@@ -45,6 +45,6 @@ public class Gun : MonoBehaviour
     void UpdateBulletCountUI()
     {
         // Update the TextMeshPro text to show the current number of bullets
-        bulletCountText.text = currentBullets.ToString() +"/" + maxBullets.ToString() ;
+        bulletCountText.text = currentBullets.ToString() +" / " + maxBullets.ToString() ;
     }
 }
