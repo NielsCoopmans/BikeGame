@@ -16,7 +16,7 @@ public class BicycleVehicle : MonoBehaviour
     private string lastReceivedData = ""; // Store the last received value.
 
     float horizontalInput;
-    float vereticallInput;
+    float verticalInput;
     float steeringInput;
 
     private readonly object lockObject = new object(); // For thread-safe access to data
@@ -26,7 +26,7 @@ public class BicycleVehicle : MonoBehaviour
 
     public Vector3 COG;
 
-    [SerializeField] float movementSpeed = 10f;
+    [SerializeField] internal float movementSpeed = 10f;
     [SerializeField] float brakeSpeed = 5f;
 
     float steeringAngle;
@@ -132,27 +132,30 @@ public class BicycleVehicle : MonoBehaviour
             if (float.TryParse(dataParts[2], out float parsedSpeed))
             {
                 float newSpeed = parsedSpeed / 10f;
-                vereticallInput = Mathf.Clamp(newSpeed, 0f, 5f);
+                verticalInput = Mathf.Clamp(newSpeed, 0f, 5f);
             
             }
             else
             {
-                vereticallInput = Input.GetAxis("Vertical");
+                verticalInput = Input.GetAxis("Vertical");
                 Debug.LogWarning("Speed data could not be parsed.");
             }
         }
         else
         {
             Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
+            // Use keyboard input when no serial data is available
+            steeringInput = Input.GetAxis("Horizontal"); // Arrow keys for left/right steering
+            verticalInput = Input.GetAxis("Vertical"); // Arrow keys for forward/backward speed
         }
 
-        horizontalInput = Input.GetAxis("Horizontal");
+        //horizontalInput = Input.GetAxis("Horizontal");
         braking = Input.GetKey(KeyCode.Space);
     }
 
     public void HandleEngine()
     {
-        float speed = vereticallInput * movementSpeed * Time.deltaTime;
+        float speed = verticalInput * movementSpeed * Time.deltaTime;
 
         if (braking)
         {
@@ -164,11 +167,30 @@ public class BicycleVehicle : MonoBehaviour
 
     public void HandleSteering()
     {
-        currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
+        /*currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
         currentSteeringAngle = Mathf.Clamp(currentSteeringAngle, -maxSteeringAngle, maxSteeringAngle);
 
         targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
 
+        transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime);*/
+        // Apply steering input based on either serial or keyboard input
+        if (steeringInput < 0) // Left turn (Q)
+        {
+            currentSteeringAngle = -maxSteeringAngle;
+        }
+        else if (steeringInput > 0) // Right turn (D)
+        {
+            currentSteeringAngle = maxSteeringAngle;
+        }
+        else // No steering (neither Q nor D pressed)
+        {
+            currentSteeringAngle = 0f;
+        }
+
+        // Calculate the target laying angle based on the steering
+        targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
+
+        // Apply the rotation to the bike's Y-axis to simulate steering
         transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime);
     }
 
