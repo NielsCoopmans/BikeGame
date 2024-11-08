@@ -144,6 +144,7 @@ public class BicycleVehicle : MonoBehaviour
         else
         {
             Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
+            horizontalInput = Input.GetAxis("Horizontal");
         }
 
         horizontalInput = Input.GetAxis("Horizontal");
