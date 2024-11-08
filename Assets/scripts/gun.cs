@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
     void Update()
     {
         // Check if space key is pressed and there are bullets left
-        if (Input.GetKeyDown(KeyCode.Space) && currentBullets > 0)
+        if (Input.GetKeyDown(KeyCode.Space) )
         {
             FireBullet();
         }
@@ -31,6 +31,7 @@ public class Gun : MonoBehaviour
 
     public void FireBullet()
     {
+        if (currentBullets > 0) { 
         // Instantiate the bullet and set its velocity
         var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
@@ -40,6 +41,7 @@ public class Gun : MonoBehaviour
 
         // Update the UI with the new bullet count
         UpdateBulletCountUI();
+        }
     }
 
     void UpdateBulletCountUI()
