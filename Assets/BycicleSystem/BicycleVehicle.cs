@@ -130,7 +130,7 @@ public class BicycleVehicle : MonoBehaviour
                 Debug.LogWarning("Steering data could not be parsed to a float.");
             }
 
-            if (float.TryParse(dataParts[0], out float horn))
+            if (float.TryParse(dataParts[1], out float horn))
             {
                 if (horn == 1)
                 {
