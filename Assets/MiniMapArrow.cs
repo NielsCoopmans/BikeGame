@@ -11,23 +11,28 @@ public class MinimapArrowIndicator : MonoBehaviour
     public float showArrowDistance = 10f; // Distance threshold to show the arrow
 
     void Update()
+{
+    // Calculate the distance between the player and the enemy
+    float distanceToEnemy = Vector3.Distance(player.position, enemy.position);
+
+    // Show or hide the arrow based on distance
+    arrowIcon.gameObject.SetActive(distanceToEnemy > showArrowDistance);
+
+    if (arrowIcon.gameObject.activeSelf)
     {
-        // Calculate the distance between the player and the enemy
-        float distanceToEnemy = Vector3.Distance(player.position, enemy.position);
+        // Calculate the direction vector from player to enemy
+        Vector3 directionToEnemy = (enemy.position - player.position).normalized;
 
-        // Show or hide the arrow based on distance
-        arrowIcon.gameObject.SetActive(distanceToEnemy > showArrowDistance);
+        // Transform this direction based on the player's rotation
+        Vector3 relativeDirection = player.InverseTransformDirection(directionToEnemy);
 
-        if (arrowIcon.gameObject.activeSelf)
-        {
-            // Calculate direction vector from player to enemy
-            Vector3 direction = (enemy.position - player.position).normalized;
+        // Calculate the angle to rotate the arrow in 2D space (XY plane of UI)
+        float angle = Mathf.Atan2(relativeDirection.z, relativeDirection.x) * Mathf.Rad2Deg;
 
-            // Set the arrow rotation to point towards the enemy
-            float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-            arrowIcon.rotation = Quaternion.Euler(0, 0, -angle + 180f);
-        }
+        // Rotate the arrow to point towards the enemy, with an offset to match the starting direction
+        arrowIcon.rotation = Quaternion.Euler(0, 0, angle + 135f); 
     }
+}
 
     private Vector2 GetMinimapEdgePosition(Vector3 direction)
     {
