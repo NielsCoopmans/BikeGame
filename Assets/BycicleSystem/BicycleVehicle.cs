@@ -24,6 +24,8 @@ public class BicycleVehicle : MonoBehaviour
     public Transform handle;
     bool braking;
 
+    public Gun gun;
+
     public Vector3 COG;
 
     [SerializeField] float movementSpeed = 10f;
@@ -122,6 +124,18 @@ public class BicycleVehicle : MonoBehaviour
             if (float.TryParse(dataParts[0], out float parsedSteering))
             {
                 steeringInput = -parsedSteering;
+            }
+            else
+            {
+                Debug.LogWarning("Steering data could not be parsed to a float.");
+            }
+
+            if (float.TryParse(dataParts[0], out float horn))
+            {
+                if (horn == 1)
+                {
+                    gun.FireBullet();
+                }
             }
             else
             {
