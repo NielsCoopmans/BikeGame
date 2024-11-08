@@ -8,6 +8,7 @@ public class ShockwaveProjectile : MonoBehaviour
     public float lifespan = 2f;           // Duration before the projectile is destroyed
 
     private Vector3 initialScale;
+    private bool hasHitSomething = false;
 
     void Start()
     {
@@ -20,6 +21,8 @@ public class ShockwaveProjectile : MonoBehaviour
 
     void Update()
     {
+        if (hasHitSomething) return;
+
         // Move forward
         transform.position += transform.forward * speed * Time.deltaTime;
 
@@ -27,6 +30,21 @@ public class ShockwaveProjectile : MonoBehaviour
         if (transform.localScale.x < maxSize)
         {
             transform.localScale += Vector3.one * expansionRate * Time.deltaTime;
+        }
+        else
+        {
+            // Destroy the projectile if it has reached max size
+            Destroy(gameObject);
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Check if the shockwave collides with something
+        if (other.CompareTag("Obstacle") || other.CompareTag("Enemy"))
+        {
+            hasHitSomething = true;
+            Destroy(gameObject); // Destroy the projectile on collision
         }
     }
 }
