@@ -29,7 +29,7 @@ public class BicycleVehicle : MonoBehaviour
 
     public Vector3 COG;
 
-    [SerializeField] float movementSpeed = 10f;
+    [SerializeField] internal float movementSpeed = 10f;
     [SerializeField] float brakeSpeed = 5f;
 
     float steeringAngle;
