@@ -17,7 +17,7 @@ public class BicycleVehicle : MonoBehaviour
     private float lastFireTime = -5f;
 
     float horizontalInput;
-    float vereticallInput;
+    float verticalInput;
     float steeringInput;
 
     private readonly object lockObject = new object(); // For thread-safe access to data
@@ -149,11 +149,11 @@ public class BicycleVehicle : MonoBehaviour
         if (float.TryParse(dataParts[2], out float parsedSpeed))
         {
             float newSpeed = parsedSpeed /8f;
-            vereticallInput = Mathf.Clamp(newSpeed, 0f, 15f);
+            verticalInput = Mathf.Clamp(newSpeed, 0f, 15f);
         }
         else
         {
-            vereticallInput = Input.GetAxis("Vertical");
+            verticalInput = Input.GetAxis("Vertical");
             Debug.LogWarning("Speed data could not be parsed.");
         }
     }
@@ -161,14 +161,16 @@ public class BicycleVehicle : MonoBehaviour
     {
         Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
         horizontalInput = Input.GetAxis("Horizontal");
-    }
+        VerticalInput = Input.GetAxis("Vertical");
 
-    horizontalInput = Input.GetAxis("Horizontal");
-    braking = Input.GetKey(KeyCode.Space);
+        }
+
+        horizontalInput = Input.GetAxis("Horizontal");
+        braking = Input.GetKey(KeyCode.Space);
 }
     public void HandleEngine()
     {
-        float speed = vereticallInput * movementSpeed * Time.deltaTime;
+        float speed = verticalInput * movementSpeed * Time.deltaTime;
 
         if (braking)
         {
