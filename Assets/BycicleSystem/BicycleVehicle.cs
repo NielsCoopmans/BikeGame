@@ -14,6 +14,7 @@ public class BicycleVehicle : MonoBehaviour
     private bool isSerialRunning = false;
 
     private string lastReceivedData = ""; // Store the last received value.
+    private float lastFireTime = -5f;
 
     float horizontalInput;
     float vereticallInput;
@@ -109,62 +110,62 @@ public class BicycleVehicle : MonoBehaviour
 
     //data komt nu van seperate thread waardoor programma niet elke frame ligt te wachten op input
     public void GetInput()
-    {
-        string[] dataParts;
+{
+    string[] dataParts;
 
-        lock (lockObject)
+    lock (lockObject)
+    {
+        // Make a local copy of the last received data
+        dataParts = lastReceivedData.Trim().Split(',');
+    }
+
+    if (dataParts.Length >= 3)
+    {
+        // Parse steering input(a)
+        if (float.TryParse(dataParts[0], out float parsedSteering))
         {
-            // Make a local copy of the last received data
-            dataParts = lastReceivedData.Trim().Split(',');
+            steeringInput = -parsedSteering;
+        }
+        else
+        {
+            Debug.LogWarning("Steering data could not be parsed to a float.");
         }
 
-        if (dataParts.Length >= 3)
+        // Parse horn input and fire bullet if cooldown has passed
+        if (float.TryParse(dataParts[1], out float horn))
         {
-            // Parse steering input(a)
-            if (float.TryParse(dataParts[0], out float parsedSteering))
+            if (horn == 1 && (Time.time - lastFireTime) >= 2f)
             {
-                steeringInput = -parsedSteering;
-            }
-            else
-            {
-                Debug.LogWarning("Steering data could not be parsed to a float.");
-            }
-
-            if (float.TryParse(dataParts[1], out float horn))
-            {
-                if (horn == 1)
-                {
-                    gun.FireBullet();
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Steering data could not be parsed to a float.");
-            }
-
-            // Parse speed input(c)
-            if (float.TryParse(dataParts[2], out float parsedSpeed))
-            {
-                float newSpeed = parsedSpeed / 10f;
-                vereticallInput = Mathf.Clamp(newSpeed, 0f, 5f);
-            
-            }
-            else
-            {
-                vereticallInput = Input.GetAxis("Vertical");
-                Debug.LogWarning("Speed data could not be parsed.");
+                gun.FireBullet();
+                lastFireTime = Time.time; // Update the last fire time to the current time
             }
         }
         else
         {
-            Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
-            horizontalInput = Input.GetAxis("Horizontal");
+            Debug.LogWarning("Horn data could not be parsed to a float.");
         }
 
+        // Parse speed input(c)
+        if (float.TryParse(dataParts[2], out float parsedSpeed))
+        {
+            float newSpeed = parsedSpeed /8f;
+            vereticallInput = Mathf.Clamp(newSpeed, 0f, 15f);
+        }
+        else
+        {
+            vereticallInput = Input.GetAxis("Vertical");
+            Debug.LogWarning("Speed data could not be parsed.");
+        }
+    }
+    else
+    {
+        Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
         horizontalInput = Input.GetAxis("Horizontal");
-        braking = Input.GetKey(KeyCode.Space);
     }
 
+    horizontalInput = Input.GetAxis("Horizontal");
+    braking = Input.GetKey(KeyCode.Space);
+}
     public void HandleEngine()
     {
         float speed = vereticallInput * movementSpeed * Time.deltaTime;
