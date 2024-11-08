@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour
 
     // Time-related variables for tracking proximity
     private float timeNearPlayer = 0f;       // Time the player has been near the enemy
-    private float requiredTimeToTriggerCutscene = 5f; // Time required for the cutscene to trigger
+    public float requiredTimeToTriggerCutscene = 2f; // Time required for the cutscene to trigger
 
     private void Start()
     {
