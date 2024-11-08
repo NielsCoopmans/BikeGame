@@ -21,6 +21,7 @@ public class BicycleVehicle : MonoBehaviour
     float steeringInput;
 
     private readonly object lockObject = new object(); // For thread-safe access to data
+    private bool arduinoData;
 
     public Transform handle;
     bool braking;
@@ -121,6 +122,7 @@ public class BicycleVehicle : MonoBehaviour
 
     if (dataParts.Length >= 3)
     {
+        arduinoData = true;
         // Parse steering input(a)
         if (float.TryParse(dataParts[0], out float parsedSteering))
         {
@@ -159,12 +161,14 @@ public class BicycleVehicle : MonoBehaviour
     }
     else
     {
+        arduinoData = false;
         Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
         horizontalInput = Input.GetAxis("Horizontal");
-        VerticalInput = Input.GetAxis("Vertical");
+        verticalInput = Input.GetAxis("Vertical");
 
         }
-
+        
+        verticalInput = Input.GetAxis("Vertical");
         horizontalInput = Input.GetAxis("Horizontal");
         braking = Input.GetKey(KeyCode.Space);
 }
@@ -182,12 +186,37 @@ public class BicycleVehicle : MonoBehaviour
 
     public void HandleSteering()
     {
-        currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
-        currentSteeringAngle = Mathf.Clamp(currentSteeringAngle, -maxSteeringAngle, maxSteeringAngle);
+        if (arduinoData)
+        {
+            currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
+            currentSteeringAngle = Mathf.Clamp(currentSteeringAngle, -maxSteeringAngle, maxSteeringAngle);
 
-        targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
+            targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
 
-        transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime);
+            transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime);
+        }
+        else
+        {
+            // Apply steering input based on either serial or keyboard input
+            if (horizontalInput < 0) // Left turn (Q)
+            {
+                currentSteeringAngle = -maxSteeringAngle;
+            }
+            else if (horizontalInput > 0) // Right turn (D)
+            {
+                currentSteeringAngle = maxSteeringAngle;
+            }
+            else // No steering (neither Q nor D pressed)
+            {
+                currentSteeringAngle = 0f;
+            }
+
+            // Calculate the target laying angle based on the steering
+            targetlayingAngle = maxlayingAngle * -horizontalInput / maxSteeringAngle;
+
+            // Apply the rotation to the bike's Y-axis to simulate steering
+            transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime);
+        }
     }
 
     private void LayOnTurn()
