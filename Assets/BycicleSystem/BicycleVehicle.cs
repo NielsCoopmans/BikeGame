@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class BicycleVehicle : MonoBehaviour
@@ -21,11 +22,13 @@ public class BicycleVehicle : MonoBehaviour
     float steeringInput;
 
     private readonly object lockObject = new object(); // For thread-safe access to data
+    
 
     public Transform handle;
     bool braking;
 
     public Gun gun;
+
 
     public Vector3 COG;
 
@@ -58,6 +61,7 @@ public class BicycleVehicle : MonoBehaviour
 
         serialPort = new SerialPort(portName, baudRate);
         serialPort.ReadTimeout = readTimeout;
+        
 
         try
         {
