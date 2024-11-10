@@ -11,7 +11,7 @@ public class Spawner : MonoBehaviour
 
     private List<GameObject> spawnedObjects = new List<GameObject>();
 
-    public string[] roadTiles = { "Road Lane_01 (71)", "Road Intersection_01", "Road Lane_01 (95)", "Road Lane_01 (100)", "Road Lane_01 (99)" };
+    public string[] roadTiles = { "Road Lane_01 (71)"/*, "Road Intersection_01", "Road Lane_01 (95)", "Road Lane_01 (100)", "Road Lane_01 (99)"*/ };
 
     public void SpawnObject(Vector3 position)
     {
@@ -23,11 +23,12 @@ public class Spawner : MonoBehaviour
             // Add the new sphere to the list of spawned objects
             spawnedObjects.Add(newObject);
 
-            // Destroy the first object in the list (oldest one)
-            //Destroy(spawnedObjects[0]);
-
-            // Remove the destroyed object from the list
-            //spawnedObjects.RemoveAt(0);
+            // Optionally, we can tell the powerup to register itself to be removed when it's picked up.
+            PowerUp powerupScript = newObject.GetComponent<PowerUp>();
+            if (powerupScript != null)
+            {
+                powerupScript.SetSpawner(this); // Pass reference to spawner for removal later
+            }
         }
         else
         {
@@ -35,10 +36,18 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    public void RemoveObject(GameObject oldObject)
+    {
+        if (spawnedObjects.Contains(oldObject))
+        {
+            spawnedObjects.Remove(oldObject);
+        }
+    }
+
     void Update()
     {
-        // Check if the Space key is pressed
-        if (Input.GetKeyDown(KeyCode.Space))
+        // Check if the max number of objects have been spawned
+        if (spawnedObjects.Count < maxSpawnedObjects)
         {
             // Pick a random road tile from the array
             if (roadTiles.Length > 0)  // Use Length for arrays

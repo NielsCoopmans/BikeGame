@@ -9,6 +9,7 @@ public class PowerUp : MonoBehaviour
     bool hasExploded = false;
     private float countdown;
     public float duration = 4f;
+    public Spawner spawner; // Reference to the spawner
 
     void Start()
     {
@@ -26,6 +27,12 @@ public class PowerUp : MonoBehaviour
         }
     }
 
+    // Method to set the spawner reference from the Spawner class
+    public void SetSpawner(Spawner spawnerReference)
+    {
+        spawner = spawnerReference;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -40,6 +47,9 @@ public class PowerUp : MonoBehaviour
 
         BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
         bicycle.movementSpeed += 10;
+
+        // Notify the spawner to remove this power-up from the list
+        spawner.RemoveObject(gameObject);
 
         foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
         {
