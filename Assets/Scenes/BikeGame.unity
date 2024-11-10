@@ -12258,7 +12258,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 427.99997, y: 30.999994}
+  m_AnchoredPosition: {x: 427.99997, y: -29}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &316341145
@@ -18106,6 +18106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finalBike: {fileID: 2117067375}
+  bicycleVehicle: {fileID: 0}
   speedText: {fileID: 316341145}
 --- !u!1001 &455054926
 PrefabInstance:
@@ -41726,6 +41727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 3
   duration: 4
+  spawner: {fileID: 0}
 --- !u!1001 &1091092098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47906,6 +47908,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 3
   duration: 4
+  spawner: {fileID: 0}
 --- !u!136 &1239766598
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -61655,15 +61658,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 60
+      value: 59.9
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 20
+      value: 20.3
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
       propertyPath: m_LocalRotation.w
@@ -67517,6 +67520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 3
   duration: 4
+  spawner: {fileID: 0}
 --- !u!114 &1706646302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76703,7 +76707,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 423, y: 30}
+  m_AnchoredPosition: {x: -8, y: -1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1937763940

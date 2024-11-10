@@ -8,6 +8,7 @@ public class Speedometer : MonoBehaviour
 {
     public GameObject finalBike; // Reference to the FinalBike GameObject
     private Rigidbody bikeRigidbody;
+    public BicycleVehicle bicycleVehicle;
     public TextMeshProUGUI speedText; // UI Text element to display the speed (optional)
 
     // Start is called before the first frame update
@@ -34,7 +35,7 @@ public class Speedometer : MonoBehaviour
         if (bikeRigidbody != null)
         {
            
-            float speed = bikeRigidbody.velocity.magnitude * 3.6f; // Convert from m/s to km/h
+            float speed = bikeRigidbody.velocity.magnitude * 20f; // Convert from m/s to km/h
 
             if (speedText != null)
             {

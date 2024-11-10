@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 6cefa2e8b692b4ea89dbe23a10ab2330
   - enabled: 1
+    path: Assets/Scenes/INTRO.unity
+    guid: fecf9cdbe59584075b01637e19110358
+  - enabled: 1
     path: Assets/Scenes/BikeGame.unity
     guid: 7e6d3f4e5d896154ab4438845532ac3e
   m_configObjects: {}
