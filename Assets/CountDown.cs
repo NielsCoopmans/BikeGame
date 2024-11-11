@@ -7,6 +7,7 @@ public class CountDown : MonoBehaviour
 {
     public int countdownTime = 3; 
     public TextMeshProUGUI countdownDisplay; 
+    public TextMeshProUGUI countdownMessage; 
     private BicycleVehicle bicycleVehicleScript; 
 
     private void Start()
@@ -32,6 +33,7 @@ public class CountDown : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         countdownDisplay.gameObject.SetActive(false);
+        countdownMessage.gameObject.SetActive(false);
         bicycleVehicleScript.enabled = true;
     }
 }
