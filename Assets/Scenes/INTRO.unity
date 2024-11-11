@@ -380,7 +380,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2221, y: -93}
+  m_AnchoredPosition: {x: 2221, y: 46}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &642387846
@@ -403,16 +403,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The Objective is simple:
-
-
-    Get close enough to the bad guy to capture
-    him. If you manage to stay close enough for 1 second he will be caught.
-
-
-    Too
-    start please hold the steering wheel straight and don''t move it before the countdown
-    has ended'
+  m_text: "The Objective is simple:\n\nGet close enough to the bad guy to capture
+    him. If you manage to stay close enough for 1 second he will be caught. \n\nIf 
+    you lose him, follow the red arrow\n\nToo start please hold the steering wheel
+    straight and don't move it before the countdown has ended"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -1248,11 +1242,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "The cocaine industry of Antwerp has emigrated to Leuven, due to years
-    of poor management from the mayor of Leuven. This has transformed Leuven from
-    a great student city to a drug lord\u2019s paradise. \n\nYou are part of a special
-    task force and are tasked to capture the criminals and transform Leuven back
-    into the beauty it once was.\r\n"
+  m_text: "Leuven has been transformed from a great student city to a drug lord\u2019s
+    paradise. \n\nYou are part of a special task force and are tasked to capture
+    the criminals and transform Leuven back into the beauty it once was.\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -1315,7 +1307,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -1195.0557, y: 0, z: 292.6639, w: -596.1824}
+  m_margin: {x: -1195.0557, y: 0, z: 292.6639, w: -256.2153}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
