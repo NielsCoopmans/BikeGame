@@ -282,4 +282,6 @@ public class BicycleVehicle : MonoBehaviour
             serialPort.Close();
         }
     }
+
+
 }
