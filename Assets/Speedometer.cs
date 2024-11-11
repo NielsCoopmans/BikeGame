@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class Speedometer : MonoBehaviour
 {
-    public GameObject finalBike; // Reference to the FinalBike GameObject
+    public GameObject finalBike; 
     private Rigidbody bikeRigidbody;
-    public BicycleVehicle bicycleVehicle;
-    public TextMeshProUGUI speedText; // UI Text element to display the speed (optional)
+    public TextMeshProUGUI speedText;
+
+    private Queue<float> speedReadings = new Queue<float>();
+    private float maxWindowDuration = 1f; 
+    private float totalSpeed = 0f; 
 
     // Start is called before the first frame update
     void Start()
@@ -34,16 +36,20 @@ public class Speedometer : MonoBehaviour
     {
         if (bikeRigidbody != null)
         {
-           
-            float speed = bikeRigidbody.velocity.magnitude * 20f; // Convert from m/s to km/h
+            float currentSpeed = bikeRigidbody.velocity.magnitude * 36f;
 
+            speedReadings.Enqueue(currentSpeed);
+            totalSpeed += currentSpeed;
+
+            while (speedReadings.Count > 0 && speedReadings.Count * Time.deltaTime > maxWindowDuration)
+            {
+                totalSpeed -= speedReadings.Dequeue();
+            }
+            float smoothedSpeed = totalSpeed / speedReadings.Count;
             if (speedText != null)
             {
-                speedText.text = $"Speed: {speed:F1} km/h";
+                speedText.text = $"Speed: {smoothedSpeed:F1} km/h";
             }
-
-            // Alternatively, you could log or use the speed for other purposes
-            // Debug.Log("Current Speed: " + speed);
         }
     }
 }

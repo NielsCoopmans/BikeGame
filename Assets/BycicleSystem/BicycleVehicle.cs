@@ -115,70 +115,68 @@ public class BicycleVehicle : MonoBehaviour
     public void GetInput()
     {
         string[] dataParts;
-    lock (lockObject)
-    {
-        if (!string.IsNullOrEmpty(lastReceivedData))
+        lock (lockObject)
         {
-            dataParts = lastReceivedData.Trim().Split(',');
-        }
-        else
-        {
-            dataParts = new string[0];
-        }
-    }
-
-    if (dataParts.Length >= 3)
-    {
-        arduinoData = true;
-        usingKeyboardInput = false;
-
-        // Parse steering input
-        if (float.TryParse(dataParts[0], out float parsedSteering))
-        {
-            steeringInput = -parsedSteering;
-        }
-        else
-        {
-            Debug.LogWarning("Steering data could not be parsed to a float.");
-        }
-
-        // Parse horn input and fire bullet if cooldown has passed
-        if (float.TryParse(dataParts[1], out float horn))
-        {
-            if (horn == 1 && (Time.time - lastFireTime) >= 2f)
+            if (!string.IsNullOrEmpty(lastReceivedData))
             {
-                gun.FireBullet();
-                lastFireTime = Time.time;
+                dataParts = lastReceivedData.Trim().Split(',');
+            }
+            else
+            {
+                dataParts = new string[0];
+            }
+    }
+        if (dataParts.Length >= 3)
+        {
+            arduinoData = true;
+            usingKeyboardInput = false;
+
+            // Parse steering input
+            if (float.TryParse(dataParts[0], out float parsedSteering))
+            {
+                steeringInput = -parsedSteering;
+            }
+            else
+            {
+                Debug.LogWarning("Steering data could not be parsed to a float.");
+            }
+
+            // Parse horn input and fire bullet if cooldown has passed
+            if (float.TryParse(dataParts[1], out float horn))
+            {
+                if (horn == 1 && (Time.time - lastFireTime) >= 2f)
+                {
+                    gun.FireBullet();
+                    lastFireTime = Time.time;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Horn data could not be parsed to a float.");
+            }
+
+            // Parse speed input
+            if (float.TryParse(dataParts[2], out float parsedSpeed))
+            {
+                float newSpeed = parsedSpeed / 8f;
+                verticalInput = Mathf.Clamp(newSpeed, 0f, 15f);
+            }
+            else
+            {
+                verticalInput = Input.GetAxis("Vertical"); // Fallback for speed when serial data is incomplete
+                Debug.LogWarning("Speed data could not be parsed.");
             }
         }
         else
         {
-            Debug.LogWarning("Horn data could not be parsed to a float.");
+            // Fallback to keyboard input if data from Arduino is incomplete
+            arduinoData = false;
+            usingKeyboardInput = true;
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+            Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
         }
-
-        // Parse speed input
-        if (float.TryParse(dataParts[2], out float parsedSpeed))
-        {
-            float newSpeed = parsedSpeed / 8f;
-            verticalInput = Mathf.Clamp(newSpeed, 0f, 15f);
-        }
-        else
-        {
-            verticalInput = Input.GetAxis("Vertical"); // Fallback for speed when serial data is incomplete
-            Debug.LogWarning("Speed data could not be parsed.");
-        }
-    }
-    else
-    {
-        // Fallback to keyboard input if data from Arduino is incomplete
-        arduinoData = false;
-        usingKeyboardInput = true;
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
-        Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
-    }
-
-    braking = Input.GetKey(KeyCode.Space);
+        braking = Input.GetKey(KeyCode.Space);
     }
 
 
