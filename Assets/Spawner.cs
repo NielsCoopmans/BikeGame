@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject mySphere;
+    public GameObject myObject;
     public float spawnHeightOffset = -10f;
     public int maxSpawnedObjects = 5;
 
@@ -18,7 +18,7 @@ public class Spawner : MonoBehaviour
          // If the number of spawned objects does not exceeds the max create it, otherwise don't
         if (spawnedObjects.Count < maxSpawnedObjects)
         {
-            GameObject newObject = Instantiate(mySphere, position, Quaternion.identity);
+            GameObject newObject = Instantiate(myObject, position, Quaternion.identity);
 
             // Add the new sphere to the list of spawned objects
             spawnedObjects.Add(newObject);
