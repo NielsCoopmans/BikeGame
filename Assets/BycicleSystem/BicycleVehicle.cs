@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading;
 using UnityEngine;
@@ -66,7 +67,7 @@ public class BicycleVehicle : MonoBehaviour
         try
         {
             serialPort.Open();
-            Debug.Log("Serial port opened successfully.");
+            UnityEngine.Debug.Log("Serial port opened successfully.");
 
             isSerialRunning = true;
             serialThread = new Thread(SerialReadThread);
@@ -74,7 +75,7 @@ public class BicycleVehicle : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-            Debug.LogError($"Failed to open serial port: {ex.Message}");
+            UnityEngine.Debug.LogError($"Failed to open serial port: {ex.Message}");
         }
     }
 
@@ -107,7 +108,7 @@ public class BicycleVehicle : MonoBehaviour
             }
             catch (System.Exception ex)
             {
-                Debug.LogError($"Serial read error: {ex.Message}");
+                UnityEngine.Debug.LogError($"Serial read error: {ex.Message}");
             }
         }
     }
@@ -125,7 +126,7 @@ public class BicycleVehicle : MonoBehaviour
             {
                 dataParts = new string[0];
             }
-    }
+        }
         if (dataParts.Length >= 3)
         {
             arduinoData = true;
@@ -138,7 +139,7 @@ public class BicycleVehicle : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Steering data could not be parsed to a float.");
+                UnityEngine.Debug.LogWarning("Steering data could not be parsed to a float.");
             }
 
             // Parse horn input and fire bullet if cooldown has passed
@@ -152,7 +153,7 @@ public class BicycleVehicle : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Horn data could not be parsed to a float.");
+                UnityEngine.Debug.LogWarning("Horn data could not be parsed to a float.");
             }
 
             // Parse speed input
@@ -164,7 +165,7 @@ public class BicycleVehicle : MonoBehaviour
             else
             {
                 verticalInput = Input.GetAxis("Vertical"); // Fallback for speed when serial data is incomplete
-                Debug.LogWarning("Speed data could not be parsed.");
+                UnityEngine.Debug.LogWarning("Speed data could not be parsed.");
             }
         }
         else
@@ -174,7 +175,7 @@ public class BicycleVehicle : MonoBehaviour
             usingKeyboardInput = true;
             horizontalInput = Input.GetAxis("Horizontal");
             verticalInput = Input.GetAxis("Vertical");
-            Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
+            UnityEngine.Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
         }
         braking = Input.GetKey(KeyCode.Space);
     }

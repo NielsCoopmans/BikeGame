@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a52f1d567d6594302b4aa222a61a6722, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a52f1d567d6594302b4aa222a61a6722, type: 3}
       propertyPath: m_LocalPosition.z
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 100
   bounceSpeed: 2
-  bounceHeight: 0.5
+  bounceHeight: 0.2
 --- !u!114 &4160961693018742508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +115,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 3
+  duration: 4
+  spawner: {fileID: 0}
 --- !u!136 &1014341503645798787
 CapsuleCollider:
   m_ObjectHideFlags: 0
