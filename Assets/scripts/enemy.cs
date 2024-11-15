@@ -128,11 +128,11 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.collider.CompareTag("bullet"))
         {
-            ApplySlow(0.1f, 2); // Example: Slow down the enemy when hit by a bullet
+            ApplySlow(10f, 0.5f); // Example: Slow down the enemy when hit by a bullet
             if (enemyRenderer != null)
             {
                 // Set the emission color to blue to make the enemy glow
-                enemyRenderer.material.SetColor("_EmissionColor", glowColor);
+                enemyRenderer.material.SetColor("_Color", glowColor);
             }
             Destroy(collision.gameObject); // Destroy the bullet after collision
         }
