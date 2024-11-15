@@ -59,8 +59,8 @@ public class PowerUp : MonoBehaviour
         }
         GetComponent<Collider>().enabled = false;
 
-        float duration = 4f; // Total time for the speed boost effect
-        float peakBoost = 20f; // Maximum speed boost
+        float duration = 2f; // Total time for the speed boost effect
+        float peakBoost = 15f; // Maximum speed boost
         float halfDuration = duration / 2f; // Time to reach peak boost
 
         float elapsedTime = 0f;
