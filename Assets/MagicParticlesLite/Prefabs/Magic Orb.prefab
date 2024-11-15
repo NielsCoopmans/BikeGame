@@ -23877,6 +23877,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4667868370430098}
   - component: {fileID: -3087435725885280743}
+  - component: {fileID: -4994765048784969897}
   m_Layer: 0
   m_Name: Magic Orb
   m_TagString: bullet
@@ -23895,7 +23896,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4149530738903622}
   - {fileID: 4015850864555988}
@@ -23933,6 +23934,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-4994765048784969897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919913695092184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea4c2f47078dd7469c7fe3a3802c641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifetime: 5
+  maxSize: 10
+  expansionRate: 2
 --- !u!1 &1940178129794352
 GameObject:
   m_ObjectHideFlags: 0
