@@ -7,12 +7,13 @@ using UnityEngine;
 
 public class BicycleVehicle : MonoBehaviour
 {
-    public string portName = "/dev/tty.usbmodem11401";
+    public string portName = "/dev/tty.usbmodem11201";
     public int baudRate = 115200;
     public int readTimeout = 1000;
     private SerialPort serialPort;
     private Thread serialThread;
     private bool isSerialRunning = false;
+    public int buttonPressed = 0;
 
     private string lastReceivedData = "";
     private float lastFireTime = -5f;
@@ -33,7 +34,7 @@ public class BicycleVehicle : MonoBehaviour
     public Vector3 COG;
 
     [SerializeField] internal float movementSpeed = 10f;
-    [SerializeField] float brakeSpeed = 5f;
+    [SerializeField] float brakeSpeed = 10f;
 
     float steeringAngle;
     [SerializeField] float currentSteeringAngle;
@@ -160,12 +161,23 @@ public class BicycleVehicle : MonoBehaviour
             if (float.TryParse(dataParts[2], out float parsedSpeed))
             {
                 float newSpeed = parsedSpeed / 8f;
-                verticalInput = Mathf.Clamp(newSpeed, 0f, 15f);
+                verticalInput = Mathf.Clamp(newSpeed, 0f, 50f);
             }
             else
             {
                 verticalInput = Input.GetAxis("Vertical"); // Fallback for speed when serial data is incomplete
                 UnityEngine.Debug.LogWarning("Speed data could not be parsed.");
+            }
+
+            // Parse Buttion input
+            if (int.TryParse(dataParts[3], out int parsedButton))
+            {
+                buttonPressed = parsedButton;
+                Debug.Log("ButtonPressed");
+            }
+            else
+            {
+                Debug.LogWarning("Button data could not be parsed to an integer.");
             }
         }
         else
