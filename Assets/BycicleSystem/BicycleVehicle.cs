@@ -173,11 +173,11 @@ public class BicycleVehicle : MonoBehaviour
             if (int.TryParse(dataParts[3], out int parsedButton))
             {
                 buttonPressed = parsedButton;
-                Debug.Log("ButtonPressed");
+                UnityEngine.Debug.Log("ButtonPressed");
             }
             else
             {
-                Debug.LogWarning("Button data could not be parsed to an integer.");
+                UnityEngine.Debug.LogWarning("Button data could not be parsed to an integer.");
             }
         }
         else
