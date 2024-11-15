@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading;
 using UnityEngine;
 
 public class BicycleVehicle : MonoBehaviour
 {
-    public string portName = "/dev/tty.usbmodem11401";
+    public string portName = "/dev/tty.usbmodem11201";
     public int baudRate = 115200;
     public int readTimeout = 1000;
     private SerialPort serialPort;
     private Thread serialThread;
     private bool isSerialRunning = false;
+    public int buttonPressed = 0;
 
     private string lastReceivedData = "";
     private float lastFireTime = -5f;
@@ -32,7 +34,7 @@ public class BicycleVehicle : MonoBehaviour
     public Vector3 COG;
 
     [SerializeField] internal float movementSpeed = 10f;
-    [SerializeField] float brakeSpeed = 5f;
+    [SerializeField] float brakeSpeed = 10f;
 
     float steeringAngle;
     [SerializeField] float currentSteeringAngle;
@@ -66,7 +68,7 @@ public class BicycleVehicle : MonoBehaviour
         try
         {
             serialPort.Open();
-            Debug.Log("Serial port opened successfully.");
+            UnityEngine.Debug.Log("Serial port opened successfully.");
 
             isSerialRunning = true;
             serialThread = new Thread(SerialReadThread);
@@ -74,7 +76,7 @@ public class BicycleVehicle : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-            Debug.LogError($"Failed to open serial port: {ex.Message}");
+            UnityEngine.Debug.LogError($"Failed to open serial port: {ex.Message}");
         }
     }
 
@@ -107,7 +109,7 @@ public class BicycleVehicle : MonoBehaviour
             }
             catch (System.Exception ex)
             {
-                Debug.LogError($"Serial read error: {ex.Message}");
+                UnityEngine.Debug.LogError($"Serial read error: {ex.Message}");
             }
         }
     }
@@ -125,7 +127,7 @@ public class BicycleVehicle : MonoBehaviour
             {
                 dataParts = new string[0];
             }
-    }
+        }
         if (dataParts.Length >= 3)
         {
             arduinoData = true;
@@ -138,7 +140,7 @@ public class BicycleVehicle : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Steering data could not be parsed to a float.");
+                UnityEngine.Debug.LogWarning("Steering data could not be parsed to a float.");
             }
 
             // Parse horn input and fire bullet if cooldown has passed
@@ -152,19 +154,30 @@ public class BicycleVehicle : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Horn data could not be parsed to a float.");
+                UnityEngine.Debug.LogWarning("Horn data could not be parsed to a float.");
             }
 
             // Parse speed input
             if (float.TryParse(dataParts[2], out float parsedSpeed))
             {
                 float newSpeed = parsedSpeed / 8f;
-                verticalInput = Mathf.Clamp(newSpeed, 0f, 15f);
+                verticalInput = Mathf.Clamp(newSpeed, 0f, 50f);
             }
             else
             {
                 verticalInput = Input.GetAxis("Vertical"); // Fallback for speed when serial data is incomplete
-                Debug.LogWarning("Speed data could not be parsed.");
+                UnityEngine.Debug.LogWarning("Speed data could not be parsed.");
+            }
+
+            // Parse Buttion input
+            if (int.TryParse(dataParts[3], out int parsedButton))
+            {
+                buttonPressed = parsedButton;
+                Debug.Log("ButtonPressed");
+            }
+            else
+            {
+                Debug.LogWarning("Button data could not be parsed to an integer.");
             }
         }
         else
@@ -174,7 +187,7 @@ public class BicycleVehicle : MonoBehaviour
             usingKeyboardInput = true;
             horizontalInput = Input.GetAxis("Horizontal");
             verticalInput = Input.GetAxis("Vertical");
-            Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
+            UnityEngine.Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
         }
         braking = Input.GetKey(KeyCode.Space);
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Permissions;
 using UnityEngine;
 
@@ -43,10 +44,11 @@ public class PowerUp : MonoBehaviour
 
     IEnumerator PickUp(Collider player)
     {
-        Debug.Log("Power Picked Up");
+        UnityEngine.Debug.Log("Power Picked Up");
 
         BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
-        bicycle.movementSpeed += 10;
+
+        float baseSpeed = bicycle.movementSpeed;
 
         // Notify the spawner to remove this power-up from the list
         spawner.RemoveObject(gameObject);
@@ -56,15 +58,35 @@ public class PowerUp : MonoBehaviour
             renderer.enabled = false;
         }
         GetComponent<Collider>().enabled = false;
-        GetComponent<Collider>().enabled = false;
 
-        yield return new WaitForSeconds(4);
+        float duration = 4f; // Total time for the speed boost effect
+        float peakBoost = 20f; // Maximum speed boost
+        float halfDuration = duration / 2f; // Time to reach peak boost
 
-        bicycle.movementSpeed -= 10;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            // Calculate the speed adjustment using a parabola
+            float timeFactor = elapsedTime / halfDuration; // Normalize to 0-2
+            if (timeFactor > 1f) timeFactor = 2f - timeFactor; // Mirror for second half
+
+            float speedBoost = peakBoost * timeFactor; // Apply parabola
+
+            bicycle.movementSpeed = baseSpeed + speedBoost; // Update speed
+
+            yield return null; // Wait for the next frame
+        }
+
+        // Restore the speed to its base value
+        bicycle.movementSpeed = baseSpeed;
 
         Destroy(gameObject);
     }
-    
+
+
     void Explode()
     {
         // show effect

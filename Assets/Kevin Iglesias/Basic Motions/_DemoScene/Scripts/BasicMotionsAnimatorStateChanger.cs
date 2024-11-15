@@ -20,7 +20,7 @@ namespace KevinIglesias
 {
     public class BasicMotionsAnimatorStateChanger : StateMachineBehaviour
     {
-        [SerializeField]
+        /*[SerializeField]
         private CharacterState newState; //NEW STATE TO CHANGE
         
         //THIS WILL BE CALLED EVERY FRAME WHILE IN THE STATE, HIGHER LAYERS WILL HAVE HIGHER PRIORITY AND WILL OVERRIDE LOWER LAYERS CALLS
@@ -28,6 +28,6 @@ namespace KevinIglesias
         {
             //CALL CHANGE STATE FUNCTION FROM MAIN SCRIPT
             animator.transform.parent.GetComponent<BasicMotionsCharacterController>().ChangeState(newState); 
-        }
+        }*/
     }
 }

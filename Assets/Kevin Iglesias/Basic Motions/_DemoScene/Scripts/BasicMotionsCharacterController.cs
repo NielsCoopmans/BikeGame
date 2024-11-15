@@ -107,7 +107,7 @@ namespace KevinIglesias
         public float walkSpeed = 2f;          //SPEED WHEN WALKING
         public float crouchSpeed = 2f;        //SPEED WHEN CROUCHING
         public float sprintSpeed = 7.5f;      //SPEED WHEN SPRINTING
-        public float turnSpeed = 150f;        //SPEED FOR TURNING THE CHARACTER
+        public float turnSpeed = 0f;        //SPEED FOR TURNING THE CHARACTER
         private Vector3 moveDirection = Vector3.zero; //CURRENT CHARACTER MOVEMENT DIRECTION
         
         private bool jump; //JUMP CHECK

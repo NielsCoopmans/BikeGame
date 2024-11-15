@@ -5,21 +5,18 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
-    public float moveSpeed = 5f;            // Speed of forward movement
-    public float turnSpeed = 100f;          // Speed of turning/steering
-    public float health = 100f;             // Enemy health
-    public float detectionRange = 6f;       // Detection range to trigger the cutscene
-    public GameObject cutsceneObject;       // Reference to the cutscene UI or camera
-    public Transform playerTransform;       // Reference to the player's transform
+    public float moveSpeed = 5f;            
+    public float turnSpeed = 100f;          
+    public float health = 100f;             
+    public float detectionRange = 6f;       
+    public GameObject cutsceneObject;       
+    public Transform playerTransform;       
 
-    public int missionTime = 60;
-    
-   
-
-    public TextMeshProUGUI gameOverText;    // Text for the game over screen
+    public int missionTime = 120;
+    public TextMeshProUGUI gameOverText;    
     public TextMeshProUGUI TimeNearText;
 
-    public Transform enemyObject;           // Reference to the enemy model
+    public Transform enemyObject;          
     private Renderer enemyRenderer;
     public Color glowColor = Color.blue;
 
@@ -30,9 +27,9 @@ public class EnemyController : MonoBehaviour
     private Rigidbody rb;
 
     private float timeNearPlayer = 0f;       
-    public float requiredTimeToTriggerCutscene = 2f; 
+    public float requiredTimeToTriggerCutscene = 4f; 
 
-
+    public BicycleVehicle bicycleVehicle; // Reference to BicycleVehicle script
 
     private void Start()
     {
@@ -48,23 +45,25 @@ public class EnemyController : MonoBehaviour
         {
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;  
         }
-
     }
 
     private void Update()
     {
         if (!isCutsceneTriggered)
         {
-            
+            // Access the buttonPressed value from the BicycleVehicle script
+            int buttonPressed = bicycleVehicle != null ? bicycleVehicle.buttonPressed : 0;
+
+            // Check if the player is within detection range
             if (Vector3.Distance(transform.position, playerTransform.position) < detectionRange)
             {
-            
                 timeNearPlayer += Time.deltaTime;
 
                 if (TimeNearText != null)
                     TimeNearText.text = $"Time Near: {timeNearPlayer:F1}s";
 
-                if (!isCutsceneTriggered && timeNearPlayer >= requiredTimeToTriggerCutscene)
+                // Win the game if time near player reaches the required time or button is pressed
+                if (timeNearPlayer >= requiredTimeToTriggerCutscene || buttonPressed == 1)
                 {
                     gameOverText.text = "YOU WON";
                     TriggerCutscene();
@@ -82,7 +81,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    
     public void ApplySlow(float duration, float slowFactor)
     {
         if (!isSlowed)
@@ -95,14 +93,14 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator ResetSpeedAfterDelay(float delay)
+    private IEnumerator ResetSpeedAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        moveSpeed = originalMoveSpeed; // Restore the original speed
-        isSlowed = false; // Reset the slowed state
+        moveSpeed = originalMoveSpeed; 
+        isSlowed = false; 
     }
 
-    // Trigger cutscene when the player is within detection range for the required time
+    // Trigger cutscene when the player is within detection range for the required time or button is pressed
     public void TriggerCutscene()
     {
         isCutsceneTriggered = true;
@@ -115,7 +113,7 @@ public class EnemyController : MonoBehaviour
         StartCoroutine(WaitAndChangeScene(5f)); // Wait for 5 seconds
     }
 
-    private System.Collections.IEnumerator WaitAndChangeScene(float delay)
+    private IEnumerator WaitAndChangeScene(float delay)
     {
         yield return new WaitForSeconds(delay);
 
@@ -137,6 +135,4 @@ public class EnemyController : MonoBehaviour
             Destroy(collision.gameObject); // Destroy the bullet after collision
         }
     }
-
-    
 }
