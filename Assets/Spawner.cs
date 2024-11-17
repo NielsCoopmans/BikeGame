@@ -1,43 +1,48 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject myObject;
-    public float spawnHeightOffset = -10f;
-    public int maxSpawnedObjects = 5;
+    public GameObject myObject; // The power-up to spawn
+    public float spawnHeightOffset = -10f; // Offset for spawn height
+    public int maxSpawnedObjects = 5; // Max number of spawned power-ups at any time
 
     private List<GameObject> spawnedObjects = new List<GameObject>();
+    private GameObject[] roadTiles; // Array of tiles with the spawnPowerup tag
 
-    public string[] roadTiles = { "Road Lane_01 (71)"/*, "Road Intersection_01", "Road Lane_01 (95)", "Road Lane_01 (100)", "Road Lane_01 (99)"*/ };
+    void Start()
+    {
+        // Find all GameObjects with the tag "spawnPowerup" once, at the start
+        roadTiles = GameObject.FindGameObjectsWithTag("spawnPowerup");
+
+        if (roadTiles.Length == 0)
+        {
+            UnityEngine.Debug.LogWarning("No tiles found with the tag 'spawnPowerup'. Power-ups won't spawn.");
+        }
+    }
 
     public void SpawnObject(Vector3 position)
     {
-         // If the number of spawned objects does not exceeds the max create it, otherwise don't
+        // Ensure max spawn count is not exceeded
         if (spawnedObjects.Count < maxSpawnedObjects)
         {
             GameObject newObject = Instantiate(myObject, position, Quaternion.identity);
 
-            // Add the new sphere to the list of spawned objects
+            // Track spawned objects
             spawnedObjects.Add(newObject);
 
-            // Optionally, we can tell the powerup to register itself to be removed when it's picked up.
+            //Notify the PowerUp script about this spawner
             PowerUp powerupScript = newObject.GetComponent<PowerUp>();
             if (powerupScript != null)
             {
-                powerupScript.SetSpawner(this); // Pass reference to spawner for removal later
+                powerupScript.SetSpawner(this);
             }
-        }
-        else
-        {
-            //don't spawn
         }
     }
 
     public void RemoveObject(GameObject oldObject)
     {
+        // Remove object from the list if it exists
         if (spawnedObjects.Contains(oldObject))
         {
             spawnedObjects.Remove(oldObject);
@@ -46,48 +51,31 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
-        // Check if the max number of objects have been spawned
-        if (spawnedObjects.Count < maxSpawnedObjects)
+        // Check if we can spawn more objects
+        if (spawnedObjects.Count < maxSpawnedObjects && roadTiles.Length > 0)
         {
-            // Pick a random road tile from the array
-            if (roadTiles.Length > 0)  // Use Length for arrays
+            // Choose a random tile from the array
+            int randomTileIndex = UnityEngine.Random.Range(0, roadTiles.Length);
+            GameObject selectedTile = roadTiles[randomTileIndex];
+
+            // Ensure the selected tile has a MeshRenderer to determine bounds
+            MeshRenderer selectedRenderer = selectedTile.GetComponent<MeshRenderer>();
+
+            if (selectedRenderer != null)
             {
-                // Pick a random index
-                int randomTileIndex = UnityEngine.Random.Range(0, roadTiles.Length);
-                string selectedTileName = roadTiles[randomTileIndex];
+                // Generate a random position within the bounds of the selected tile
+                Vector3 randomSpawnPosition = new Vector3(
+                    UnityEngine.Random.Range(selectedRenderer.bounds.min.x, selectedRenderer.bounds.max.x),
+                    selectedRenderer.bounds.center.y + spawnHeightOffset,
+                    UnityEngine.Random.Range(selectedRenderer.bounds.min.z, selectedRenderer.bounds.max.z)
+                );
 
-                // Find the selected road tile GameObject by name
-                GameObject selectedTile = GameObject.Find(selectedTileName);
-
-                if (selectedTile != null)
-                {
-                    MeshRenderer selectedRenderer = selectedTile.GetComponent<MeshRenderer>();
-
-                    if (selectedRenderer != null)
-                    {
-                        // Generate a random position within the bounds of the selected road tile
-                        Vector3 randomSpawnPosition = new Vector3(
-                            UnityEngine.Random.Range(selectedRenderer.bounds.min.x, selectedRenderer.bounds.max.x),
-                            selectedRenderer.bounds.center.y + spawnHeightOffset,
-                            UnityEngine.Random.Range(selectedRenderer.bounds.min.z, selectedRenderer.bounds.max.z)
-                        );
-
-                        // Spawn the sphere at the random position
-                        SpawnObject(randomSpawnPosition);
-                    }
-                    else
-                    {
-                        UnityEngine.Debug.LogWarning("Selected road tile does not have a MeshRenderer component.");
-                    }
-                }
-                else
-                {
-                    UnityEngine.Debug.LogWarning($"Road tile with name '{selectedTileName}' not found.");
-                }
+                // Spawn the power-up at the calculated position
+                SpawnObject(randomSpawnPosition);
             }
             else
             {
-                UnityEngine.Debug.LogWarning("No road tiles are available in the array.");
+                UnityEngine.Debug.LogWarning("Selected road tile does not have a MeshRenderer component.");
             }
         }
     }

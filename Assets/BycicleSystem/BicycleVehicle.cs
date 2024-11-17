@@ -88,7 +88,7 @@ public class BicycleVehicle : MonoBehaviour
         UpdateWheels();
         UpdateHandle();
         LayOnTurn();
-        EmitTrail();
+        //EmitTrail();
     }
 
     private void SerialReadThread()

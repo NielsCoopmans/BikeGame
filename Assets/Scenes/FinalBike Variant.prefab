@@ -215,8 +215,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 69
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 30
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -360,6 +360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 3
   duration: 4
+  spawner: {fileID: 0}
 --- !u!1 &8237055467978539613
 GameObject:
   m_ObjectHideFlags: 0
