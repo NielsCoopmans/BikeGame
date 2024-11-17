@@ -24,7 +24,7 @@ public class PowerUp : MonoBehaviour
         {
             Explode();
             hasExploded = true;
-            countdown = delay; // Reset countdown if you want it to repeat, or remove this line to only explode once
+            countdown = delay; // Reset countdown
         }
     }
 

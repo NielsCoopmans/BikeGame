@@ -31,7 +31,7 @@ public class Spawner : MonoBehaviour
             // Track spawned objects
             spawnedObjects.Add(newObject);
 
-            // Optional: Notify the PowerUp script about this spawner
+            //Notify the PowerUp script about this spawner
             PowerUp powerupScript = newObject.GetComponent<PowerUp>();
             if (powerupScript != null)
             {
