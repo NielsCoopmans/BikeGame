@@ -15983,13 +15983,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b31c4c5f499fa8489d7586e53507e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 5
   turnSpeed: 100
   health: 100
   detectionRange: 3
   cutsceneObject: {fileID: 0}
   playerTransform: {fileID: 837171019}
-  missionTime: 60
+  missionTime: 120
   gameOverText: {fileID: 1937763940}
   TimeNearText: {fileID: 1246068102}
   enemyObject: {fileID: 106688140}
@@ -16035,7 +16035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34850698eda66f468fe9e1e65aa9354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 20
+  moveSpeed: 5
   turnSpeed: 100
   health: 100
   detectionRange: 5
@@ -37070,7 +37070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: portName
-      value: /dev/tty.usbmodem11201
+      value: /dev/tty.usbmodem1401
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: m_Enabled
@@ -37082,15 +37082,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: rearGrounded
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: frontGrounded
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: leanSmoothing
-      value: 0.000001
+      value: 0.22
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: movementSpeed
@@ -37098,7 +37098,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: turnSmoothing
-      value: 0.125
+      value: 0.331
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: maxSteeringAngle
@@ -58109,7 +58109,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 0.0067912894, y: 0.0067912894, z: 0.0067912894}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 515280112}
