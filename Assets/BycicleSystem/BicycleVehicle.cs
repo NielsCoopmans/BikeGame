@@ -58,6 +58,24 @@ public class BicycleVehicle : MonoBehaviour
 
     private bool usingKeyboardInput = false;
 
+    [Header("Collision Handling")]
+    public float rayDistance = 2f; // Raycast distance for collision detection
+    public LayerMask collisionLayer; // Layer for detecting collisions
+    public float backwardSpeed = 5f; // Speed to move backward upon collision
+    public float backwardDuration = 1f; // Duration for moving backward
+    private bool isColliding = false;
+    private float collisionTimer = 0f;
+
+    [Header("Camera Shake")]
+    public Camera mainCamera; // Main camera for shake effect
+    public float shakeDuration = 0.5f;
+    public float shakeMagnitude = 0.2f;
+    private Vector3 originalCameraPosition;
+
+    [Header("Sound Effects")]
+    public AudioSource audioSource; // Audio source for sound effects
+    public AudioClip collisionSound;
+
     void Start()
     {
         StopEmitTrail();
@@ -82,13 +100,20 @@ public class BicycleVehicle : MonoBehaviour
 
     void Update()
     {
-        GetInput();
-        HandleEngine();
-        HandleSteering();
-        UpdateWheels();
-        UpdateHandle();
-        LayOnTurn();
-        //EmitTrail();
+        if (isColliding)
+        {
+            HandleBackwardMovement();
+        }
+        else
+        {
+            GetInput();
+            HandleEngine();
+            HandleSteering();
+            UpdateWheels();
+            UpdateHandle();
+            LayOnTurn();
+            CheckForCollision();
+        }
     }
 
     private void SerialReadThread()
@@ -286,6 +311,97 @@ public class BicycleVehicle : MonoBehaviour
     private void UpdateSingleWheel(Transform wheelTransform)
     {
         wheelTransform.localRotation = Quaternion.Euler(new Vector3(0, currentSteeringAngle, 0));
+    }
+
+    public Transform rayOriginObject;  // Reference to the empty GameObject that will act as the ray origin
+    public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); // Size of the box (width, height, depth)
+    public Color boxColor = Color.red; // Color for the box visualization
+
+    private void CheckForCollision()
+    {
+        Vector3 rayOrigin = rayOriginObject.position;
+
+        //DrawBox(rayOrigin);
+
+        RaycastHit hit;
+        if (Physics.BoxCast(rayOrigin, boxSize / 2f, transform.forward, out hit, Quaternion.identity, rayDistance, collisionLayer))
+        {
+            if (!isColliding)
+            {
+                collisionTimer = backwardDuration;
+                isColliding = true;
+
+                PlayCollisionSound();
+                StartCoroutine(CameraShake());
+            }
+        }
+    }
+
+    private void DrawBox(Vector3 origin)
+    {
+        // Box's half extents
+        Vector3 halfExtents = boxSize / 2f;
+
+        // Calculate corners of the box
+        Vector3[] corners = new Vector3[8];
+        corners[0] = origin + transform.forward * rayDistance + transform.right * halfExtents.x + transform.up * halfExtents.y;
+        corners[1] = origin + transform.forward * rayDistance - transform.right * halfExtents.x + transform.up * halfExtents.y;
+        corners[2] = origin + transform.forward * rayDistance + transform.right * halfExtents.x - transform.up * halfExtents.y;
+        corners[3] = origin + transform.forward * rayDistance - transform.right * halfExtents.x - transform.up * halfExtents.y;
+        corners[4] = origin + transform.forward * 0 + transform.right * halfExtents.x + transform.up * halfExtents.y;
+        corners[5] = origin + transform.forward * 0 - transform.right * halfExtents.x + transform.up * halfExtents.y;
+        corners[6] = origin + transform.forward * 0 + transform.right * halfExtents.x - transform.up * halfExtents.y;
+        corners[7] = origin + transform.forward * 0 - transform.right * halfExtents.x - transform.up * halfExtents.y;
+
+        // Draw lines between the corners to visualize the box
+        for (int i = 0; i < 4; i++)
+        {
+            UnityEngine.Debug.DrawLine(corners[i], corners[(i + 1) % 4], boxColor);
+            UnityEngine.Debug.DrawLine(corners[i + 4], corners[((i + 1) % 4) + 4], boxColor);
+            UnityEngine.Debug.DrawLine(corners[i], corners[i + 4], boxColor);
+        }
+    }
+    private void HandleBackwardMovement()
+    {
+        if (collisionTimer > 0)
+        {
+            transform.Translate(-Vector3.forward * backwardSpeed * Time.deltaTime);
+            collisionTimer -= Time.deltaTime;
+        }
+        else
+        {
+            isColliding = false;
+        }
+    }
+
+    private void PlayCollisionSound()
+    {
+        if (audioSource != null && collisionSound != null)
+        {
+            audioSource.PlayOneShot(collisionSound);
+        }
+    }
+
+    private System.Collections.IEnumerator CameraShake()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < shakeDuration)
+        {
+            if (mainCamera != null)
+            {
+                Vector3 randomOffset = Random.insideUnitSphere * shakeMagnitude;
+                mainCamera.transform.localPosition = originalCameraPosition + randomOffset;
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        if (mainCamera != null)
+        {
+            mainCamera.transform.localPosition = originalCameraPosition;
+        }
     }
 
     void OnApplicationQuit()
