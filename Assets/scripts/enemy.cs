@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour
     private float timeNearPlayer = 0f;       
     public float requiredTimeToTriggerCutscene = 4f; 
 
-    public BicycleVehicle bicycleVehicle; // Reference to BicycleVehicle script
+    public BicycleVehicle bicycleVehicle; 
 
     private void Start()
     {
@@ -51,10 +51,13 @@ public class EnemyController : MonoBehaviour
     {
         if (!isCutsceneTriggered)
         {
-            // Access the buttonPressed value from the BicycleVehicle script
-            int buttonPressed = bicycleVehicle != null ? bicycleVehicle.buttonPressed : 0;
+            
+            //int buttonPressed = bicycleVehicle.buttonPressed;
+            //if(buttonPressed == 1){
+              //  TimeNearText.text = "ButtonPRESSED";
+            //}
+            
 
-            // Check if the player is within detection range
             if (Vector3.Distance(transform.position, playerTransform.position) < detectionRange)
             {
                 timeNearPlayer += Time.deltaTime;
@@ -63,8 +66,9 @@ public class EnemyController : MonoBehaviour
                     TimeNearText.text = $"Time Near: {timeNearPlayer:F1}s";
 
                 // Win the game if time near player reaches the required time or button is pressed
-                if (timeNearPlayer >= requiredTimeToTriggerCutscene || buttonPressed == 1)
+                if (timeNearPlayer >= requiredTimeToTriggerCutscene )
                 {
+                    UnityEngine.Debug.Log("ButtonPressed");
                     gameOverText.text = "YOU WON";
                     TriggerCutscene();
                 }

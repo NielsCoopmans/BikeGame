@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class BicycleVehicle : MonoBehaviour
 {
-    public string portName = "/dev/tty.usbmodem11201";
+    public string portName = "/dev/tty.usbmodem1401"	;
     public int baudRate = 115200;
     public int readTimeout = 1000;
     private SerialPort serialPort;
@@ -198,7 +198,9 @@ public class BicycleVehicle : MonoBehaviour
             if (int.TryParse(dataParts[3], out int parsedButton))
             {
                 buttonPressed = parsedButton;
-                UnityEngine.Debug.Log("ButtonPressed");
+                if(buttonPressed == 1){
+                    //UnityEngine.Debug.Log("ButtonPressed");
+                }
             }
             else
             {
