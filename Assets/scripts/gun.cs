@@ -10,6 +10,7 @@ public class Gun : MonoBehaviour
     private int currentBullets;             // Number of bullets currently available
 
     public TextMeshProUGUI bulletCountText; // Reference to the TextMeshProUGUI component to display the bullet count
+    public AudioSource shotSound;           // Reference to the AudioSource for the shot sound
 
     void Start()
     {
@@ -31,16 +32,20 @@ public class Gun : MonoBehaviour
 
     public void FireBullet()
     {
-        if (currentBullets > 0) { 
-        // Instantiate the bullet and set its velocity
-        var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
+        if (currentBullets > 0) {
+            
+            // Instantiate the bullet and set its velocity
+            var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
 
-        // Decrease the bullet count
-        currentBullets--;
+            // Play the shot sound
+            shotSound.Play();
 
-        // Update the UI with the new bullet count
-        UpdateBulletCountUI();
+            // Decrease the bullet count
+            currentBullets--;
+
+            // Update the UI with the new bullet count
+            UpdateBulletCountUI();
         }
     }
 
