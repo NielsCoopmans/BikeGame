@@ -17,9 +17,12 @@ TagManager:
   - Water
   - UI
   - MiniMap
-  - 
-  - 
-  - 
+  - obstacle
+  - road
+  - Bike
+  - Camera
+  - MiniMapBoard
+  - GlowLayer
   - 
   - 
   - 

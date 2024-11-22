@@ -9,7 +9,8 @@ public class EnemyController : MonoBehaviour
     public float turnSpeed = 100f;          
     public float health = 100f;             
     public float detectionRange = 6f;       
-    public GameObject cutsceneObject;       
+    public GameObject cutsceneObject;  
+    public GameObject VFX_EasyExplosion;    
     public Transform playerTransform;       
 
     public int missionTime = 120;
@@ -135,8 +136,24 @@ public class EnemyController : MonoBehaviour
             {
                 // Set the emission color to blue to make the enemy glow
                 enemyRenderer.material.SetColor("_Color", glowColor);
+                Explode();
             }
             Destroy(collision.gameObject); // Destroy the bullet after collision
+            Explode();
         }
     }
-}
+
+    void Explode()
+    {
+        void Explode()
+    {
+        if (VFX_EasyExplosion != null)
+        {
+            GameObject explosion = Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
+            Destroy(explosion, 2f); 
+        }
+        Destroy(gameObject); 
+    }
+    }
+}    
+
