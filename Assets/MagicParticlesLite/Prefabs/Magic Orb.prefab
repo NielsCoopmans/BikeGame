@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4015850864555988}
   - component: {fileID: 198683964593574260}
   - component: {fileID: 199740422434755458}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4813,7 +4813,7 @@ GameObject:
   - component: {fileID: 4485151109746918}
   - component: {fileID: 198111710524089246}
   - component: {fileID: 199578419139126016}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Orb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9588,7 +9588,7 @@ GameObject:
   - component: {fileID: 4827232773872640}
   - component: {fileID: 198347528150434826}
   - component: {fileID: 199976004462319922}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14332,7 +14332,7 @@ GameObject:
   - component: {fileID: 4149530738903622}
   - component: {fileID: 198470868727049936}
   - component: {fileID: 199894735345823932}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19076,7 +19076,7 @@ GameObject:
   - component: {fileID: 4753197992899194}
   - component: {fileID: 198951959689354048}
   - component: {fileID: 199293778347593414}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23879,7 +23879,7 @@ GameObject:
   - component: {fileID: -3087435725885280743}
   - component: {fileID: -4994765048784969897}
   - component: {fileID: 8740203918548037141}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Magic Orb
   m_TagString: bullet
   m_Icon: {fileID: 0}
@@ -23981,7 +23981,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4162544056945390}
   - component: {fileID: 108369614880845956}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24076,7 +24076,7 @@ GameObject:
   - component: {fileID: 4354392012451544}
   - component: {fileID: 198267160947838692}
   - component: {fileID: 199393909710585820}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Small Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
