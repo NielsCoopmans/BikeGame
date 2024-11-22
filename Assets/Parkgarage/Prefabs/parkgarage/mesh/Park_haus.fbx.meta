@@ -1,95 +1,257 @@
 fileFormatVersion: 2
 guid: 5edd4747c884a664d96748dbc79fe217
-timeCreated: 1510165044
-licenseType: Store
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: cable_parkgarage
-    100002: Floor_paint
-    100004: Grass_roof
-    100006: Lamp_grid
-    100008: Park_garage
-    100010: //RootNode
-    100012: Stairs
-    100014: stairwell
-    100016: Tree
-    100018: Tree_holder
-    100020: Glass_couple_roof
-    100022: Glass_couple_roof.001
-    100024: Glass_couple_roof.002
-    100026: Stairs_glass
-    100028: Stairs_glass_2
-    100030: Stairs_MetalPole
-    100032: Stone_roof
-    400000: cable_parkgarage
-    400002: Floor_paint
-    400004: Grass_roof
-    400006: Lamp_grid
-    400008: Park_garage
-    400010: //RootNode
-    400012: Stairs
-    400014: stairwell
-    400016: Tree
-    400018: Tree_holder
-    400020: Glass_couple_roof
-    400022: Glass_couple_roof.001
-    400024: Glass_couple_roof.002
-    400026: Stairs_glass
-    400028: Stairs_glass_2
-    400030: Stairs_MetalPole
-    400032: Stone_roof
-    2300000: cable_parkgarage
-    2300002: Floor_paint
-    2300004: Grass_roof
-    2300006: Lamp_grid
-    2300008: Park_garage
-    2300010: Stairs
-    2300012: stairwell
-    2300014: Tree
-    2300016: Tree_holder
-    2300018: Glass_couple_roof
-    2300020: Glass_couple_roof.001
-    2300022: Glass_couple_roof.002
-    2300024: Stairs_glass
-    2300026: Stairs_glass_2
-    2300028: Stairs_MetalPole
-    2300030: Stone_roof
-    3300000: cable_parkgarage
-    3300002: Floor_paint
-    3300004: Grass_roof
-    3300006: Lamp_grid
-    3300008: Park_garage
-    3300010: Stairs
-    3300012: stairwell
-    3300014: Tree
-    3300016: Tree_holder
-    3300018: Glass_couple_roof
-    3300020: Glass_couple_roof.001
-    3300022: Glass_couple_roof.002
-    3300024: Stairs_glass
-    3300026: Stairs_glass_2
-    3300028: Stairs_MetalPole
-    3300030: Stone_roof
-    4300000: cable_parkgarage
-    4300002: Lamp_grid
-    4300004: Floor_paint
-    4300006: stairwell
-    4300008: Grass_roof
-    4300010: Park_garage
-    4300012: Stairs
-    4300014: Tree
-    4300016: Tree_holder
-    4300018: Glass_couple_roof.002
-    4300020: Glass_couple_roof.001
-    4300022: Glass_couple_roof
-    4300024: Stone_roof
-    4300026: Stairs_glass_2
-    4300028: Stairs_glass
-    4300030: Stairs_MetalPole
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: cable_parkgarage
+  - first:
+      1: 100002
+    second: Floor_paint
+  - first:
+      1: 100004
+    second: Grass_roof
+  - first:
+      1: 100006
+    second: Lamp_grid
+  - first:
+      1: 100008
+    second: Park_garage
+  - first:
+      1: 100010
+    second: //RootNode
+  - first:
+      1: 100012
+    second: Stairs
+  - first:
+      1: 100014
+    second: stairwell
+  - first:
+      1: 100016
+    second: Tree
+  - first:
+      1: 100018
+    second: Tree_holder
+  - first:
+      1: 100020
+    second: Glass_couple_roof
+  - first:
+      1: 100022
+    second: Glass_couple_roof.001
+  - first:
+      1: 100024
+    second: Glass_couple_roof.002
+  - first:
+      1: 100026
+    second: Stairs_glass
+  - first:
+      1: 100028
+    second: Stairs_glass_2
+  - first:
+      1: 100030
+    second: Stairs_MetalPole
+  - first:
+      1: 100032
+    second: Stone_roof
+  - first:
+      4: 400000
+    second: cable_parkgarage
+  - first:
+      4: 400002
+    second: Floor_paint
+  - first:
+      4: 400004
+    second: Grass_roof
+  - first:
+      4: 400006
+    second: Lamp_grid
+  - first:
+      4: 400008
+    second: Park_garage
+  - first:
+      4: 400010
+    second: //RootNode
+  - first:
+      4: 400012
+    second: Stairs
+  - first:
+      4: 400014
+    second: stairwell
+  - first:
+      4: 400016
+    second: Tree
+  - first:
+      4: 400018
+    second: Tree_holder
+  - first:
+      4: 400020
+    second: Glass_couple_roof
+  - first:
+      4: 400022
+    second: Glass_couple_roof.001
+  - first:
+      4: 400024
+    second: Glass_couple_roof.002
+  - first:
+      4: 400026
+    second: Stairs_glass
+  - first:
+      4: 400028
+    second: Stairs_glass_2
+  - first:
+      4: 400030
+    second: Stairs_MetalPole
+  - first:
+      4: 400032
+    second: Stone_roof
+  - first:
+      23: 2300000
+    second: cable_parkgarage
+  - first:
+      23: 2300002
+    second: Floor_paint
+  - first:
+      23: 2300004
+    second: Grass_roof
+  - first:
+      23: 2300006
+    second: Lamp_grid
+  - first:
+      23: 2300008
+    second: Park_garage
+  - first:
+      23: 2300010
+    second: Stairs
+  - first:
+      23: 2300012
+    second: stairwell
+  - first:
+      23: 2300014
+    second: Tree
+  - first:
+      23: 2300016
+    second: Tree_holder
+  - first:
+      23: 2300018
+    second: Glass_couple_roof
+  - first:
+      23: 2300020
+    second: Glass_couple_roof.001
+  - first:
+      23: 2300022
+    second: Glass_couple_roof.002
+  - first:
+      23: 2300024
+    second: Stairs_glass
+  - first:
+      23: 2300026
+    second: Stairs_glass_2
+  - first:
+      23: 2300028
+    second: Stairs_MetalPole
+  - first:
+      23: 2300030
+    second: Stone_roof
+  - first:
+      33: 3300000
+    second: cable_parkgarage
+  - first:
+      33: 3300002
+    second: Floor_paint
+  - first:
+      33: 3300004
+    second: Grass_roof
+  - first:
+      33: 3300006
+    second: Lamp_grid
+  - first:
+      33: 3300008
+    second: Park_garage
+  - first:
+      33: 3300010
+    second: Stairs
+  - first:
+      33: 3300012
+    second: stairwell
+  - first:
+      33: 3300014
+    second: Tree
+  - first:
+      33: 3300016
+    second: Tree_holder
+  - first:
+      33: 3300018
+    second: Glass_couple_roof
+  - first:
+      33: 3300020
+    second: Glass_couple_roof.001
+  - first:
+      33: 3300022
+    second: Glass_couple_roof.002
+  - first:
+      33: 3300024
+    second: Stairs_glass
+  - first:
+      33: 3300026
+    second: Stairs_glass_2
+  - first:
+      33: 3300028
+    second: Stairs_MetalPole
+  - first:
+      33: 3300030
+    second: Stone_roof
+  - first:
+      43: 4300000
+    second: cable_parkgarage
+  - first:
+      43: 4300002
+    second: Lamp_grid
+  - first:
+      43: 4300004
+    second: Floor_paint
+  - first:
+      43: 4300006
+    second: stairwell
+  - first:
+      43: 4300008
+    second: Grass_roof
+  - first:
+      43: 4300010
+    second: Park_garage
+  - first:
+      43: 4300012
+    second: Stairs
+  - first:
+      43: 4300014
+    second: Tree
+  - first:
+      43: 4300016
+    second: Tree_holder
+  - first:
+      43: 4300018
+    second: Glass_couple_roof.002
+  - first:
+      43: 4300020
+    second: Glass_couple_roof.001
+  - first:
+      43: 4300022
+    second: Glass_couple_roof
+  - first:
+      43: 4300024
+    second: Stone_roof
+  - first:
+      43: 4300026
+    second: Stairs_glass_2
+  - first:
+      43: 4300028
+    second: Stairs_glass
+  - first:
+      43: 4300030
+    second: Stairs_MetalPole
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 0
@@ -98,6 +260,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -106,6 +269,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -120,30 +284,49 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 1
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -153,14 +336,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

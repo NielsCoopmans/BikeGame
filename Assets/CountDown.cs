@@ -12,15 +12,11 @@ public class CountDown : MonoBehaviour
     public TextMeshProUGUI MissionTimeDisplay; 
     public TextMeshProUGUI MissionTimeCounter; 
     public TextMeshProUGUI GameOver; 
-<<<<<<< Updated upstream
-    public EnemyController enemyController;  
-    
-=======
+
     public EnemyController enemyController;
     public AudioSource Sound;
     public AudioSource SoundGo;
 
->>>>>>> Stashed changes
 
     private BicycleVehicle bicycleVehicleScript; 
 
