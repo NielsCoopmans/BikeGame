@@ -47,7 +47,8 @@ public class CollisionPlayer : MonoBehaviour
 
         float duration = 2f; // Total time for the speed limit effect
 
-        bicycle.movementSpeed = currentSpeed - penalty < 0 ? 0 : currentSpeed - penalty;
+        //bicycle.movementSpeed = currentSpeed - penalty < 0 ? 0 : currentSpeed - penalty;
+        bicycle.movementSpeed = penalty;
         
         yield return new WaitForSeconds(duration);
 

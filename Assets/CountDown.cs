@@ -18,7 +18,6 @@ public class CountDown : MonoBehaviour
     public AudioSource SoundGo;
 
 
-
     private BicycleVehicle bicycleVehicleScript; 
 
     private void Start()
