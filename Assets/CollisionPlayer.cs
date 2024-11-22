@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CollisionPlayer : MonoBehaviour
 {
+    //public GameObject explosionPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +33,10 @@ public class CollisionPlayer : MonoBehaviour
 
         //float baseSpeed = bicycle.movementSpeed;
         float baseSpeed = 10f; //problem with the stacking of these penalties
+        float currentSpeed = bicycle.movementSpeed;
         float penalty = 5f;
+
+        //Instantiate(explosionPrefab, transform.position, transform.rotation);
 
         //dissable meshes and collider, so that only once
         foreach (SkinnedMeshRenderer renderer in GetComponentsInChildren<SkinnedMeshRenderer>())
@@ -42,7 +47,7 @@ public class CollisionPlayer : MonoBehaviour
 
         float duration = 2f; // Total time for the speed limit effect
 
-        bicycle.movementSpeed = baseSpeed - penalty < 0 ? 0 : baseSpeed - penalty;
+        bicycle.movementSpeed = currentSpeed - penalty < 0 ? 0 : currentSpeed - penalty;
         
         yield return new WaitForSeconds(duration);
 

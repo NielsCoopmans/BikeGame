@@ -13,7 +13,7 @@ public class CountDown : MonoBehaviour
     public TextMeshProUGUI MissionTimeCounter; 
     public TextMeshProUGUI GameOver; 
     public EnemyController enemyController;  
-
+    
 
     private BicycleVehicle bicycleVehicleScript; 
 
@@ -22,6 +22,8 @@ public class CountDown : MonoBehaviour
         
         bicycleVehicleScript = FindObjectOfType<BicycleVehicle>();
         bicycleVehicleScript.enabled = false;
+        enemyController.enabled = false;
+        
         MissionTimeDisplay.gameObject.SetActive(false);
         MissionTimeCounter.gameObject.SetActive(false);
        
@@ -45,6 +47,8 @@ public class CountDown : MonoBehaviour
         countdownDisplay.gameObject.SetActive(false);
         countdownMessage.gameObject.SetActive(false);
         bicycleVehicleScript.enabled = true;
+        enemyController.enabled = true;
+    
 
         MissionTimeDisplay.gameObject.SetActive(true);
         MissionTimeCounter.gameObject.SetActive(true);
