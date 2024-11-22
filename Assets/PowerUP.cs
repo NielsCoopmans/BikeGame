@@ -11,6 +11,7 @@ public class PowerUp : MonoBehaviour
     private float countdown;
     public float duration = 4f;
     public Spawner spawner; // Reference to the spawner
+    public AudioSource audioSource;
 
     void Start()
     {
@@ -44,6 +45,7 @@ public class PowerUp : MonoBehaviour
 
     IEnumerator PickUp(Collider player)
     {
+        audioSource.Play();
         UnityEngine.Debug.Log("Power Picked Up");
 
         BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
@@ -81,7 +83,7 @@ public class PowerUp : MonoBehaviour
         }
 
         // Restore the speed to its base value
-        bicycle.movementSpeed = baseSpeed;
+        bicycle.movementSpeed = 10;
 
         Destroy(gameObject);
     }

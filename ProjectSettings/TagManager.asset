@@ -24,10 +24,7 @@ TagManager:
   - MiniMapBoard
   - bullet
   - GlowLayer
-  - 
-  - 
-  - 
-  - 
+  - 'pedestrianLayer '
   - 
   - 
   - 

@@ -12,8 +12,15 @@ public class CountDown : MonoBehaviour
     public TextMeshProUGUI MissionTimeDisplay; 
     public TextMeshProUGUI MissionTimeCounter; 
     public TextMeshProUGUI GameOver; 
+<<<<<<< Updated upstream
     public EnemyController enemyController;  
     
+=======
+    public EnemyController enemyController;
+    public AudioSource Sound;
+    public AudioSource SoundGo;
+
+>>>>>>> Stashed changes
 
     private BicycleVehicle bicycleVehicleScript; 
 
@@ -37,11 +44,14 @@ public class CountDown : MonoBehaviour
         while (countdownTime > 0)
         {
             countdownDisplay.text = countdownTime.ToString();
+            Sound.Play();
             yield return new WaitForSeconds(1f);
             countdownTime--;
         }
-
+        
+        SoundGo.Play();
         countdownDisplay.text = "GO!";
+        
         yield return new WaitForSeconds(1f);
 
         countdownDisplay.gameObject.SetActive(false);
@@ -54,6 +64,7 @@ public class CountDown : MonoBehaviour
         MissionTimeCounter.gameObject.SetActive(true);
 
         StartCoroutine(MissionTimeCountdown());
+        
 
 
     }
