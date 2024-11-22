@@ -9,6 +9,7 @@
       },
       "url": "https://packages.unity.com"
     },
+<<<<<<< Updated upstream
     "com.unity.burst": {
       "version": "1.8.18",
       "depth": 0,
@@ -16,6 +17,19 @@
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
         "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.cinemachine": {
+      "version": "2.10.1",
+=======
+    "com.unity.cinemachine": {
+      "version": "2.10.3",
+>>>>>>> Stashed changes
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.31"
       },
       "url": "https://packages.unity.com"
     },
@@ -95,6 +109,7 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+<<<<<<< Updated upstream
     "com.unity.postprocessing": {
       "version": "3.4.0",
       "depth": 0,
@@ -149,6 +164,20 @@
     "com.unity.searcher": {
       "version": "4.9.2",
       "depth": 0,
+=======
+    "com.unity.recorder": {
+      "version": "4.0.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.timeline": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.settings-manager": {
+      "version": "2.0.1",
+      "depth": 2,
+>>>>>>> Stashed changes
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

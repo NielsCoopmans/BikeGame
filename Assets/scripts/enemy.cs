@@ -30,7 +30,8 @@ public class EnemyController : MonoBehaviour
     private float timeNearPlayer = 0f;       
     public float requiredTimeToTriggerCutscene = 4f; 
 
-    public BicycleVehicle bicycleVehicle; 
+    public BicycleVehicle bicycleVehicle;
+    public AudioSource SoundNear;
 
     private void Start()
     {
@@ -65,6 +66,8 @@ public class EnemyController : MonoBehaviour
 
                 if (TimeNearText != null)
                     TimeNearText.text = $"Time Near: {timeNearPlayer:F1}s";
+                    SoundNear.Play();
+
 
                 // Win the game if time near player reaches the required time or button is pressed
                 if (timeNearPlayer >= requiredTimeToTriggerCutscene )
