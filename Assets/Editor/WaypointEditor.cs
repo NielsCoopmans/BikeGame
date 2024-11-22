@@ -6,9 +6,13 @@ using UnityEditor;
 [InitializeOnLoad]
 public static class WaypointEditor
 {
+    // This method draws gizmos in the scene view.
     [DrawGizmo(GizmoType.NonSelected | GizmoType.Selected | GizmoType.Pickable)]
     public static void OnDrawSceneGizmo(Waypoint waypoint, GizmoType gizmoType)
     {
+        // Only draw gizmos if we are not in play mode (so it only draws in Scene view, not in Game view)
+        if (Application.isPlaying) return;
+
         // Set color based on whether the waypoint is selected
         if ((gizmoType & GizmoType.Selected) != 0)
         {
@@ -49,14 +53,14 @@ public static class WaypointEditor
             Gizmos.DrawLine(waypoint.transform.position + offset, waypoint.nextWaypoint.transform.position + offsetTo);
         }
 
-        if(waypoint.branches != null)
+        // Draw branches if they exist
+        if (waypoint.branches != null)
         {
-            foreach(Waypoint branch in waypoint.branches)
+            foreach (Waypoint branch in waypoint.branches)
             {
                 Gizmos.color = Color.blue;
                 Gizmos.DrawLine(waypoint.transform.position, branch.transform.position);
             }
-
         }
     }
 }
