@@ -126,7 +126,7 @@ public class EnemyController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
     }
 
-    // Optional: Take damage if the enemy gets hit by bullets
+    //Take damage if the enemy gets hit by bullets
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("bullet"))

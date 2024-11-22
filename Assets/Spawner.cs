@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject myObject; // The power-up to spawn
-    public float spawnHeightOffset = -10f; // Offset for spawn height
-    public int maxSpawnedObjects = 5; // Max number of spawned power-ups at any time
+    public GameObject myObject; //the power-up to spawn
+    public float spawnHeightOffset = -10f; // offset for spawn height
+    public int maxSpawnedObjects = 5; //max number of spawned power-ups at any time
 
     private List<GameObject> spawnedObjects = new List<GameObject>();
-    private GameObject[] roadTiles; // Array of tiles with the spawnPowerup tag
+    private GameObject[] roadTiles; // array of tiles with the spawnPowerup tag
 
     void Start()
     {
-        // Find all GameObjects with the tag "spawnPowerup" once, at the start
+        //find all GameObjects with the tag "spawnPowerup" once, at the start
         roadTiles = GameObject.FindGameObjectsWithTag("spawnPowerup");
 
         if (roadTiles.Length == 0)
@@ -23,15 +23,15 @@ public class Spawner : MonoBehaviour
 
     public void SpawnObject(Vector3 position)
     {
-        // Ensure max spawn count is not exceeded
+        //ensure max spawn count is not exceeded
         if (spawnedObjects.Count < maxSpawnedObjects)
         {
             GameObject newObject = Instantiate(myObject, position, Quaternion.identity);
 
-            // Track spawned objects
+            //track spawned objects
             spawnedObjects.Add(newObject);
 
-            //Notify the PowerUp script about this spawner
+            //notify the PowerUp script about this spawner
             PowerUp powerupScript = newObject.GetComponent<PowerUp>();
             if (powerupScript != null)
             {
@@ -42,7 +42,7 @@ public class Spawner : MonoBehaviour
 
     public void RemoveObject(GameObject oldObject)
     {
-        // Remove object from the list if it exists
+        //remove object from the list if it exists
         if (spawnedObjects.Contains(oldObject))
         {
             spawnedObjects.Remove(oldObject);
@@ -51,26 +51,26 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
-        // Check if we can spawn more objects
+        //check if we can spawn more objects
         if (spawnedObjects.Count < maxSpawnedObjects && roadTiles.Length > 0)
         {
-            // Choose a random tile from the array
+            //choose a random tile from the array
             int randomTileIndex = UnityEngine.Random.Range(0, roadTiles.Length);
             GameObject selectedTile = roadTiles[randomTileIndex];
 
-            // Ensure the selected tile has a MeshRenderer to determine bounds
+            //ensure the selected tile has a MeshRenderer to determine bounds
             MeshRenderer selectedRenderer = selectedTile.GetComponent<MeshRenderer>();
 
             if (selectedRenderer != null)
             {
-                // Generate a random position within the bounds of the selected tile
+                //generate a random position within the bounds of the selected tile
                 Vector3 randomSpawnPosition = new Vector3(
                     UnityEngine.Random.Range(selectedRenderer.bounds.min.x, selectedRenderer.bounds.max.x),
                     selectedRenderer.bounds.center.y + spawnHeightOffset,
                     UnityEngine.Random.Range(selectedRenderer.bounds.min.z, selectedRenderer.bounds.max.z)
                 );
 
-                // Spawn the power-up at the calculated position
+                //spawn the power-up at the calculated position
                 SpawnObject(randomSpawnPosition);
             }
             else
