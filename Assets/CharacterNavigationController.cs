@@ -49,11 +49,6 @@ public class CharacterNavigationController : MonoBehaviour
             velocity = (transform.position - lastPosition) / Time.deltaTime;
             velocity.y = 0; // Ignore vertical velocity
 
-            // Optional: Use the velocity magnitude and directional components for additional purposes
-            float velocityMagnitude = velocity.magnitude;
-            float fwdDotProduct = Vector3.Dot(transform.forward, velocity.normalized);
-            float rightDotProduct = Vector3.Dot(transform.right, velocity.normalized);
-
             // Update lastPosition
             lastPosition = transform.position;
         }
