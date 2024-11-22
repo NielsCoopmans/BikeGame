@@ -33,12 +33,17 @@ public class EnemyController : MonoBehaviour
     public BicycleVehicle bicycleVehicle;
     public AudioSource SoundNear;
 
+    public EnemyNavigationController navigationController;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         originalMoveSpeed = moveSpeed;
         enemyRenderer = enemyObject.GetComponent<Renderer>();
+
+        if (navigationController == null)
+            navigationController = GetComponent<EnemyNavigationController>();
 
         if (cutsceneObject != null)
             cutsceneObject.SetActive(false);
@@ -134,29 +139,23 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.collider.CompareTag("bullet"))
         {
-            ApplySlow(10f, 0.5f); // Example: Slow down the enemy when hit by a bullet
-            if (enemyRenderer != null)
+            // Trigger the slow effect in NavigationController
+            if (navigationController != null)
             {
-                // Set the emission color to blue to make the enemy glow
-                enemyRenderer.material.SetColor("_Color", glowColor);
-                Explode();
+                navigationController.ApplySlow(3f, 0.5f); // Slow for 3 seconds at 50% speed
             }
-            Destroy(collision.gameObject); // Destroy the bullet after collision
+
             Explode();
         }
     }
 
     void Explode()
     {
-        void Explode()
-    {
         if (VFX_EasyExplosion != null)
         {
             GameObject explosion = Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
             Destroy(explosion, 2f); 
         }
-        Destroy(gameObject); 
-    }
     }
 }    
 

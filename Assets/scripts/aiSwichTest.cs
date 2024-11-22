@@ -14,6 +14,9 @@ public class EnemyNavigationController : MonoBehaviour
     private Vector3 lastPosition;
     private Vector3 velocity;
 
+    private bool isSlowed = false;
+    private float originalSpeed;
+
     private Rigidbody rb;
 
     // Start is called before the first frame update
@@ -76,6 +79,26 @@ public class EnemyNavigationController : MonoBehaviour
 
         // Update lastPosition
         lastPosition = transform.position;
+    }
+
+    public void ApplySlow(float duration, float slowFactor)
+    {
+        if (isSlowed) return; // Prevent multiple slows
+
+        isSlowed = true;
+        movementSpeed *= slowFactor; // Apply the slow factor
+
+        // Schedule a reset after the duration
+        StartCoroutine(ResetSpeedAfterDelay(duration));
+    }
+
+    private IEnumerator ResetSpeedAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Reset the movement speed
+        movementSpeed = originalSpeed;
+        isSlowed = false;
     }
 
     // Method to update the destination to the next waypoint
