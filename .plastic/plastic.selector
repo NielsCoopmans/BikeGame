@@ -1,4 +1,0 @@
-repository "BikeGame@BDP2003@cloud"
-  path "/"
-    br "/main"
-    co "/main"

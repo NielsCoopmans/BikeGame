@@ -76,6 +76,14 @@ public class BicycleVehicle : MonoBehaviour
     public AudioSource audioSource; // Audio source for sound effects
     public AudioClip collisionSound;
 
+    [Header("Camera Settings")]
+    public Transform bikeTransform; // The bike's transform to follow
+    public Vector3 cameraOffset = new Vector3(0f, 2f, -5f); // Offset from the bike
+    public float smoothFollowSpeed = 0.1f; // Speed of smooth following
+    private Vector3 smoothDampVelocity; // For smooth damp calculations
+
+
+
     void Start()
     {
         StopEmitTrail();
@@ -311,7 +319,7 @@ public class BicycleVehicle : MonoBehaviour
     private void UpdateSingleWheel(Transform wheelTransform)
     {
         wheelTransform.localRotation = Quaternion.Euler(new Vector3(0, currentSteeringAngle, 0));
-    }
+    } 
 
     public Transform rayOriginObject;  // Reference to the empty GameObject that will act as the ray origin
     public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); // Size of the box (width, height, depth)
@@ -382,7 +390,7 @@ public class BicycleVehicle : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator CameraShake()
+    private IEnumerator CameraShake()
     {
         float elapsed = 0f;
 
@@ -390,19 +398,18 @@ public class BicycleVehicle : MonoBehaviour
         {
             if (mainCamera != null)
             {
-                Vector3 randomOffset = Random.insideUnitSphere * shakeMagnitude;
-                mainCamera.transform.localPosition = originalCameraPosition + randomOffset;
+                // Add shake to the camera's local position
+                Vector3 randomOffset = new Vector3(Random.Range(-shakeMagnitude, shakeMagnitude), 0f, 0f);
+                mainCamera.transform.localPosition += randomOffset;
             }
 
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        if (mainCamera != null)
-        {
-            mainCamera.transform.localPosition = originalCameraPosition;
-        }
+        // Ensure the camera's position stabilizes (handled by Smooth Follow)
     }
+
 
     void OnApplicationQuit()
     {
