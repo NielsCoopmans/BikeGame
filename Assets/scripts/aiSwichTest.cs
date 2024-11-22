@@ -81,17 +81,35 @@ public class EnemyNavigationController : MonoBehaviour
     // Method to update the destination to the next waypoint
     void ChooseNextWaypoint()
     {
-        // Check if the current waypoint has a next waypoint
-        if (currentWaypoint != null && currentWaypoint.nextWaypoint != null)
+        if (currentWaypoint != null)
         {
-            currentWaypoint = currentWaypoint.nextWaypoint; // Move to the next waypoint
-            targetPosition = currentWaypoint.GetPosition(); // Update the target position
-            Debug.Log("Moving to next waypoint: " + currentWaypoint.name);
-        }
-        else
-        {
-            Debug.Log("No more waypoints or end of path reached!");
-            reachedDestination = true; // Stop moving if no next waypoint
+            // Check if there are branches
+            if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0)
+            {
+                // Decide whether to take a branch based on branchRatio
+                if (UnityEngine.Random.value < currentWaypoint.branchRatio)
+                {
+                    // Choose a random branch from the list
+                    currentWaypoint = currentWaypoint.branches[UnityEngine.Random.Range(0, currentWaypoint.branches.Count)];
+                    targetPosition = currentWaypoint.GetPosition();
+                    Debug.Log("Branch chosen, moving to: " + currentWaypoint.name);
+                    return;
+                }
+            }
+
+            // If no branch is chosen, move to the next waypoint
+            if (currentWaypoint.nextWaypoint != null)
+            {
+                currentWaypoint = currentWaypoint.nextWaypoint;
+                targetPosition = currentWaypoint.GetPosition();
+                Debug.Log("Moving to next waypoint: " + currentWaypoint.name);
+            }
+            else
+            {
+                Debug.Log("No more waypoints or end of path reached!");
+                reachedDestination = true; // Stop moving if no next waypoint
+            }
         }
     }
+
 }
