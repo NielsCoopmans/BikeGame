@@ -14,6 +14,9 @@ public class EnemyNavigationController : MonoBehaviour
     private Vector3 lastPosition;
     private Vector3 velocity;
 
+    private bool isSlowed = false;
+    private float originalSpeed;
+
     private Rigidbody rb;
 
     // Start is called before the first frame update
@@ -78,20 +81,58 @@ public class EnemyNavigationController : MonoBehaviour
         lastPosition = transform.position;
     }
 
+    public void ApplySlow(float duration, float slowFactor)
+    {
+        if (isSlowed) return; // Prevent multiple slows
+
+        isSlowed = true;
+        movementSpeed *= slowFactor; // Apply the slow factor
+
+        // Schedule a reset after the duration
+        StartCoroutine(ResetSpeedAfterDelay(duration));
+    }
+
+    private IEnumerator ResetSpeedAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Reset the movement speed
+        movementSpeed = originalSpeed;
+        isSlowed = false;
+    }
+
     // Method to update the destination to the next waypoint
     void ChooseNextWaypoint()
     {
-        // Check if the current waypoint has a next waypoint
-        if (currentWaypoint != null && currentWaypoint.nextWaypoint != null)
+        if (currentWaypoint != null)
         {
-            currentWaypoint = currentWaypoint.nextWaypoint; // Move to the next waypoint
-            targetPosition = currentWaypoint.GetPosition(); // Update the target position
-            Debug.Log("Moving to next waypoint: " + currentWaypoint.name);
-        }
-        else
-        {
-            Debug.Log("No more waypoints or end of path reached!");
-            reachedDestination = true; // Stop moving if no next waypoint
+            // Check if there are branches
+            if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0)
+            {
+                // Decide whether to take a branch based on branchRatio
+                if (UnityEngine.Random.value < currentWaypoint.branchRatio)
+                {
+                    // Choose a random branch from the list
+                    currentWaypoint = currentWaypoint.branches[UnityEngine.Random.Range(0, currentWaypoint.branches.Count)];
+                    targetPosition = currentWaypoint.GetPosition();
+                    Debug.Log("Branch chosen, moving to: " + currentWaypoint.name);
+                    return;
+                }
+            }
+
+            // If no branch is chosen, move to the next waypoint
+            if (currentWaypoint.nextWaypoint != null)
+            {
+                currentWaypoint = currentWaypoint.nextWaypoint;
+                targetPosition = currentWaypoint.GetPosition();
+                Debug.Log("Moving to next waypoint: " + currentWaypoint.name);
+            }
+            else
+            {
+                Debug.Log("No more waypoints or end of path reached!");
+                reachedDestination = true; // Stop moving if no next waypoint
+            }
         }
     }
+
 }

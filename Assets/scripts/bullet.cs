@@ -25,10 +25,11 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        // Instantiate the explosion effect at the bullet's position
+        Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
         // Destroy the bullet upon collision
         Destroy(gameObject);
 
-        // Instantiate the explosion effect at the bullet's position
-        // Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
+        
     }
 }
