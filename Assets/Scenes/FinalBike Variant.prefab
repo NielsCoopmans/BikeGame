@@ -711,9 +711,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
+      propertyPath: fronttrail
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 7646289942077976836}
+    - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
+      propertyPath: rearttrail
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       propertyPath: audioSource
       value: 
@@ -803,7 +811,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1289980563654191974, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
+    - {fileID: 1289980563693950054, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5472104034219470852, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
       insertIndex: -1
