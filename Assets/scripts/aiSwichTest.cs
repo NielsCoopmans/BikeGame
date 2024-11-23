@@ -25,6 +25,9 @@ public class EnemyNavigationController : MonoBehaviour
         lastPosition = transform.position; // Initialize last position
         rb = GetComponent<Rigidbody>();    // Get the Rigidbody component if available
 
+        originalSpeed = movementSpeed; // Initialize the original speed
+        Debug.Log($"Original speed set to: {originalSpeed}");
+
         if (currentWaypoint != null)
         {
             targetPosition = currentWaypoint.GetPosition(); // Set the initial destination to the first waypoint
@@ -83,10 +86,17 @@ public class EnemyNavigationController : MonoBehaviour
 
     public void ApplySlow(float duration, float slowFactor)
     {
-        if (isSlowed) return; // Prevent multiple slows
+        if (isSlowed)
+        {
+            Debug.Log("Enemy is already slowed. Skipping.");
+            return; // Prevent multiple slows
+        }
 
         isSlowed = true;
-        movementSpeed *= slowFactor; // Apply the slow factor
+        originalSpeed = movementSpeed; // Save the current speed as the original speed
+        movementSpeed *= slowFactor;  // Apply the slow factor
+
+        Debug.Log($"Slow applied: Speed changed from {originalSpeed} to {movementSpeed}. Duration: {duration}");
 
         // Schedule a reset after the duration
         StartCoroutine(ResetSpeedAfterDelay(duration));
@@ -96,7 +106,8 @@ public class EnemyNavigationController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        // Reset the movement speed
+        // Reset the movement speed to its original value
+        Debug.Log($"Resetting speed from {movementSpeed} to {originalSpeed} after {delay} seconds.");
         movementSpeed = originalSpeed;
         isSlowed = false;
     }
@@ -134,5 +145,4 @@ public class EnemyNavigationController : MonoBehaviour
             }
         }
     }
-
 }
