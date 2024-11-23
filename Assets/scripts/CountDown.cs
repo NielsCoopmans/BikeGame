@@ -6,7 +6,7 @@ using TMPro;
 public class CountDown : MonoBehaviour
 {
     public int countdownTime = 3; 
-    public int missionTime = 60;
+    public int missionTime = 200;
     public TextMeshProUGUI countdownDisplay; 
     public TextMeshProUGUI countdownMessage; 
     public TextMeshProUGUI MissionTimeDisplay; 
@@ -67,7 +67,6 @@ public class CountDown : MonoBehaviour
 
     public IEnumerator MissionTimeCountdown()
     {
-        missionTime = 300;
         while (missionTime > 0)
         {
             MissionTimeCounter.text = missionTime.ToString();
