@@ -67,7 +67,7 @@ public class CountDown : MonoBehaviour
 
     public IEnumerator MissionTimeCountdown()
     {
-        missionTime = 60;
+        missionTime = 200;
         while (missionTime > 0)
         {
             MissionTimeCounter.text = missionTime.ToString();
