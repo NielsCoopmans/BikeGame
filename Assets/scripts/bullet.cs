@@ -5,7 +5,7 @@ public class Bullet : MonoBehaviour
     public float lifetime = 5f;          // Time before the bullet is destroyed
     public float maxSize = 5f;           // Maximum size of the bullet
     public float expansionRate = 2f;     // Rate at which the bullet grows over time
-    public GameObject VFX_EasyExplosion;
+    //public GameObject VFX_EasyExplosion;
 
     private void Start()
     {
@@ -25,10 +25,17 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Destroy the bullet upon collision
-        Destroy(gameObject);
+        // Check if the object it collided with has a specific tag or layer
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            // Don't destroy the bullet if it's a sphere
+            return;
+        }
 
         // Instantiate the explosion effect at the bullet's position
-        // Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
+        //Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
+
+        // Destroy the bullet upon collision
+        Destroy(gameObject);
     }
 }
