@@ -62,7 +62,7 @@ public class BicycleVehicle : MonoBehaviour
     public float rayDistance = 2f; // Raycast distance for collision detection
     public LayerMask collisionLayer; // Layer for detecting collisions
     public float backwardSpeed = 5f; // Speed to move backward upon collision
-    public float backwardDuration = 0.2f; // Duration for moving backward
+    public float backwardDuration = 1f; // Duration for moving backward
     private bool isColliding = false;
     private float collisionTimer = 0f;
 
@@ -295,7 +295,7 @@ public class BicycleVehicle : MonoBehaviour
     public void UpdateWheels()
     {
         UpdateSingleWheel(frontWheeltransform);
-        //UpdateSingleWheel(backWheeltransform);
+        UpdateSingleWheel(backWheeltransform);
     }
 
     public void UpdateHandle()
@@ -329,25 +329,46 @@ public class BicycleVehicle : MonoBehaviour
     {
         Vector3 rayOrigin = rayOriginObject.position;
 
-        // Overlap Box
-        Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
-        if (hitColliders.Length > 0 && !isColliding)
-        {
-            collisionTimer = backwardDuration;
-            isColliding = true;
+        //DrawBox(rayOrigin);
 
-            PlayCollisionSound();
-            StartCoroutine(CameraShake());
+        RaycastHit hit;
+        if (Physics.BoxCast(rayOrigin, boxSize / 2f, transform.forward, out hit, Quaternion.identity, rayDistance, collisionLayer))
+        {
+            if (!isColliding)
+            {
+                collisionTimer = backwardDuration;
+                isColliding = true;
+
+                PlayCollisionSound();
+                StartCoroutine(CameraShake());
+            }
         }
     }
 
-    private void OnDrawGizmos()
+    private void DrawBox(Vector3 origin)
     {
-        Gizmos.color = boxColor;
-        Gizmos.matrix = Matrix4x4.TRS(rayOriginObject.position, transform.rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.zero, boxSize);
-    }
+        // Box's half extents
+        Vector3 halfExtents = boxSize / 2f;
 
+        // Calculate corners of the box
+        Vector3[] corners = new Vector3[8];
+        corners[0] = origin + transform.forward * rayDistance + transform.right * halfExtents.x + transform.up * halfExtents.y;
+        corners[1] = origin + transform.forward * rayDistance - transform.right * halfExtents.x + transform.up * halfExtents.y;
+        corners[2] = origin + transform.forward * rayDistance + transform.right * halfExtents.x - transform.up * halfExtents.y;
+        corners[3] = origin + transform.forward * rayDistance - transform.right * halfExtents.x - transform.up * halfExtents.y;
+        corners[4] = origin + transform.forward * 0 + transform.right * halfExtents.x + transform.up * halfExtents.y;
+        corners[5] = origin + transform.forward * 0 - transform.right * halfExtents.x + transform.up * halfExtents.y;
+        corners[6] = origin + transform.forward * 0 + transform.right * halfExtents.x - transform.up * halfExtents.y;
+        corners[7] = origin + transform.forward * 0 - transform.right * halfExtents.x - transform.up * halfExtents.y;
+
+        // Draw lines between the corners to visualize the box
+        for (int i = 0; i < 4; i++)
+        {
+            UnityEngine.Debug.DrawLine(corners[i], corners[(i + 1) % 4], boxColor);
+            UnityEngine.Debug.DrawLine(corners[i + 4], corners[((i + 1) % 4) + 4], boxColor);
+            UnityEngine.Debug.DrawLine(corners[i], corners[i + 4], boxColor);
+        }
+    }
     private void HandleBackwardMovement()
     {
         if (collisionTimer > 0)

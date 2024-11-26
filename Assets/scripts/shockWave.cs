@@ -34,7 +34,7 @@ public class Shockwave : MonoBehaviour
                 EnemyController enemy = hitCollider.GetComponent<EnemyController>(); // Assuming your enemy script is named "Enemy"
                 if (enemy != null)
                 {
-                    //enemy.ApplySlow(slowEffectDuration, slowFactor);
+                    enemy.ApplySlow(slowEffectDuration, slowFactor);
                 }
             }
         }

@@ -21,12 +21,11 @@ public class EnemyController : MonoBehaviour
     private Renderer enemyRenderer;
     public Color glowColor = Color.blue;
 
-    private float originalMoveSpeed;           
+    private float originalMoveSpeed;        
+    private bool isSlowed = false;          
     private bool isCutsceneTriggered = false; 
 
     private Rigidbody rb;
-
-    public float slowFactor = 0.5f;
 
     private float timeNearPlayer = 0f;       
     public float requiredTimeToTriggerCutscene = 4f; 
@@ -34,17 +33,12 @@ public class EnemyController : MonoBehaviour
     public BicycleVehicle bicycleVehicle;
     public AudioSource SoundNear;
 
-    public EnemyNavigationController navigationController;
-
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         originalMoveSpeed = moveSpeed;
         enemyRenderer = enemyObject.GetComponent<Renderer>();
-
-        if (navigationController == null)
-            navigationController = GetComponent<EnemyNavigationController>();
 
         if (cutsceneObject != null)
             cutsceneObject.SetActive(false);
@@ -95,6 +89,25 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public void ApplySlow(float duration, float slowFactor)
+    {
+        if (!isSlowed)
+        {
+            isSlowed = true;
+            moveSpeed *= slowFactor; 
+
+            // Start a coroutine to reset the speed after the duration
+            StartCoroutine(ResetSpeedAfterDelay(duration));
+        }
+    }
+
+    private IEnumerator ResetSpeedAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        moveSpeed = originalMoveSpeed; 
+        isSlowed = false; 
+    }
+
     // Trigger cutscene when the player is within detection range for the required time or button is pressed
     public void TriggerCutscene()
     {
@@ -121,23 +134,29 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.collider.CompareTag("bullet"))
         {
-            // Trigger the slow effect in NavigationController
-            if (navigationController != null)
+            ApplySlow(10f, 0.5f); // Example: Slow down the enemy when hit by a bullet
+            if (enemyRenderer != null)
             {
-                navigationController.ApplySlow(3f, slowFactor); // Slow for 3 seconds at 50% speed
+                // Set the emission color to blue to make the enemy glow
+                enemyRenderer.material.SetColor("_Color", glowColor);
+                Explode();
             }
-
+            Destroy(collision.gameObject); // Destroy the bullet after collision
             Explode();
         }
     }
 
     void Explode()
     {
+        void Explode()
+    {
         if (VFX_EasyExplosion != null)
         {
             GameObject explosion = Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
             Destroy(explosion, 2f); 
         }
+        Destroy(gameObject); 
+    }
     }
 }    
 
