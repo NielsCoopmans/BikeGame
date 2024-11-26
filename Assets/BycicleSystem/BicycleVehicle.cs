@@ -331,15 +331,36 @@ public class BicycleVehicle : MonoBehaviour
 
         // Overlap Box
         Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
-        if (hitColliders.Length > 0 && !isColliding)
-        {
-            collisionTimer = backwardDuration;
-            isColliding = true;
 
-            PlayCollisionSound();
-            StartCoroutine(CameraShake());
+        foreach (Collider hit in hitColliders)
+        {
+            UnityEngine.Debug.Log("Detected: " + hit.gameObject.name);
+
+            if (!isColliding)
+            {
+                collisionTimer = backwardDuration;
+                isColliding = true;
+
+                if (hit.CompareTag("portal"))
+                {
+                    UnityEngine.Debug.Log("collision with portal!");
+                    // Find the RampPortal script on the portal object
+                    RampPortal portalScript = hit.GetComponent<RampPortal>();
+                    if (portalScript != null)
+                    {
+                        UnityEngine.Debug.Log("Portal activated for " + hit.gameObject.name);
+                        portalScript.ActivatePortal(hit); // Pass the collider to ActivatePortal
+                    }
+                }
+                else
+                {
+                    PlayCollisionSound();
+                    StartCoroutine(CameraShake());
+                }
+            }
         }
     }
+
 
     private void OnDrawGizmos()
     {
