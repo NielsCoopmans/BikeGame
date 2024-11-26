@@ -28,7 +28,7 @@ public class CollisionPlayer : MonoBehaviour
 
     IEnumerator Collision(Collider player)
     {
-
+        UnityEngine.Debug.Log("pedestrian collision player");
         BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
 
         //float baseSpeed = bicycle.movementSpeed;
@@ -44,17 +44,17 @@ public class CollisionPlayer : MonoBehaviour
             renderer.enabled = false;
         }
         GetComponent<Collider>().enabled = false;
-
+        
         float duration = 2f; // Total time for the speed limit effect
-
+        
         //bicycle.movementSpeed = currentSpeed - penalty < 0 ? 0 : currentSpeed - penalty;
         bicycle.movementSpeed = penalty;
         
         yield return new WaitForSeconds(duration);
-
+        
         // Restore the speed to its base value
         bicycle.movementSpeed = baseSpeed;
-
+        
         Destroy(gameObject);
     }
 }
