@@ -343,13 +343,12 @@ public class BicycleVehicle : MonoBehaviour
 
                 if (hit.CompareTag("portal"))
                 {
-                    UnityEngine.Debug.Log("collision with portal!");
+                    UnityEngine.Debug.Log("Portal activated for " + hit.gameObject.name);
                     // Find the RampPortal script on the portal object
                     RampPortal portalScript = hit.GetComponent<RampPortal>();
                     if (portalScript != null)
                     {
-                        UnityEngine.Debug.Log("Portal activated for " + hit.gameObject.name);
-                        portalScript.ActivatePortal(hit); // Pass the collider to ActivatePortal
+                        portalScript.ActivatePortal(); // Pass the collider to ActivatePortal                       
                     }
                 }
                 else
