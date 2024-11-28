@@ -349,16 +349,16 @@ public class BicycleVehicle : MonoBehaviour
                     enemyController.enemyhit();
                     break; // Exit the loop after handling the first valid collision
                 }
-                if else(hit.CompareTag("portal"))
+                else if(hitCollider.CompareTag("portal"))
+                {
+                    UnityEngine.Debug.Log("Portal activated for " + hitCollider.gameObject.name);
+                    // Find the RampPortal script on the portal object
+                    RampPortal portalScript = hitCollider.GetComponent<RampPortal>();
+                    if (portalScript != null)
                     {
-                        UnityEngine.Debug.Log("Portal activated for " + hit.gameObject.name);
-                        // Find the RampPortal script on the portal object
-                        RampPortal portalScript = hit.GetComponent<RampPortal>();
-                        if (portalScript != null)
-                        {
-                            portalScript.ActivatePortal(); // Pass the collider to ActivatePortal                       
-                        }
+                        portalScript.ActivatePortal(); // Pass the collider to ActivatePortal                       
                     }
+                }
                 else
                 {
                     collisionTimer = backwardDuration;
@@ -368,8 +368,7 @@ public class BicycleVehicle : MonoBehaviour
                     StartCoroutine(CameraShake());
                     break; // Exit the loop after handling the first valid collision
                 }
-                UnityEngine.Debug.Log("Detected: " + hit.gameObject.name);
-                }
+            }
         }
     }
 
