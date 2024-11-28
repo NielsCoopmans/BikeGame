@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class BicycleVehicle : MonoBehaviour
 {
-    public string portName = "/dev/tty.usbmodem1401"	;
+    public string portName = "/dev/tty.usbmodem11201"	;
     public int baudRate = 115200;
     public int readTimeout = 1000;
     private SerialPort serialPort;
@@ -214,7 +214,7 @@ public class BicycleVehicle : MonoBehaviour
                 buttonPressed = parsedButton;
                 if(buttonPressed == 1){
                     gun.ReloadBullets();
-                    if(enemy.NearPlayer = true){
+                    if(enemy.NearPlayer == true){
                         enemy.TriggerCutscene();
                     }
                 }
@@ -254,8 +254,9 @@ public class BicycleVehicle : MonoBehaviour
     {
         if (arduinoData)
         {
-            currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
-            currentSteeringAngle = Mathf.Clamp(currentSteeringAngle, -maxSteeringAngle, maxSteeringAngle);
+            //currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
+            //currentSteeringAngle = Mathf.Clamp(currentSteeringAngle, -maxSteeringAngle, maxSteeringAngle);
+            currentSteeringAngle = steeringInput;
 
             targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
 
