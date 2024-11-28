@@ -20,14 +20,16 @@ public class CountDown : MonoBehaviour
 
     public AudioSource backgroundMusic;
 
-
     private BicycleVehicle bicycleVehicleScript; 
 
     private void Start()
     {
-        
         bicycleVehicleScript = FindObjectOfType<BicycleVehicle>();
-        bicycleVehicleScript.enabled = false;
+        if (bicycleVehicleScript != null)
+        {
+            bicycleVehicleScript.isCountdownComplete = false; // Disable movement initially
+        }
+        bicycleVehicleScript.enabled = true;
         enemyController.enabled = false;
         
         MissionTimeDisplay.gameObject.SetActive(false);
@@ -61,6 +63,11 @@ public class CountDown : MonoBehaviour
 
         MissionTimeDisplay.gameObject.SetActive(true);
         MissionTimeCounter.gameObject.SetActive(true);
+
+        if (bicycleVehicleScript != null)
+        {
+            bicycleVehicleScript.isCountdownComplete = true; 
+        }
 
         backgroundMusic.Play();
 

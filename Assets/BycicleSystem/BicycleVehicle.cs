@@ -16,6 +16,7 @@ public class BicycleVehicle : MonoBehaviour
     public int buttonPressed = 0;
 
     public EnemyController enemy;
+    public bool isCountdownComplete = false;
 
     private string lastReceivedData = "";
     private float lastFireTime = -5f;
@@ -120,7 +121,7 @@ public class BicycleVehicle : MonoBehaviour
         {
             HandleBackwardMovement();
         }
-        else
+        else if (isCountdownComplete) 
         {
             GetInput();
             HandleEngine();
@@ -129,7 +130,13 @@ public class BicycleVehicle : MonoBehaviour
             UpdateHandle();
             LayOnTurn();
             CheckForCollision();
+            CaptureEnemy();
         }
+        else
+        {
+            GetInput(); 
+        }
+        
     }
 
     private void SerialReadThread()
@@ -156,87 +163,94 @@ public class BicycleVehicle : MonoBehaviour
     }
 
     public void GetInput()
+{
+    string[] dataParts;
+    lock (lockObject)
     {
-        string[] dataParts;
-        lock (lockObject)
+        if (!string.IsNullOrEmpty(lastReceivedData))
         {
-            if (!string.IsNullOrEmpty(lastReceivedData))
-            {
-                dataParts = lastReceivedData.Trim().Split(',');
-            }
-            else
-            {
-                dataParts = new string[0];
-            }
+            dataParts = lastReceivedData.Trim().Split(',');
         }
-        if (dataParts.Length >= 3)
+        else
         {
-            arduinoData = true;
-            usingKeyboardInput = false;
+            dataParts = new string[0];
+        }
+    }
+    if (dataParts.Length >= 3)
+    {
+        arduinoData = true;
+        usingKeyboardInput = false;
 
-            // Parse steering input
-            if (float.TryParse(dataParts[0], out float parsedSteering))
-            {
-                steeringInput = -parsedSteering;
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning("Steering data could not be parsed to a float.");
-            }
+        // Parse steering input
+        if (float.TryParse(dataParts[0], out float parsedSteering))
+        {
+            steeringInput = -parsedSteering;
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("Steering data could not be parsed to a float.");
+        }
 
-            // Parse horn input and fire bullet if cooldown has passed
-            if (float.TryParse(dataParts[1], out float horn))
+        // Parse horn input and fire bullet if cooldown has passed
+        if (float.TryParse(dataParts[1], out float horn))
+        {
+            if (horn == 1 && (Time.time - lastFireTime) >= 2f)
             {
-                if (horn == 1 && (Time.time - lastFireTime) >= 2f)
-                {
-                    gun.FireBullet();
-                    lastFireTime = Time.time;
-                }
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning("Horn data could not be parsed to a float.");
-            }
-
-            // Parse speed input
-            if (float.TryParse(dataParts[2], out float parsedSpeed))
-            {
-                float newSpeed = parsedSpeed / 8f;
-                verticalInput = Mathf.Clamp(newSpeed, 0f, 50f);
-            }
-            else
-            {
-                verticalInput = Input.GetAxis("Vertical"); // Fallback for speed when serial data is incomplete
-                UnityEngine.Debug.LogWarning("Speed data could not be parsed.");
-            }
-
-            // Parse Buttion input
-            if (int.TryParse(dataParts[3], out int parsedButton))
-            {
-                buttonPressed = parsedButton;
-                if(buttonPressed == 1){
-                    gun.ReloadBullets();
-                    if(enemy.NearPlayer == true){
-                        enemy.TriggerCutscene();
-                    }
-                }
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning("Button data could not be parsed to an integer.");
+                gun.FireBullet();
+                lastFireTime = Time.time;
             }
         }
         else
         {
-            // Fallback to keyboard input if data from Arduino is incomplete
-            arduinoData = false;
-            usingKeyboardInput = true;
-            horizontalInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical");
-            UnityEngine.Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
+            UnityEngine.Debug.LogWarning("Horn data could not be parsed to a float.");
         }
-        braking = Input.GetKey(KeyCode.Space);
+
+        // Parse speed input
+        if (float.TryParse(dataParts[2], out float parsedSpeed))
+        {
+            float newSpeed = parsedSpeed / 8f;
+            verticalInput = Mathf.Clamp(newSpeed, 0f, 50f);
+        }
+        else
+        {
+            verticalInput = Input.GetAxis("Vertical"); // Fallback for speed when serial data is incomplete
+            UnityEngine.Debug.LogWarning("Speed data could not be parsed.");
+        }
+
+        // Parse Button input
+        if (int.TryParse(dataParts[3], out int parsedButton))
+        {
+            buttonPressed = parsedButton;
+            
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("Button data could not be parsed to an integer.");
+        }
     }
+    else
+    {
+        // Fallback to keyboard input if data from Arduino is incomplete
+        arduinoData = false;
+        usingKeyboardInput = true;
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+
+        // Detect "B" key press for fallback action
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            gun.ReloadBullets();
+            if (enemy != null && enemy.NearPlayer)
+            {
+                enemy.TriggerCutscene();
+            }
+        }
+
+        UnityEngine.Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
+    }
+    braking = Input.GetKey(KeyCode.Space);
+}
+
 
 
 
@@ -439,4 +453,17 @@ public class BicycleVehicle : MonoBehaviour
         }
     }
 
+    private void CaptureEnemy()
+    {      
+        
+    if (buttonPressed == 1)
+    {
+        gun.ReloadBullets();
+
+        if (enemy != null && enemy.NearPlayer)
+        {
+            enemy.enemyhit();
+        }
+    }
+    }
 }
