@@ -15,7 +15,10 @@ public class CountDown : MonoBehaviour
     public EnemyController enemyController;  
 
     public AudioSource Sound;
-    public AudioSource SoundGo;
+    public AudioClip go;
+    public AudioClip count;
+
+    public AudioSource backgroundMusic;
 
 
     private BicycleVehicle bicycleVehicleScript; 
@@ -40,12 +43,12 @@ public class CountDown : MonoBehaviour
         while (countdownTime > 0)
         {
             countdownDisplay.text = countdownTime.ToString();
-            Sound.Play();
+            Sound.PlayOneShot(count);
             yield return new WaitForSeconds(1f);
             countdownTime--;
         }
         
-        SoundGo.Play();
+        Sound.PlayOneShot(go);
         countdownDisplay.text = "GO!";
         
         yield return new WaitForSeconds(1f);
@@ -59,10 +62,9 @@ public class CountDown : MonoBehaviour
         MissionTimeDisplay.gameObject.SetActive(true);
         MissionTimeCounter.gameObject.SetActive(true);
 
+        backgroundMusic.Play();
+
         StartCoroutine(MissionTimeCountdown());
-        
-
-
     }
 
     public IEnumerator MissionTimeCountdown()

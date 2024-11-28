@@ -82,11 +82,15 @@ public class BicycleVehicle : MonoBehaviour
     public float smoothFollowSpeed = 0.1f; // Speed of smooth following
     private Vector3 smoothDampVelocity; // For smooth damp calculations
 
+    public EnemyController enemyController;
+
 
 
     void Start()
     {
         StopEmitTrail();
+        if (enemyController == null)
+            enemyController = GetComponent<EnemyController>();
 
         serialPort = new SerialPort(portName, baudRate);
         serialPort.ReadTimeout = readTimeout;
@@ -333,11 +337,23 @@ public class BicycleVehicle : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
         if (hitColliders.Length > 0 && !isColliding)
         {
-            collisionTimer = backwardDuration;
-            isColliding = true;
+            foreach (Collider hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("enemy"))  // Replace "YourTagName" with the actual tag you want to check for
+                {
+                    enemyController.enemyhit();
+                    break; // Exit the loop after handling the first valid collision
+                }
+                else
+                {
+                    collisionTimer = backwardDuration;
+                    isColliding = true;
 
-            PlayCollisionSound();
-            StartCoroutine(CameraShake());
+                    PlayCollisionSound();
+                    StartCoroutine(CameraShake());
+                    break; // Exit the loop after handling the first valid collision
+                }
+            }
         }
     }
 

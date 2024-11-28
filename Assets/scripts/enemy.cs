@@ -95,6 +95,13 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public void enemyhit()
+    {
+        UnityEngine.Debug.Log("ButtonPressed");
+        gameOverText.text = "YOU WON";
+        TriggerCutscene();
+    }
+
     // Trigger cutscene when the player is within detection range for the required time or button is pressed
     public void TriggerCutscene()
     {
