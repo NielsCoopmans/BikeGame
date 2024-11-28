@@ -28,61 +28,47 @@ public class EnemyNavigationController : MonoBehaviour
         originalSpeed = movementSpeed; // Initialize the original speed
         Debug.Log($"Original speed set to: {originalSpeed}");
 
-        if (currentWaypoint != null)
-        {
-            targetPosition = currentWaypoint.GetPosition(); // Set the initial destination to the first waypoint
-        }
-        else
-        {
-            Debug.LogError("No starting waypoint assigned!");
-        }
     }
 
-    // Update is called once per frame
+    public bool isMoving = false; // Controls whether the enemy moves
+
     void Update()
     {
-        // Check if the current waypoint is assigned and if the enemy is moving
-        if (currentWaypoint == null) return;
+        if (!isMoving) return; // Skip the rest of Update if not moving
+
+        if (currentWaypoint == null) return; // No waypoint assigned, stop processing
 
         Vector3 destinationDirection = targetPosition - transform.position;
         destinationDirection.y = 0; // Keep movement in the horizontal plane
         float destinationDistance = destinationDirection.magnitude;
 
-        // If not yet reached the target
         if (destinationDistance >= stopDistance)
         {
             reachedDestination = false;
-
-            // Rotate towards the destination
             Quaternion targetRotation = Quaternion.LookRotation(destinationDirection);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-            // Move forward
             Vector3 moveDirection = destinationDirection.normalized * movementSpeed * Time.deltaTime;
 
-            // Use Rigidbody for smooth movement if available
             if (rb != null)
-            {
                 rb.MovePosition(transform.position + moveDirection);
-            }
             else
-            {
-                transform.Translate(moveDirection, Space.World); // Fallback to transform if no Rigidbody is available
-            }
+                transform.Translate(moveDirection, Space.World);
         }
         else
         {
-            reachedDestination = true;  // Reached the current waypoint
-            ChooseNextWaypoint();       // Move to the next waypoint
+            reachedDestination = true;
+            ChooseNextWaypoint();
         }
-
-        // Calculate velocity
-        velocity = (transform.position - lastPosition) / Time.deltaTime;
-        velocity.y = 0; // Ignore vertical velocity
-
-        // Update lastPosition
-        lastPosition = transform.position;
     }
+
+    public void StartMoving()
+    {
+        Debug.Log("Enemy started moving.");
+        isMoving = true; // Enable movement
+        if (currentWaypoint != null)
+            targetPosition = currentWaypoint.GetPosition();
+    }
+
 
     public void ApplySlow(float duration, float slowFactor)
     {

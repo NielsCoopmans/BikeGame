@@ -10,6 +10,8 @@ TagManager:
   - Pared
   - spawnPowerup
   - portal
+  - SpeedBoost
+  - startEnemy
   layers:
   - Default
   - TransparentFX

@@ -70,6 +70,7 @@ public class EnemyController : MonoBehaviour
             if (Vector3.Distance(transform.position, playerTransform.position) < detectionRange)
             {
                 NearPlayer = true;
+                UnityEngine.Debug.Log($"EnemyController: NearPlayer = {NearPlayer}");
                 timeNearPlayer += Time.deltaTime;
 
                 if (TimeNearText != null)
@@ -80,9 +81,7 @@ public class EnemyController : MonoBehaviour
                 // Win the game if time near player reaches the required time or button is pressed
                 if (timeNearPlayer >= requiredTimeToTriggerCutscene )
                 {
-                    UnityEngine.Debug.Log("ButtonPressed");
-                    gameOverText.text = "YOU WON";
-                    TriggerCutscene();
+                    enemyhit();
                 }
             }
             else
@@ -105,7 +104,6 @@ public class EnemyController : MonoBehaviour
 
     public void enemyhit()
     {
-        UnityEngine.Debug.Log("ButtonPressed");
         gameOverText.text = "YOU WON";
         TriggerCutscene();
     }

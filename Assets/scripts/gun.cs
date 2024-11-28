@@ -21,13 +21,11 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        // Check if space key is pressed and there are bullets left
         if (Input.GetKeyDown(KeyCode.Space) )
         {
             FireBullet();
         }
 
-        // Optionally, add a reload mechanic or bullet regeneration here
     }
 
     public void FireBullet()
@@ -65,5 +63,11 @@ public class Gun : MonoBehaviour
             currentBullets = maxBullets; 
             UpdateBulletCountUI();  
         }     
+    }
+
+    public void ReloadBulletsComplete()
+    {
+        currentBullets = maxBullets;
+        UpdateBulletCountUI();
     }
 }
