@@ -85,6 +85,7 @@ public class BicycleVehicle : MonoBehaviour
     private Vector3 smoothDampVelocity; // For smooth damp calculations
 
     public EnemyController enemyController;
+    public EnemyNavigationController navigationController; 
 
 
 
@@ -93,7 +94,8 @@ public class BicycleVehicle : MonoBehaviour
         StopEmitTrail();
         if (enemyController == null)
             enemyController = GetComponent<EnemyController>();
-
+        if (navigationController == null)
+            navigationController = GetComponent<EnemyNavigationController>();
         serialPort = new SerialPort(portName, baudRate);
         serialPort.ReadTimeout = readTimeout;
 
@@ -359,6 +361,10 @@ public class BicycleVehicle : MonoBehaviour
                     {
                         portalScript.ActivatePortal(); // Pass the collider to ActivatePortal                       
                     }
+                }
+                else if (hitCollider.CompareTag("startEnemy"))
+                {
+                    navigationController.StartMoving();
                 }
                 else
                 {
