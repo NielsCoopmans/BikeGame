@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class MinimapArrowIndicator : MonoBehaviour
 {
-    public Camera minimapCamera;        // Reference to the minimap camera
+    public Camera minimapCamera;        
     public Transform player;            // Reference to the player position
     public Transform enemy;             // Reference to the enemy position
     public RectTransform arrowIcon;     // UI arrow icon that will point to the enemy

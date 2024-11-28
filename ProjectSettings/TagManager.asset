@@ -9,6 +9,7 @@ TagManager:
   - Ball
   - Pared
   - spawnPowerup
+  - portal
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,6 @@ TagManager:
   - bullet
   - GlowLayer
   - 'pedestrianLayer '
-  - 
   - 
   - 
   - 

@@ -15,6 +15,8 @@ public class BicycleVehicle : MonoBehaviour
     private bool isSerialRunning = false;
     public int buttonPressed = 0;
 
+    public EnemyController enemy;
+
     private string lastReceivedData = "";
     private float lastFireTime = -5f;
 
@@ -81,8 +83,6 @@ public class BicycleVehicle : MonoBehaviour
     public Vector3 cameraOffset = new Vector3(0f, 2f, -5f); // Offset from the bike
     public float smoothFollowSpeed = 0.1f; // Speed of smooth following
     private Vector3 smoothDampVelocity; // For smooth damp calculations
-
-
 
     void Start()
     {
@@ -207,7 +207,10 @@ public class BicycleVehicle : MonoBehaviour
             {
                 buttonPressed = parsedButton;
                 if(buttonPressed == 1){
-                    //UnityEngine.Debug.Log("ButtonPressed");
+                    gun.ReloadBullets();
+                    if(enemy.NearPlayer = true){
+                        enemy.TriggerCutscene();
+                    }
                 }
             }
             else
@@ -331,15 +334,35 @@ public class BicycleVehicle : MonoBehaviour
 
         // Overlap Box
         Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
-        if (hitColliders.Length > 0 && !isColliding)
-        {
-            collisionTimer = backwardDuration;
-            isColliding = true;
 
-            PlayCollisionSound();
-            StartCoroutine(CameraShake());
+        foreach (Collider hit in hitColliders)
+        {
+            UnityEngine.Debug.Log("Detected: " + hit.gameObject.name);
+
+            if (!isColliding)
+            {
+                collisionTimer = backwardDuration;
+                isColliding = true;
+
+                if (hit.CompareTag("portal"))
+                {
+                    UnityEngine.Debug.Log("Portal activated for " + hit.gameObject.name);
+                    // Find the RampPortal script on the portal object
+                    RampPortal portalScript = hit.GetComponent<RampPortal>();
+                    if (portalScript != null)
+                    {
+                        portalScript.ActivatePortal(); // Pass the collider to ActivatePortal                       
+                    }
+                }
+                else
+                {
+                    PlayCollisionSound();
+                    StartCoroutine(CameraShake());
+                }
+            }
         }
     }
+
 
     private void OnDrawGizmos()
     {
@@ -399,6 +422,5 @@ public class BicycleVehicle : MonoBehaviour
             serialPort.Close();
         }
     }
-
 
 }
