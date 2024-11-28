@@ -64,9 +64,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7146521406498821007, guid: a52f1d567d6594302b4aa222a61a6722, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -516098083770646512, guid: a52f1d567d6594302b4aa222a61a6722, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a52f1d567d6594302b4aa222a61a6722, type: 3}
       propertyPath: m_Name
       value: SpeedBoost_animation
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a52f1d567d6594302b4aa222a61a6722, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416272007918961125, guid: a52f1d567d6594302b4aa222a61a6722, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
