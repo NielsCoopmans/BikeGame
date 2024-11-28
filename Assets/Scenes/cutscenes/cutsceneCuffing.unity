@@ -376,8 +376,6 @@ GameObject:
   - component: {fileID: 626526662}
   - component: {fileID: 626526661}
   - component: {fileID: 626526660}
-  - component: {fileID: 626526659}
-  - component: {fileID: 626526658}
   - component: {fileID: 626526657}
   - component: {fileID: 626526664}
   m_Layer: 0
@@ -414,52 +412,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 36
   m_CollisionDetection: 0
---- !u!114 &626526658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626526656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d34850698eda66f468fe9e1e65aa9354, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 2
-  rotationSpeed: 120
-  stopDistance: 2.5
-  reachedDestination: 0
-  currentWaypoint: {fileID: 0}
---- !u!114 &626526659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626526656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b31c4c5f499fa8489d7586e53507e52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 1
-  turnSpeed: 100
-  health: 100
-  detectionRange: 3
-  cutsceneObject: {fileID: 0}
-  VFX_EasyExplosion: {fileID: 0}
-  playerTransform: {fileID: 0}
-  missionTime: 120
-  gameOverText: {fileID: 0}
-  TimeNearText: {fileID: 0}
-  enemyObject: {fileID: 1283941566}
-  glowColor: {r: 0, g: 0, b: 1, a: 1}
-  slowFactor: 0.5
-  requiredTimeToTriggerCutscene: 1
-  bicycleVehicle: {fileID: 0}
-  SoundNear: {fileID: 0}
-  navigationController: {fileID: 626526658}
 --- !u!136 &626526660
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1242,7 +1194,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4664322994268695228, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
     m_RemovedGameObjects:
     - {fileID: 1289980563693950054, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
     - {fileID: 1289980563654191974, guid: b9f42de6425d7a64492e24f3f8462954, type: 3}
