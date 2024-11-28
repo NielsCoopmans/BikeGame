@@ -84,9 +84,15 @@ public class BicycleVehicle : MonoBehaviour
     public float smoothFollowSpeed = 0.1f; // Speed of smooth following
     private Vector3 smoothDampVelocity; // For smooth damp calculations
 
+    public EnemyController enemyController;
+
+
+
     void Start()
     {
         StopEmitTrail();
+        if (enemyController == null)
+            enemyController = GetComponent<EnemyController>();
 
         serialPort = new SerialPort(portName, baudRate);
         serialPort.ReadTimeout = readTimeout;
@@ -334,32 +340,36 @@ public class BicycleVehicle : MonoBehaviour
 
         // Overlap Box
         Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
-
-        foreach (Collider hit in hitColliders)
+        if (hitColliders.Length > 0 && !isColliding)
         {
-            UnityEngine.Debug.Log("Detected: " + hit.gameObject.name);
-
-            if (!isColliding)
+            foreach (Collider hitCollider in hitColliders)
             {
-                collisionTimer = backwardDuration;
-                isColliding = true;
-
-                if (hit.CompareTag("portal"))
+                if (hitCollider.CompareTag("enemy"))  // Replace "YourTagName" with the actual tag you want to check for
                 {
-                    UnityEngine.Debug.Log("Portal activated for " + hit.gameObject.name);
-                    // Find the RampPortal script on the portal object
-                    RampPortal portalScript = hit.GetComponent<RampPortal>();
-                    if (portalScript != null)
-                    {
-                        portalScript.ActivatePortal(); // Pass the collider to ActivatePortal                       
-                    }
+                    enemyController.enemyhit();
+                    break; // Exit the loop after handling the first valid collision
                 }
+                if else(hit.CompareTag("portal"))
+                    {
+                        UnityEngine.Debug.Log("Portal activated for " + hit.gameObject.name);
+                        // Find the RampPortal script on the portal object
+                        RampPortal portalScript = hit.GetComponent<RampPortal>();
+                        if (portalScript != null)
+                        {
+                            portalScript.ActivatePortal(); // Pass the collider to ActivatePortal                       
+                        }
+                    }
                 else
                 {
+                    collisionTimer = backwardDuration;
+                    isColliding = true;
+
                     PlayCollisionSound();
                     StartCoroutine(CameraShake());
+                    break; // Exit the loop after handling the first valid collision
                 }
-            }
+                UnityEngine.Debug.Log("Detected: " + hit.gameObject.name);
+                }
         }
     }
 
