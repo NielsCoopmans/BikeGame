@@ -45,47 +45,68 @@ public class PowerUp : MonoBehaviour
 
     IEnumerator PickUp(Collider player)
     {
-        audioSource.Play();
-        UnityEngine.Debug.Log("Power Picked Up");
-
-        BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
-
-        float baseSpeed = bicycle.movementSpeed;
-
-        // Notify the spawner to remove this power-up from the list
-        spawner.RemoveObject(gameObject);
-
-        foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
+        if (gameObject.CompareTag("SpeedBoost"))
         {
-            renderer.enabled = false;
+            audioSource.Play();
+            UnityEngine.Debug.Log("Speedboost Picked Up");
+
+            BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
+
+            float baseSpeed = bicycle.movementSpeed;
+
+            // Notify the spawner to remove this power-up from the list
+            spawner.RemoveObject(gameObject);
+
+            foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
+            {
+                renderer.enabled = false;
+            }
+            GetComponent<Collider>().enabled = false;
+
+            float duration = 2f; // Total time for the speed boost effect
+            float peakBoost = 15f; // Maximum speed boost
+            float halfDuration = duration / 2f; // Time to reach peak boost
+
+            float elapsedTime = 0f;
+
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+
+                // Calculate the speed adjustment using a parabola
+                float timeFactor = elapsedTime / halfDuration; // Normalize to 0-2
+                if (timeFactor > 1f) timeFactor = 2f - timeFactor; // Mirror for second half
+
+                float speedBoost = peakBoost * timeFactor; // Apply parabola
+
+                bicycle.movementSpeed = baseSpeed + speedBoost; // Update speed
+
+                yield return null; // Wait for the next frame
+            }
+
+            // Restore the speed to its base value
+            bicycle.movementSpeed = 10;
+
+            Destroy(gameObject);
         }
-        GetComponent<Collider>().enabled = false;
-
-        float duration = 2f; // Total time for the speed boost effect
-        float peakBoost = 15f; // Maximum speed boost
-        float halfDuration = duration / 2f; // Time to reach peak boost
-
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
+        else
         {
-            elapsedTime += Time.deltaTime;
+            UnityEngine.Debug.Log("Ammo Picked Up");
 
-            // Calculate the speed adjustment using a parabola
-            float timeFactor = elapsedTime / halfDuration; // Normalize to 0-2
-            if (timeFactor > 1f) timeFactor = 2f - timeFactor; // Mirror for second half
+            // Notify the spawner to remove this power-up from the list
+            spawner.RemoveObject(gameObject);
 
-            float speedBoost = peakBoost * timeFactor; // Apply parabola
+            foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
+            {
+                renderer.enabled = false;
+            }
+            GetComponent<Collider>().enabled = false;
 
-            bicycle.movementSpeed = baseSpeed + speedBoost; // Update speed
+            Gun gun = player.GetComponentInChildren<Gun> ();
+            gun.ReloadBulletsComplete();
 
-            yield return null; // Wait for the next frame
+            Destroy(gameObject);
         }
-
-        // Restore the speed to its base value
-        bicycle.movementSpeed = 10;
-
-        Destroy(gameObject);
     }
 
 

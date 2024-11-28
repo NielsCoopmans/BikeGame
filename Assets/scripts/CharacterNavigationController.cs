@@ -91,6 +91,7 @@ public class CharacterNavigationController : MonoBehaviour
         movementSpeed = originalMovementSpeed;
         isSped = false;
         Destroy(bullet.gameObject); // Destroy the bullet after collision
+        yield break;
         //Explode();
         
     }

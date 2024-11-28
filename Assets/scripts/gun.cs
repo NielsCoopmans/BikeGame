@@ -66,4 +66,10 @@ public class Gun : MonoBehaviour
             UpdateBulletCountUI();  
         }     
     }
+
+    public void ReloadBulletsComplete()
+    {
+        currentBullets = maxBullets;
+        UpdateBulletCountUI();
+    }
 }

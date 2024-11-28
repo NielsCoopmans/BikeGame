@@ -56,5 +56,6 @@ public class CollisionPlayer : MonoBehaviour
         bicycle.movementSpeed = baseSpeed;
         
         Destroy(gameObject);
+        yield break;
     }
 }
