@@ -15,6 +15,8 @@ public class BicycleVehicle : MonoBehaviour
     private bool isSerialRunning = false;
     public int buttonPressed = 0;
 
+    public EnemyController enemy;
+
     private string lastReceivedData = "";
     private float lastFireTime = -5f;
 
@@ -211,7 +213,10 @@ public class BicycleVehicle : MonoBehaviour
             {
                 buttonPressed = parsedButton;
                 if(buttonPressed == 1){
-                    //UnityEngine.Debug.Log("ButtonPressed");
+                    gun.ReloadBullets();
+                    if(enemy.NearPlayer = true){
+                        enemy.TriggerCutscene();
+                    }
                 }
             }
             else
@@ -344,6 +349,16 @@ public class BicycleVehicle : MonoBehaviour
                     enemyController.enemyhit();
                     break; // Exit the loop after handling the first valid collision
                 }
+                if else(hit.CompareTag("portal"))
+                    {
+                        UnityEngine.Debug.Log("Portal activated for " + hit.gameObject.name);
+                        // Find the RampPortal script on the portal object
+                        RampPortal portalScript = hit.GetComponent<RampPortal>();
+                        if (portalScript != null)
+                        {
+                            portalScript.ActivatePortal(); // Pass the collider to ActivatePortal                       
+                        }
+                    }
                 else
                 {
                     collisionTimer = backwardDuration;
@@ -353,9 +368,11 @@ public class BicycleVehicle : MonoBehaviour
                     StartCoroutine(CameraShake());
                     break; // Exit the loop after handling the first valid collision
                 }
-            }
+                UnityEngine.Debug.Log("Detected: " + hit.gameObject.name);
+                }
         }
     }
+
 
     private void OnDrawGizmos()
     {
@@ -415,6 +432,5 @@ public class BicycleVehicle : MonoBehaviour
             serialPort.Close();
         }
     }
-
 
 }

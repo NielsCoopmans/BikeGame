@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
     public float detectionRange = 6f;       
     public GameObject cutsceneObject;  
     public GameObject VFX_EasyExplosion;    
-    public Transform playerTransform;       
+    public Transform playerTransform;  
 
     public int missionTime = 120;
     public TextMeshProUGUI gameOverText;    
@@ -28,7 +28,8 @@ public class EnemyController : MonoBehaviour
 
     public float slowFactor = 0.5f;
 
-    private float timeNearPlayer = 0f;       
+    private float timeNearPlayer = 0f; 
+    public bool NearPlayer = false;       
     public float requiredTimeToTriggerCutscene = 4f; 
 
     public BicycleVehicle bicycleVehicle;
@@ -68,6 +69,7 @@ public class EnemyController : MonoBehaviour
 
             if (Vector3.Distance(transform.position, playerTransform.position) < detectionRange)
             {
+                NearPlayer = true;
                 timeNearPlayer += Time.deltaTime;
 
                 if (TimeNearText != null)
@@ -85,6 +87,7 @@ public class EnemyController : MonoBehaviour
             }
             else
             {
+                NearPlayer = false;
                 // Reset the timer if the player is no longer within range
                 timeNearPlayer = 0f;
 

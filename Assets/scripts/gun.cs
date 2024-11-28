@@ -51,7 +51,19 @@ public class Gun : MonoBehaviour
 
     void UpdateBulletCountUI()
     {
-        // Update the TextMeshPro text to show the current number of bullets
-        bulletCountText.text = currentBullets.ToString() +" / " + maxBullets.ToString() ;
+        if(currentBullets == 0){
+            bulletCountText.text = "RELOAD!" ;
+        }  else {
+            // Update the TextMeshPro text to show the current number of bullets
+            bulletCountText.text = currentBullets.ToString() +" / " + maxBullets.ToString() ;
+        }   
+    }
+
+    public void ReloadBullets()
+    {   
+        if(currentBullets == 0){
+            currentBullets = maxBullets; 
+            UpdateBulletCountUI();  
+        }     
     }
 }
