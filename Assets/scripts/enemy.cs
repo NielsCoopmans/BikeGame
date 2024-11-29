@@ -8,9 +8,9 @@ public class EnemyController : MonoBehaviour
     public float moveSpeed = 5f;            
     public float turnSpeed = 100f;          
     public float health = 100f;             
-    public float detectionRange = 6f;       
-    public GameObject cutsceneObject;  
-    public GameObject VFX_EasyExplosion;    
+    public float detectionRange = 6f;
+    public GameObject cutsceneObject;
+    public GameObject VFX_EasyExplosion;
     public Transform playerTransform;  
 
     public int missionTime = 120;
@@ -22,7 +22,7 @@ public class EnemyController : MonoBehaviour
     public Color glowColor = Color.blue;
 
     private float originalMoveSpeed;           
-    private bool isCutsceneTriggered = false; 
+    private bool isCutsceneTriggered = false;
 
     private Rigidbody rb;
 
@@ -34,6 +34,8 @@ public class EnemyController : MonoBehaviour
 
     public BicycleVehicle bicycleVehicle;
     public AudioSource SoundNear;
+
+    public Waypoint waypointLevel2;
 
     public EnemyNavigationController navigationController;
     public TeleportObject enemyTeleporter;
@@ -75,6 +77,9 @@ public class EnemyController : MonoBehaviour
             {
                 NearPlayer = true;
                 UnityEngine.Debug.Log($"EnemyController: NearPlayer = {NearPlayer}");
+                TimeNearText.text = $"PRESS THE CAPTURE BUTTON";
+
+                /*
                 timeNearPlayer += Time.deltaTime;
 
                 if (TimeNearText != null)
@@ -87,6 +92,7 @@ public class EnemyController : MonoBehaviour
                 {
                     enemyhit();
                 }
+                */
             }
             else
             {
@@ -96,7 +102,7 @@ public class EnemyController : MonoBehaviour
 
                 // Reset the display text
                 if (TimeNearText != null)
-                    TimeNearText.text = "Time Near: 0s";
+                    TimeNearText.text = "Come Closer to Enemy";
             }
         }
     }
@@ -105,12 +111,14 @@ public class EnemyController : MonoBehaviour
     {
         gameOverText.text = "YOU WON";
         TriggerCutscene();
+        navigationController.changeWaypoint(waypointLevel2);
     }
 
-    // Trigger cutscene when the player is within detection range for the required time or button is pressed
-    public void TriggerCutscene()
+        // Trigger cutscene when the player is within detection range for the required time or button is pressed
+        public void TriggerCutscene()
     {
         isCutsceneTriggered = true;
+        SceneManager.LoadScene("CutsceneCuffing");
 
         // Show the cutscene UI or camera changes
         if (cutsceneObject != null)

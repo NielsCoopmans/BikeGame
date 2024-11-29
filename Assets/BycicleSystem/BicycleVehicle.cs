@@ -361,7 +361,6 @@ public class BicycleVehicle : MonoBehaviour
             {
                 if (hitCollider.CompareTag("enemy"))  // Replace "YourTagName" with the actual tag you want to check for
                 {
-                    enemyController.enemyhit();
                     break; // Exit the loop after handling the first valid collision
                 }
                 else if(hitCollider.CompareTag("portal"))
