@@ -17,11 +17,13 @@ public class CharacterNavigationController : MonoBehaviour
     private float originalMovementSpeed;
 
 
+
+
     // Start is called before the first frame update
     void Start()
     {
-        lastPosition = transform.position; // Initialize lastPosition
         originalMovementSpeed = movementSpeed;
+        lastPosition = transform.position; // Initialize lastPosition
     }
 
     // Update is called once per frame

@@ -88,10 +88,33 @@ public class BicycleVehicle : MonoBehaviour
     public EnemyController enemyController;
     public EnemyNavigationController navigationController; 
 
-
+    public Transform playStartPosition;
+    public Transform tutorialStartPosition;
 
     void Start()
     {
+        if (GameManager.Instance != null)
+        {
+            UnityEngine.Debug.Log("GameManager.instance is: " + GameManager.Instance.SkipTutorial);
+            UnityEngine.Debug.Log("PlayStartPosition is: " + playStartPosition);
+            UnityEngine.Debug.Log("tutorialStartPosition is: " + tutorialStartPosition);
+
+            if (GameManager.Instance.SkipTutorial){
+                UnityEngine.Debug.Log("skip tutorial instance, play position is: " + playStartPosition.position);
+                bikeTransform.position = playStartPosition.position;
+            }
+            else
+            {
+                UnityEngine.Debug.Log("tutorial instance, tutorial position is: " + tutorialStartPosition.position);
+                bikeTransform.position = tutorialStartPosition.position;
+            }
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("GameManager.Instance is null! Defaulting to tutorialStartPosition.");
+            bikeTransform.position = tutorialStartPosition.position;
+        }
+
         StopEmitTrail();
         if (enemyController == null)
             enemyController = GetComponent<EnemyController>();

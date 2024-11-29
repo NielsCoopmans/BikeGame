@@ -105,7 +105,7 @@ public class EnemyController : MonoBehaviour
     public void enemyhit()
     {
         gameOverText.text = "YOU WON";
-        TriggerCutscene();
+        TriggerVictoryCutscene();
     }
 
     // Trigger cutscene when the player is within detection range for the required time or button is pressed
@@ -116,7 +116,11 @@ public class EnemyController : MonoBehaviour
 
         Debug.Log("Back in enemy code after load cutscene. waiting for signal to end");
     }
-
+    public void TriggerVictoryCutscene()
+    {
+        isCutsceneTriggered = true;
+        SceneManager.LoadScene("CutsceneGettingAway");
+    }
 
     //Take damage if the enemy gets hit by bullets
     private void OnCollisionEnter(Collision collision)
