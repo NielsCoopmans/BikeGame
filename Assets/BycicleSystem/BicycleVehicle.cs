@@ -134,13 +134,13 @@ public class BicycleVehicle : MonoBehaviour
 
     void Update()
     {
+        GetInput();
         if (isColliding)
         {
             HandleBackwardMovement();
         }
         else if (isCountdownComplete) 
         {
-            GetInput();
             HandleEngine();
             HandleSteering();
             UpdateWheels();
@@ -149,10 +149,7 @@ public class BicycleVehicle : MonoBehaviour
             CheckForCollision();
             CaptureEnemy();
         }
-        else
-        {
-            GetInput(); 
-        }
+ 
         //TryOpenSerialPort();
 
     }
