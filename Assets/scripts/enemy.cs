@@ -119,6 +119,7 @@ public class EnemyController : MonoBehaviour
         // Start the coroutine to wait and then change scenes
         //StartCoroutine(WaitAndChangeScene(5f)); // Wait for 5 seconds
         playerTeleporter.Teleport();
+        enemyTeleporter.Teleport();
     }
 
     private IEnumerator WaitAndChangeScene(float delay)
