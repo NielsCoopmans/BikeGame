@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8916328206085866134}
   - component: {fileID: 1474603966280114492}
   - component: {fileID: 6144610316581266437}
+  - component: {fileID: 8321072644156441599}
   m_Layer: 8
   m_Name: FX_Direction_Arrows_02
   m_TagString: SpeedBoost
@@ -5033,3 +5034,19 @@ MonoBehaviour:
   rotationSpeed: 100
   bounceSpeed: 2
   bounceHeight: 0.5
+--- !u!114 &8321072644156441599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294733841131794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b7dcf45d32043dd8176e501695ff8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 3
+  duration: 4
+  spawner: {fileID: 0}
+  audioSource: {fileID: 1474603966280114492}
