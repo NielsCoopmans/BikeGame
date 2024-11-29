@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) )
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             FireBullet();
         }
@@ -30,8 +30,9 @@ public class Gun : MonoBehaviour
 
     public void FireBullet()
     {
-        if (currentBullets > 0) {
-            
+        if (currentBullets > 0)
+        {
+
             // Instantiate the bullet and set its velocity
             var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
             bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
@@ -49,25 +50,29 @@ public class Gun : MonoBehaviour
 
     void UpdateBulletCountUI()
     {
-        if(currentBullets == 0){
-            bulletCountText.text = "RELOAD!" ;
-        }  else {
+        if (currentBullets == 0)
+        {
+            bulletCountText.text = "RELOAD!";
+        }
+        else
+        {
             // Update the TextMeshPro text to show the current number of bullets
-            bulletCountText.text = currentBullets.ToString() +" / " + maxBullets.ToString() ;
-        }   
+            bulletCountText.text = currentBullets.ToString() + " / " + maxBullets.ToString();
+        }
     }
 
     public void ReloadBullets()
-    {   
-        if(currentBullets == 0){
-            currentBullets = maxBullets; 
-            UpdateBulletCountUI();  
-        }     
+    {
+        if (currentBullets == 0)
+        {
+            currentBullets = maxBullets;
+            UpdateBulletCountUI();
+        }
     }
 
-    public void ReloadBulletsComplete()
+    public void ReloadBulletsAmmoPowerup()
     {
-        currentBullets = maxBullets;
+        currentBullets = (currentBullets + 5) < maxBullets ? currentBullets + 5 : maxBullets;
         UpdateBulletCountUI();
     }
 }

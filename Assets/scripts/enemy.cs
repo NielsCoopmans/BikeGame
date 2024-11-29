@@ -35,14 +35,27 @@ public class EnemyController : MonoBehaviour
     public BicycleVehicle bicycleVehicle;
     public AudioSource SoundNear;
 
+    public Waypoint waypointLevel2;
+
     public EnemyNavigationController navigationController;
+    public TeleportObject enemyTeleporter;
+    public TeleportObject playerTeleporter;
 
     private void Start()
     {
+        if (GameStateManager.currentLevel == 2)
+        {
+            playerTeleporter.Teleport();
+            enemyTeleporter.Teleport();
+            navigationController.changeWaypoint(waypointLevel2);
+
+        }
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         originalMoveSpeed = moveSpeed;
         enemyRenderer = enemyObject.GetComponent<Renderer>();
+        enemyTeleporter = enemyObject.GetComponent<TeleportObject>();
+        playerTeleporter = GetComponent<TeleportObject>();
 
         if (navigationController == null)
             navigationController = GetComponent<EnemyNavigationController>();
@@ -71,6 +84,9 @@ public class EnemyController : MonoBehaviour
             {
                 NearPlayer = true;
                 UnityEngine.Debug.Log($"EnemyController: NearPlayer = {NearPlayer}");
+                TimeNearText.text = $"PRESS THE CAPTURE BUTTON";
+
+                /*
                 timeNearPlayer += Time.deltaTime;
 
                 if (TimeNearText != null)
@@ -83,6 +99,7 @@ public class EnemyController : MonoBehaviour
                 {
                     enemyhit();
                 }
+                */
             }
             else
             {
@@ -92,29 +109,33 @@ public class EnemyController : MonoBehaviour
 
                 // Reset the display text
                 if (TimeNearText != null)
-                    TimeNearText.text = "Time Near: 0s";
+                    TimeNearText.text = "Come Closer to Enemy";
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.F))
-            {
-                TriggerCutscene();
-            }
     }
 
     public void enemyhit()
     {
         gameOverText.text = "YOU WON";
-        TriggerVictoryCutscene();
+        TriggerCutscene();
+
     }
 
-    // Trigger cutscene when the player is within detection range for the required time or button is pressed
+        // Trigger cutscene when the player is within detection range for the required time or button is pressed
     public void TriggerCutscene()
     {
+        bicycleVehicle.OnApplicationQuit();
         isCutsceneTriggered = true;
-        SceneManager.LoadScene("CutsceneCuffing");
+        GameStateManager.currentLevel = 2;
+        SceneManager.LoadScene("cutsceneCuffing");
 
-        Debug.Log("Back in enemy code after load cutscene. waiting for signal to end");
+        // Show the cutscene UI or camera changes
+        if (cutsceneObject != null)
+            cutsceneObject.SetActive(true);
+
+        // Start the coroutine to wait and then change scenes
+        //StartCoroutine(WaitAndChangeScene(5f)); // Wait for 5 seconds
+
     }
     public void TriggerVictoryCutscene()
     {

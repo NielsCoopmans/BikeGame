@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BicycleVehicle : MonoBehaviour
 {
@@ -86,8 +87,9 @@ public class BicycleVehicle : MonoBehaviour
     private Vector3 smoothDampVelocity; // For smooth damp calculations
 
     public EnemyController enemyController;
-    public EnemyNavigationController navigationController; 
+    public EnemyNavigationController navigationController;
 
+    public Slider reloadBar;
     public Transform playStartPosition;
     public Transform tutorialStartPosition;
 
@@ -114,29 +116,20 @@ public class BicycleVehicle : MonoBehaviour
             UnityEngine.Debug.LogWarning("GameManager.Instance is null! Defaulting to tutorialStartPosition.");
             bikeTransform.position = tutorialStartPosition.position;
         }
+    StopEmitTrail();
+    if (enemyController == null)
+        enemyController = GetComponent<EnemyController>();
+    if (navigationController == null)
+        navigationController = GetComponent<EnemyNavigationController>();
 
-        StopEmitTrail();
-        if (enemyController == null)
-            enemyController = GetComponent<EnemyController>();
-        if (navigationController == null)
-            navigationController = GetComponent<EnemyNavigationController>();
-        serialPort = new SerialPort(portName, baudRate);
-        serialPort.ReadTimeout = readTimeout;
+    serialPort = new SerialPort(portName, baudRate)
+    {
+        ReadTimeout = readTimeout
+    };
 
-        try
-        {
-            serialPort.Open();
-            UnityEngine.Debug.Log("Serial port opened successfully.");
-
-            isSerialRunning = true;
-            serialThread = new Thread(SerialReadThread);
-            serialThread.Start();
-        }
-        catch (System.Exception ex)
-        {
-            UnityEngine.Debug.LogError($"Failed to open serial port: {ex.Message}");
-        }
-    }
+    // Ensure the serial port is open
+    TryOpenSerialPort();
+}
 
     void Update()
     {
@@ -159,7 +152,8 @@ public class BicycleVehicle : MonoBehaviour
         {
             GetInput(); 
         }
-        
+        //TryOpenSerialPort();
+
     }
 
     private void SerialReadThread()
@@ -186,7 +180,7 @@ public class BicycleVehicle : MonoBehaviour
     }
 
     public void GetInput()
-{
+    {
     string[] dataParts;
     lock (lockObject)
     {
@@ -221,6 +215,8 @@ public class BicycleVehicle : MonoBehaviour
             {
                 gun.FireBullet();
                 lastFireTime = Time.time;
+
+                StartCoroutine(ShowCooldown());
             }
         }
         else
@@ -271,23 +267,32 @@ public class BicycleVehicle : MonoBehaviour
 
         UnityEngine.Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
     }
-    braking = Input.GetKey(KeyCode.Space);
-}
+        braking = Input.GetKey(KeyCode.Space);
+    }
 
-
-
+    private float currentSpeed = 0f;
+    private float bleedOffSpeed = 1f;
 
     public void HandleEngine()
+{
+    float targetSpeed = verticalInput * movementSpeed * Time.deltaTime;
+
+    if (braking)
     {
-        float speed = verticalInput * movementSpeed * Time.deltaTime;
-
-        if (braking)
-        {
-            speed = Mathf.Max(speed - brakeSpeed * Time.deltaTime, 0);
-        }
-
-        transform.Translate(Vector3.forward * speed);
+        targetSpeed = Mathf.Max(targetSpeed - brakeSpeed * Time.deltaTime, 0);
     }
+
+    if (Mathf.Abs(verticalInput) < 0.01f && currentSpeed > 0)
+    {
+        currentSpeed = Mathf.Max(currentSpeed - bleedOffSpeed * Time.deltaTime, 0);
+    }
+    else
+    {
+        currentSpeed = targetSpeed;
+    }
+
+    transform.Translate(Vector3.forward * currentSpeed);
+}
 
     public void HandleSteering()
     {
@@ -295,7 +300,7 @@ public class BicycleVehicle : MonoBehaviour
         {
             //currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
             //currentSteeringAngle = Mathf.Clamp(currentSteeringAngle, -maxSteeringAngle, maxSteeringAngle);
-            currentSteeringAngle = steeringInput;
+            currentSteeringAngle = steeringInput * 1.25f;
 
             targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
 
@@ -374,6 +379,26 @@ public class BicycleVehicle : MonoBehaviour
     public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); // Size of the box (width, height, depth)
     public Color boxColor = Color.red; // Color for the box visualization
 
+    private IEnumerator ShowCooldown()
+    {
+        if (reloadBar != null)
+        {
+            reloadBar.gameObject.SetActive(true); // Show the slider
+            reloadBar.value = 0;                 // Reset the slider to 0
+
+            float cooldownDuration = 2f;         // Same as the cooldown time
+            float elapsedTime = 0f;
+
+            while (elapsedTime < cooldownDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                reloadBar.value = elapsedTime / cooldownDuration; // Update slider value
+                yield return null;
+            }
+
+            reloadBar.gameObject.SetActive(false); // Hide the slider after cooldown
+        }
+    }
     private void CheckForCollision()
     {
         Vector3 rayOrigin = rayOriginObject.position;
@@ -386,7 +411,6 @@ public class BicycleVehicle : MonoBehaviour
             {
                 if (hitCollider.CompareTag("enemy"))  // Replace "YourTagName" with the actual tag you want to check for
                 {
-                    enemyController.enemyhit();
                     break; // Exit the loop after handling the first valid collision
                 }
                 else if(hitCollider.CompareTag("portal"))
@@ -466,7 +490,7 @@ public class BicycleVehicle : MonoBehaviour
     }
 
 
-    void OnApplicationQuit()
+    public void OnApplicationQuit()
     {
         isSerialRunning = false;
         Thread.Sleep(100);
@@ -481,7 +505,7 @@ public class BicycleVehicle : MonoBehaviour
         
     if (buttonPressed == 1)
     {
-        gun.ReloadBullets();
+        //gun.ReloadBullets();
 
         if (enemy != null && enemy.NearPlayer)
         {
@@ -489,4 +513,39 @@ public class BicycleVehicle : MonoBehaviour
         }
     }
     }
+
+    void TryOpenSerialPort()
+{
+    if (serialPort == null)
+    {
+        UnityEngine.Debug.LogError("SerialPort is null. Cannot open port.");
+        return;
+    }
+
+    if (!serialPort.IsOpen)
+    {
+        try
+        {
+            serialPort.Open();
+            UnityEngine.Debug.Log("Serial port opened successfully.");
+
+            isSerialRunning = true;
+
+            // Start the thread for reading data
+            if (serialThread == null || !serialThread.IsAlive)
+            {
+                serialThread = new Thread(SerialReadThread);
+                serialThread.Start();
+            }
+        }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError($"Failed to open serial port: {ex.Message}");
+        }
+    }
+    else
+    {
+        UnityEngine.Debug.Log("Serial port is already open.");
+    }
+}
 }
