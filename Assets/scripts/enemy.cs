@@ -100,7 +100,7 @@ public class EnemyController : MonoBehaviour
 
                 // Reset the display text
                 if (TimeNearText != null)
-                    TimeNearText.text = "Time Near: 0s";
+                    TimeNearText.text = "Come Closer to Enemy";
             }
         }
     }
@@ -115,6 +115,7 @@ public class EnemyController : MonoBehaviour
     public void TriggerCutscene()
     {
         isCutsceneTriggered = true;
+        SceneManager.LoadScene("CutsceneCuffing");
 
         // Show the cutscene UI or camera changes
         if (cutsceneObject != null)
