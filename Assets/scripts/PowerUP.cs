@@ -69,6 +69,13 @@ public class PowerUp : MonoBehaviour
 
             float elapsedTime = 0f;
 
+            var renderer_particle = GetComponent<ParticleSystem>().GetComponent<Renderer>();
+            if (renderer_particle != null)
+            {
+                renderer_particle.enabled = false;  // Disables the Renderer to make particles invisible
+            }
+
+
             while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
@@ -102,8 +109,14 @@ public class PowerUp : MonoBehaviour
             }
             GetComponent<Collider>().enabled = false;
 
+            var renderer_particle = GetComponent<ParticleSystem>().GetComponent<Renderer>();
+            if (renderer_particle != null)
+            {
+                renderer_particle.enabled = false;  // Disables the Renderer to make particles invisible
+            }
+
             Gun gun = player.GetComponentInChildren<Gun> ();
-            gun.ReloadBulletsComplete();
+            gun.ReloadBulletsAmmoPowerup();
 
             Destroy(gameObject);
         }
