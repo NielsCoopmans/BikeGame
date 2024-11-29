@@ -4933,7 +4933,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.47, y: 1.47, z: 1.47}
+  m_LocalScale: {x: 4.34, y: 4.34, z: 4.34}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4787244354013590}
@@ -9775,7 +9775,7 @@ MonoBehaviour:
   delay: 3
   duration: 4
   spawner: {fileID: 0}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 4746432271182080118}
 --- !u!136 &3586505310047416891
 CapsuleCollider:
   m_ObjectHideFlags: 0
