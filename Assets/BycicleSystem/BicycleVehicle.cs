@@ -246,23 +246,32 @@ public class BicycleVehicle : MonoBehaviour
 
         UnityEngine.Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
     }
-    braking = Input.GetKey(KeyCode.Space);
-}
+        braking = Input.GetKey(KeyCode.Space);
+    }
 
-
-
+    private float currentSpeed = 0f; 
+    private float bleedOffSpeed = 1f;
 
     public void HandleEngine()
+{
+    float targetSpeed = verticalInput * movementSpeed * Time.deltaTime;
+
+    if (braking)
     {
-        float speed = verticalInput * movementSpeed * Time.deltaTime;
-
-        if (braking)
-        {
-            speed = Mathf.Max(speed - brakeSpeed * Time.deltaTime, 0);
-        }
-
-        transform.Translate(Vector3.forward * speed);
+        targetSpeed = Mathf.Max(targetSpeed - brakeSpeed * Time.deltaTime, 0);
     }
+
+    if (Mathf.Abs(verticalInput) < 0.01f && currentSpeed > 0)
+    {
+        currentSpeed = Mathf.Max(currentSpeed - bleedOffSpeed * Time.deltaTime, 0);
+    }
+    else
+    {
+        currentSpeed = targetSpeed;
+    }
+
+    transform.Translate(Vector3.forward * currentSpeed);
+}
 
     public void HandleSteering()
     {
