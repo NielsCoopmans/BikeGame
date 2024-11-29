@@ -90,7 +90,7 @@ public class CharacterNavigationController : MonoBehaviour
         // Restore the speed to its base value
         movementSpeed = originalMovementSpeed;
         isSped = false;
-        Destroy(bullet.gameObject); // Destroy the bullet after collision
+        //Destroy(bullet.gameObject); // Destroy the bullet after collision
         yield break;
         //Explode();
         
