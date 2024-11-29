@@ -43,6 +43,13 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
+        if (GlobalState.currentLevel == 2)
+        {
+            playerTeleporter.Teleport();
+            enemyTeleporter.Teleport();
+            navigationController.changeWaypoint(waypointLevel2);
+
+        }
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         originalMoveSpeed = moveSpeed;
@@ -111,13 +118,14 @@ public class EnemyController : MonoBehaviour
     {
         gameOverText.text = "YOU WON";
         TriggerCutscene();
-        navigationController.changeWaypoint(waypointLevel2);
+        
     }
 
         // Trigger cutscene when the player is within detection range for the required time or button is pressed
-        public void TriggerCutscene()
+    public void TriggerCutscene()
     {
         isCutsceneTriggered = true;
+        GlobalState.currentLevel = 2;
         SceneManager.LoadScene("CutsceneCuffing");
 
         // Show the cutscene UI or camera changes
@@ -126,8 +134,7 @@ public class EnemyController : MonoBehaviour
 
         // Start the coroutine to wait and then change scenes
         //StartCoroutine(WaitAndChangeScene(5f)); // Wait for 5 seconds
-        playerTeleporter.Teleport();
-        enemyTeleporter.Teleport();
+        
     }
 
     private IEnumerator WaitAndChangeScene(float delay)
