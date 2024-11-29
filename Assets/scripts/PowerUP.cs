@@ -57,6 +57,8 @@ public class PowerUp : MonoBehaviour
             // Notify the spawner to remove this power-up from the list
             spawner.RemoveObject(gameObject);
 
+            GetComponent<ParticleSystem>().gameObject.SetActive(false);
+
             foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
             {
                 renderer.enabled = false;
@@ -103,7 +105,7 @@ public class PowerUp : MonoBehaviour
             GetComponent<Collider>().enabled = false;
 
             Gun gun = player.GetComponentInChildren<Gun> ();
-            gun.ReloadBulletsComplete();
+            gun.ReloadBulletsAmmoPowerup();
 
             Destroy(gameObject);
         }

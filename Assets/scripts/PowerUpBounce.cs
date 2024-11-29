@@ -19,7 +19,7 @@ public class BounceAndSpin : MonoBehaviour
     void Update()
     {
         // Rotate the object around its Y-axis
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
 
         // Bounce the object up and down
         float newY = initialY + Mathf.Sin(Time.time * bounceSpeed) * bounceHeight;

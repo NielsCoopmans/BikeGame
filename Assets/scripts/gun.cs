@@ -65,9 +65,9 @@ public class Gun : MonoBehaviour
         }     
     }
 
-    public void ReloadBulletsComplete()
+    public void ReloadBulletsAmmoPowerup()
     {
-        currentBullets = maxBullets;
+        currentBullets = (currentBullets + 5) < maxBullets ? currentBullets + 5 : maxBullets;
         UpdateBulletCountUI();
     }
 }

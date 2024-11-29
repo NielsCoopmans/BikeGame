@@ -26,7 +26,17 @@ public class Spawner : MonoBehaviour
         //ensure max spawn count is not exceeded
         if (spawnedObjects.Count < maxSpawnedObjects)
         {
-            GameObject newObject = Instantiate(myObject, position, Quaternion.identity);
+            GameObject newObject;
+            if (myObject.CompareTag("SpeedBoost"))
+            {
+                Quaternion rotation = Quaternion.Euler(-70, 0, 0);
+                newObject = Instantiate(myObject, position, rotation);
+            }
+            else
+            {
+                newObject = Instantiate(myObject, position, Quaternion.identity);
+            }
+
 
             //track spawned objects
             spawnedObjects.Add(newObject);

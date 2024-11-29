@@ -38,7 +38,9 @@ public class Bullet : MonoBehaviour
         else if (collision.gameObject.CompareTag("car")){
             if (VFX_EasyExplosion_car != null)
             {
-                GameObject explosion = Instantiate(VFX_EasyExplosion_car, transform.position, transform.rotation);
+                Vector3 explosionPosition = collision.gameObject.transform.position;
+                explosionPosition.y += 1.0f;
+                GameObject explosion = Instantiate(VFX_EasyExplosion_car, explosionPosition, collision.gameObject.transform.rotation);
                 Destroy(explosion, 2f);
             }
             Destroy(collision.gameObject);
