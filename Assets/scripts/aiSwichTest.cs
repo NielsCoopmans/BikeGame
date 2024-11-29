@@ -61,6 +61,12 @@ public class EnemyNavigationController : MonoBehaviour
         }
     }
 
+    public void changeWaypoint(Waypoint waypoint)
+    {
+        if (waypoint == null) return;
+
+        currentWaypoint = waypoint;
+    }
     public void StartMoving()
     {
         Debug.Log("Enemy started moving.");
