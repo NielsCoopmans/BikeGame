@@ -43,7 +43,7 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        if (GameStateManager.Instance.currentLevel == 2)
+        if (GameStateManager.currentLevel == 2)
         {
             playerTeleporter.Teleport();
             enemyTeleporter.Teleport();
@@ -126,8 +126,8 @@ public class EnemyController : MonoBehaviour
     {
         bicycleVehicle.OnApplicationQuit();
         isCutsceneTriggered = true;
-        GameStateManager.Instance.currentLevel = 2;
-        SceneManager.LoadScene("CutsceneCuffing");
+        GameStateManager.currentLevel = 2;
+        SceneManager.LoadScene("cutsceneCuffing");
 
         // Show the cutscene UI or camera changes
         if (cutsceneObject != null)
