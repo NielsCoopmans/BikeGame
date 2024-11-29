@@ -86,9 +86,7 @@ public class BicycleVehicle : MonoBehaviour
     private Vector3 smoothDampVelocity; // For smooth damp calculations
 
     public EnemyController enemyController;
-    public EnemyNavigationController navigationController; 
-
-
+    public EnemyNavigationController navigationController;
 
     void Start()
     {
