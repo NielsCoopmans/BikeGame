@@ -71,8 +71,10 @@ public class EnemyController : MonoBehaviour
             {
                 NearPlayer = true;
                 UnityEngine.Debug.Log($"EnemyController: NearPlayer = {NearPlayer}");
+                TimeNearText.text = $"PRESS THE CAPTURE BUTTON";
+                
+                /*
                 timeNearPlayer += Time.deltaTime;
-
                 if (TimeNearText != null)
                     TimeNearText.text = $"Time Near: {timeNearPlayer:F1}s";
                     SoundNear.Play();
@@ -83,6 +85,7 @@ public class EnemyController : MonoBehaviour
                 {
                     enemyhit();
                 }
+                */
             }
             else
             {
@@ -92,7 +95,7 @@ public class EnemyController : MonoBehaviour
 
                 // Reset the display text
                 if (TimeNearText != null)
-                    TimeNearText.text = "Time Near: 0s";
+                    TimeNearText.text = "GET CLOSER TO THE ENEMY";
             }
         }
 
@@ -113,7 +116,6 @@ public class EnemyController : MonoBehaviour
     {
         isCutsceneTriggered = true;
         SceneManager.LoadScene("CutsceneCuffing");
-
         Debug.Log("Back in enemy code after load cutscene. waiting for signal to end");
     }
 
