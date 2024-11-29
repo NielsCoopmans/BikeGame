@@ -57,8 +57,6 @@ public class PowerUp : MonoBehaviour
             // Notify the spawner to remove this power-up from the list
             spawner.RemoveObject(gameObject);
 
-            GetComponent<ParticleSystem>().gameObject.SetActive(false);
-
             foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
             {
                 renderer.enabled = false;
@@ -70,6 +68,13 @@ public class PowerUp : MonoBehaviour
             float halfDuration = duration / 2f; // Time to reach peak boost
 
             float elapsedTime = 0f;
+
+            var renderer_particle = GetComponent<ParticleSystem>().GetComponent<Renderer>();
+            if (renderer_particle != null)
+            {
+                renderer_particle.enabled = false;  // Disables the Renderer to make particles invisible
+            }
+
 
             while (elapsedTime < duration)
             {
