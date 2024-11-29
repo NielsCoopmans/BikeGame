@@ -36,6 +36,8 @@ public class EnemyController : MonoBehaviour
     public AudioSource SoundNear;
 
     public EnemyNavigationController navigationController;
+    public TeleportObject enemyTeleporter;
+    public TeleportObject playerTeleporter;
 
     private void Start()
     {
@@ -43,6 +45,8 @@ public class EnemyController : MonoBehaviour
         rb.freezeRotation = true;
         originalMoveSpeed = moveSpeed;
         enemyRenderer = enemyObject.GetComponent<Renderer>();
+        enemyTeleporter = enemyObject.GetComponent<TeleportObject>();
+        playerTeleporter = GetComponent<TeleportObject>();
 
         if (navigationController == null)
             navigationController = GetComponent<EnemyNavigationController>();
@@ -113,7 +117,8 @@ public class EnemyController : MonoBehaviour
             cutsceneObject.SetActive(true);
 
         // Start the coroutine to wait and then change scenes
-        StartCoroutine(WaitAndChangeScene(5f)); // Wait for 5 seconds
+        //StartCoroutine(WaitAndChangeScene(5f)); // Wait for 5 seconds
+        playerTeleporter.Teleport();
     }
 
     private IEnumerator WaitAndChangeScene(float delay)

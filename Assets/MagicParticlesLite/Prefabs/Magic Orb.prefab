@@ -23950,6 +23950,7 @@ MonoBehaviour:
   lifetime: 10
   maxSize: 20
   expansionRate: 0.5
+  VFX_EasyExplosion: {fileID: 8873019764333172843, guid: 4bd6d9ab377f6434596a955161febe9a, type: 3}
 --- !u!135 &8740203918548037141
 SphereCollider:
   m_ObjectHideFlags: 0
