@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BicycleVehicle : MonoBehaviour
 {
@@ -87,6 +88,8 @@ public class BicycleVehicle : MonoBehaviour
 
     public EnemyController enemyController;
     public EnemyNavigationController navigationController;
+
+    public Slider reloadBar;
 
     void Start()
     {
@@ -196,6 +199,8 @@ public class BicycleVehicle : MonoBehaviour
             {
                 gun.FireBullet();
                 lastFireTime = Time.time;
+
+                StartCoroutine(ShowCooldown());
             }
         }
         else
@@ -358,6 +363,26 @@ public class BicycleVehicle : MonoBehaviour
     public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); // Size of the box (width, height, depth)
     public Color boxColor = Color.red; // Color for the box visualization
 
+    private IEnumerator ShowCooldown()
+    {
+        if (reloadBar != null)
+        {
+            reloadBar.gameObject.SetActive(true); // Show the slider
+            reloadBar.value = 0;                 // Reset the slider to 0
+
+            float cooldownDuration = 2f;         // Same as the cooldown time
+            float elapsedTime = 0f;
+
+            while (elapsedTime < cooldownDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                reloadBar.value = elapsedTime / cooldownDuration; // Update slider value
+                yield return null;
+            }
+
+            reloadBar.gameObject.SetActive(false); // Hide the slider after cooldown
+        }
+    }
     private void CheckForCollision()
     {
         Vector3 rayOrigin = rayOriginObject.position;
