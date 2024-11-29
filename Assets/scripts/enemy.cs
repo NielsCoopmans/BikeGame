@@ -43,7 +43,7 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        if (GlobalState.currentLevel == 2)
+        if (GameStateManager.Instance.currentLevel == 2)
         {
             playerTeleporter.Teleport();
             enemyTeleporter.Teleport();
@@ -125,7 +125,7 @@ public class EnemyController : MonoBehaviour
     public void TriggerCutscene()
     {
         isCutsceneTriggered = true;
-        GlobalState.currentLevel = 2;
+        GameStateManager.Instance.currentLevel = 2;
         SceneManager.LoadScene("CutsceneCuffing");
 
         // Show the cutscene UI or camera changes
