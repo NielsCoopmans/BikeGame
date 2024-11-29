@@ -272,7 +272,7 @@ public class BicycleVehicle : MonoBehaviour
         {
             //currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, steeringInput, turnSmoothing);
             //currentSteeringAngle = Mathf.Clamp(currentSteeringAngle, -maxSteeringAngle, maxSteeringAngle);
-            currentSteeringAngle = steeringInput;
+            currentSteeringAngle = steeringInput * 1.25f;
 
             targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
 
