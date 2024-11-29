@@ -35,6 +35,8 @@ public class EnemyController : MonoBehaviour
     public BicycleVehicle bicycleVehicle;
     public AudioSource SoundNear;
 
+    public Waypoint waypointLevel2;
+
     public EnemyNavigationController navigationController;
     public TeleportObject enemyTeleporter;
     public TeleportObject playerTeleporter;
@@ -105,10 +107,11 @@ public class EnemyController : MonoBehaviour
     {
         gameOverText.text = "YOU WON";
         TriggerCutscene();
+        navigationController.changeWaypoint(waypointLevel2);
     }
 
-    // Trigger cutscene when the player is within detection range for the required time or button is pressed
-    public void TriggerCutscene()
+        // Trigger cutscene when the player is within detection range for the required time or button is pressed
+        public void TriggerCutscene()
     {
         isCutsceneTriggered = true;
 
