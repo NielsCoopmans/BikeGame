@@ -13,6 +13,7 @@ TagManager:
   - SpeedBoost
   - startEnemy
   - car
+  - AmmoPowerup
   layers:
   - Default
   - TransparentFX
