@@ -12,6 +12,7 @@ TagManager:
   - portal
   - SpeedBoost
   - startEnemy
+  - car
   layers:
   - Default
   - TransparentFX

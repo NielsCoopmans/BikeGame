@@ -5,7 +5,8 @@ public class Bullet : MonoBehaviour
     public float lifetime = 5f;          // Time before the bullet is destroyed
     public float maxSize = 5f;           // Maximum size of the bullet
     public float expansionRate = 2f;     // Rate at which the bullet grows over time
-    public GameObject VFX_EasyExplosion;  
+    public GameObject VFX_EasyExplosion;
+    public GameObject VFX_EasyExplosion_car;
 
     private void Start()
     {
@@ -31,6 +32,16 @@ public class Bullet : MonoBehaviour
             return;
         }
         else if(collision.gameObject.CompareTag("enemy")) {
+            Destroy(gameObject);
+            return;
+        }
+        else if (collision.gameObject.CompareTag("car")){
+            if (VFX_EasyExplosion_car != null)
+            {
+                GameObject explosion = Instantiate(VFX_EasyExplosion_car, transform.position, transform.rotation);
+                Destroy(explosion, 2f);
+            }
+            Destroy(collision.gameObject);
             Destroy(gameObject);
             return;
         }
