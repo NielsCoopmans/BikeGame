@@ -89,29 +89,21 @@ public class BicycleVehicle : MonoBehaviour
     public EnemyNavigationController navigationController;
 
     void Start()
+{
+    StopEmitTrail();
+    if (enemyController == null)
+        enemyController = GetComponent<EnemyController>();
+    if (navigationController == null)
+        navigationController = GetComponent<EnemyNavigationController>();
+
+    serialPort = new SerialPort(portName, baudRate)
     {
-        StopEmitTrail();
-        if (enemyController == null)
-            enemyController = GetComponent<EnemyController>();
-        if (navigationController == null)
-            navigationController = GetComponent<EnemyNavigationController>();
-        serialPort = new SerialPort(portName, baudRate);
-        serialPort.ReadTimeout = readTimeout;
+        ReadTimeout = readTimeout
+    };
 
-        try
-        {
-            serialPort.Open();
-            UnityEngine.Debug.Log("Serial port opened successfully.");
-
-            isSerialRunning = true;
-            serialThread = new Thread(SerialReadThread);
-            serialThread.Start();
-        }
-        catch (System.Exception ex)
-        {
-            UnityEngine.Debug.LogError($"Failed to open serial port: {ex.Message}");
-        }
-    }
+    // Ensure the serial port is open
+    TryOpenSerialPort();
+}
 
     void Update()
     {
@@ -134,6 +126,7 @@ public class BicycleVehicle : MonoBehaviour
         {
             GetInput(); 
         }
+        //TryOpenSerialPort();
         
     }
 
@@ -161,7 +154,7 @@ public class BicycleVehicle : MonoBehaviour
     }
 
     public void GetInput()
-{
+    {
     string[] dataParts;
     lock (lockObject)
     {
@@ -449,7 +442,7 @@ public class BicycleVehicle : MonoBehaviour
     }
 
 
-    void OnApplicationQuit()
+    public void OnApplicationQuit()
     {
         isSerialRunning = false;
         Thread.Sleep(100);
@@ -464,7 +457,7 @@ public class BicycleVehicle : MonoBehaviour
         
     if (buttonPressed == 1)
     {
-        gun.ReloadBullets();
+        //gun.ReloadBullets();
 
         if (enemy != null && enemy.NearPlayer)
         {
@@ -472,4 +465,39 @@ public class BicycleVehicle : MonoBehaviour
         }
     }
     }
+
+    void TryOpenSerialPort()
+{
+    if (serialPort == null)
+    {
+        UnityEngine.Debug.LogError("SerialPort is null. Cannot open port.");
+        return;
+    }
+
+    if (!serialPort.IsOpen)
+    {
+        try
+        {
+            serialPort.Open();
+            UnityEngine.Debug.Log("Serial port opened successfully.");
+
+            isSerialRunning = true;
+
+            // Start the thread for reading data
+            if (serialThread == null || !serialThread.IsAlive)
+            {
+                serialThread = new Thread(SerialReadThread);
+                serialThread.Start();
+            }
+        }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError($"Failed to open serial port: {ex.Message}");
+        }
+    }
+    else
+    {
+        UnityEngine.Debug.Log("Serial port is already open.");
+    }
+}
 }

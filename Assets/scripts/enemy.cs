@@ -124,6 +124,7 @@ public class EnemyController : MonoBehaviour
         // Trigger cutscene when the player is within detection range for the required time or button is pressed
     public void TriggerCutscene()
     {
+        bicycleVehicle.OnApplicationQuit();
         isCutsceneTriggered = true;
         GlobalState.currentLevel = 2;
         SceneManager.LoadScene("CutsceneCuffing");
