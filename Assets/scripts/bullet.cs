@@ -30,6 +30,10 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
+        else if(collision.gameObject.CompareTag("enemy")) {
+            Destroy(gameObject);
+            return;
+        }
 
         // Instantiate the explosion effect at the bullet's position
         //Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);

@@ -36,6 +36,8 @@ public class EnemyController : MonoBehaviour
     public AudioSource SoundNear;
 
     public EnemyNavigationController navigationController;
+    public TeleportObject enemyTeleporter;
+    public TeleportObject playerTeleporter;
 
     private void Start()
     {
@@ -43,6 +45,8 @@ public class EnemyController : MonoBehaviour
         rb.freezeRotation = true;
         originalMoveSpeed = moveSpeed;
         enemyRenderer = enemyObject.GetComponent<Renderer>();
+        enemyTeleporter = enemyObject.GetComponent<TeleportObject>();
+        playerTeleporter = GetComponent<TeleportObject>();
 
         if (navigationController == null)
             navigationController = GetComponent<EnemyNavigationController>();
@@ -72,9 +76,10 @@ public class EnemyController : MonoBehaviour
                 NearPlayer = true;
                 UnityEngine.Debug.Log($"EnemyController: NearPlayer = {NearPlayer}");
                 TimeNearText.text = $"PRESS THE CAPTURE BUTTON";
-                
+
                 /*
                 timeNearPlayer += Time.deltaTime;
+
                 if (TimeNearText != null)
                     TimeNearText.text = $"Time Near: {timeNearPlayer:F1}s";
                     SoundNear.Play();
@@ -95,14 +100,9 @@ public class EnemyController : MonoBehaviour
 
                 // Reset the display text
                 if (TimeNearText != null)
-                    TimeNearText.text = "GET CLOSER TO THE ENEMY";
+                    TimeNearText.text = "Time Near: 0s";
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.F))
-            {
-                TriggerCutscene();
-            }
     }
 
     public void enemyhit()
@@ -115,10 +115,24 @@ public class EnemyController : MonoBehaviour
     public void TriggerCutscene()
     {
         isCutsceneTriggered = true;
-        SceneManager.LoadScene("CutsceneCuffing");
-        Debug.Log("Back in enemy code after load cutscene. waiting for signal to end");
+
+        // Show the cutscene UI or camera changes
+        if (cutsceneObject != null)
+            cutsceneObject.SetActive(true);
+
+        // Start the coroutine to wait and then change scenes
+        //StartCoroutine(WaitAndChangeScene(5f)); // Wait for 5 seconds
+        playerTeleporter.Teleport();
+        enemyTeleporter.Teleport();
     }
 
+    private IEnumerator WaitAndChangeScene(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Change to the previous scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+    }
 
     //Take damage if the enemy gets hit by bullets
     private void OnCollisionEnter(Collision collision)
