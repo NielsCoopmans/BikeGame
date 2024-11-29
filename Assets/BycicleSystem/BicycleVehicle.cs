@@ -90,6 +90,7 @@ public class BicycleVehicle : MonoBehaviour
     public EnemyNavigationController navigationController;
 
     public Slider reloadBar;
+    public CountDown countdown;
 
     void Start()
 {
@@ -376,6 +377,9 @@ public class BicycleVehicle : MonoBehaviour
             reloadBar.gameObject.SetActive(false); // Hide the slider after cooldown
         }
     }
+
+    public bool calledCountdown = false;
+
     private void CheckForCollision()
     {
         Vector3 rayOrigin = rayOriginObject.position;
@@ -403,6 +407,12 @@ public class BicycleVehicle : MonoBehaviour
                 else if (hitCollider.CompareTag("startEnemy"))
                 {
                     navigationController.StartMoving();
+                    if(!calledCountdown){
+                      countdown.startMissionTimeCountdown();
+                      calledCountdown = true;
+                    }
+                        
+
                 }
                 else
                 {
