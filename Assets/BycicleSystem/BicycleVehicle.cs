@@ -90,9 +90,33 @@ public class BicycleVehicle : MonoBehaviour
     public EnemyNavigationController navigationController;
 
     public Slider reloadBar;
+    public Transform playStartPosition;
+    public Transform tutorialStartPosition;
+    public CountDown countdown;
 
     void Start()
-{
+    {
+        if (GameManager.Instance != null)
+        {
+            UnityEngine.Debug.Log("GameManager.instance is: " + GameManager.Instance.SkipTutorial);
+            UnityEngine.Debug.Log("PlayStartPosition is: " + playStartPosition);
+            UnityEngine.Debug.Log("tutorialStartPosition is: " + tutorialStartPosition);
+
+            if (GameManager.Instance.SkipTutorial){
+                UnityEngine.Debug.Log("skip tutorial instance, play position is: " + playStartPosition.position);
+                bikeTransform.position = playStartPosition.position;
+            }
+            else
+            {
+                UnityEngine.Debug.Log("tutorial instance, tutorial position is: " + tutorialStartPosition.position);
+                bikeTransform.position = tutorialStartPosition.position;
+            }
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("GameManager.Instance is null! Defaulting to tutorialStartPosition.");
+            bikeTransform.position = tutorialStartPosition.position;
+        }
     StopEmitTrail();
     if (enemyController == null)
         enemyController = GetComponent<EnemyController>();
@@ -110,13 +134,13 @@ public class BicycleVehicle : MonoBehaviour
 
     void Update()
     {
+        GetInput();
         if (isColliding)
         {
             HandleBackwardMovement();
         }
         else if (isCountdownComplete) 
         {
-            GetInput();
             HandleEngine();
             HandleSteering();
             UpdateWheels();
@@ -125,12 +149,9 @@ public class BicycleVehicle : MonoBehaviour
             CheckForCollision();
             CaptureEnemy();
         }
-        else
-        {
-            GetInput(); 
-        }
+ 
         //TryOpenSerialPort();
-        
+
     }
 
     private void SerialReadThread()
@@ -247,7 +268,7 @@ public class BicycleVehicle : MonoBehaviour
         braking = Input.GetKey(KeyCode.Space);
     }
 
-    private float currentSpeed = 0f; 
+    private float currentSpeed = 0f;
     private float bleedOffSpeed = 1f;
 
     public void HandleEngine()
@@ -376,6 +397,9 @@ public class BicycleVehicle : MonoBehaviour
             reloadBar.gameObject.SetActive(false); // Hide the slider after cooldown
         }
     }
+
+    public bool calledCountdown = false;
+
     private void CheckForCollision()
     {
         Vector3 rayOrigin = rayOriginObject.position;
@@ -403,6 +427,12 @@ public class BicycleVehicle : MonoBehaviour
                 else if (hitCollider.CompareTag("startEnemy"))
                 {
                     navigationController.StartMoving();
+                    if(!calledCountdown){
+                      countdown.startMissionTimeCountdown();
+                      calledCountdown = true;
+                    }
+
+
                 }
                 else
                 {

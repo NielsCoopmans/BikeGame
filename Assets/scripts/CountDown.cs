@@ -70,7 +70,9 @@ public class CountDown : MonoBehaviour
         }
 
         backgroundMusic.Play();
+    }
 
+    public void startMissionTimeCountdown(){
         StartCoroutine(MissionTimeCountdown());
     }
 
