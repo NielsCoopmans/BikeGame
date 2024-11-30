@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CollisionPlayer : MonoBehaviour
 {
-    //public GameObject explosionPrefab;
+    public GameObject BigBloodSplash;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +36,8 @@ public class CollisionPlayer : MonoBehaviour
         float currentSpeed = bicycle.movementSpeed;
         float penalty = 5f;
 
-        //Instantiate(explosionPrefab, transform.position, transform.rotation);
+        GameObject splash = Instantiate(BigBloodSplash, transform.position, transform.rotation);
+
 
         //dissable meshes and collider, so that only once
         foreach (SkinnedMeshRenderer renderer in GetComponentsInChildren<SkinnedMeshRenderer>())
@@ -51,6 +52,7 @@ public class CollisionPlayer : MonoBehaviour
         bicycle.movementSpeed = penalty;
         
         yield return new WaitForSeconds(duration);
+        Destroy(splash);
         
         // Restore the speed to its base value
         bicycle.movementSpeed = baseSpeed;
