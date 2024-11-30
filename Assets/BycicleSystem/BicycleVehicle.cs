@@ -31,7 +31,7 @@ public class BicycleVehicle : MonoBehaviour
     public TextMeshProUGUI InfoGun; 
     public TextMeshProUGUI InfoButton; 
 
-    private readonly object lockObject = new object(); // For thread-safe access to data
+    private readonly object lockObject = new object();
     private bool arduinoData;
 
     public Transform handle;
@@ -98,6 +98,11 @@ public class BicycleVehicle : MonoBehaviour
     public Transform tutorialStartPosition;
     public CountDown countdown;
 
+    public Transform rayOriginObject;  // Reference to the empty GameObject that will act as the ray origin
+    public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); // Size of the box (width, height, depth)
+    public Color boxColor = Color.red; // Color for the box visualization
+
+
     void Start()
     {
         if (GameManager.Instance != null)
@@ -121,19 +126,17 @@ public class BicycleVehicle : MonoBehaviour
             UnityEngine.Debug.LogWarning("GameManager.Instance is null! Defaulting to tutorialStartPosition.");
             bikeTransform.position = tutorialStartPosition.position;
         }
-    StopEmitTrail();
-    if (enemyController == null)
-        enemyController = GetComponent<EnemyController>();
-    if (navigationController == null)
-        navigationController = GetComponent<EnemyNavigationController>();
+        StopEmitTrail();
+        if (enemyController == null)
+            enemyController = GetComponent<EnemyController>();
+        if (navigationController == null)
+            navigationController = GetComponent<EnemyNavigationController>();
 
-    serialPort = new SerialPort(portName, baudRate)
-    {
-        ReadTimeout = readTimeout
-    };
-
-    // Ensure the serial port is open
-    TryOpenSerialPort();
+        serialPort = new SerialPort(portName, baudRate)
+        {
+            ReadTimeout = readTimeout
+        };
+        TryOpenSerialPort();
 }
 
     void Update()
@@ -153,9 +156,6 @@ public class BicycleVehicle : MonoBehaviour
             CheckForCollision();
             CaptureEnemy();
         }
- 
-        //TryOpenSerialPort();
-
     }
 
     private void SerialReadThread()
@@ -181,120 +181,119 @@ public class BicycleVehicle : MonoBehaviour
         }
     }
 
-    public void GetInput()
-    {
-    string[] dataParts;
-    lock (lockObject)
-    {
-        if (!string.IsNullOrEmpty(lastReceivedData))
+    public void GetInput() {
+        string[] dataParts;
+        lock (lockObject)
         {
-            dataParts = lastReceivedData.Trim().Split(',');
-        }
-        else
-        {
-            dataParts = new string[0];
-        }
-    }
-    if (dataParts.Length >= 3)
-    {
-        arduinoData = true;
-        usingKeyboardInput = false;
-
-        // Parse steering input
-        if (float.TryParse(dataParts[0], out float parsedSteering))
-        {
-            steeringInput = -parsedSteering;
-        }
-        else
-        {
-            UnityEngine.Debug.LogWarning("Steering data could not be parsed to a float.");
-        }
-
-        // Parse horn input and fire bullet if cooldown has passed
-        if (float.TryParse(dataParts[1], out float horn))
-        {
-            if (horn == 1 && (Time.time - lastFireTime) >= 2f)
+            if (!string.IsNullOrEmpty(lastReceivedData))
             {
-                gun.FireBullet();
-                lastFireTime = Time.time;
+                dataParts = lastReceivedData.Trim().Split(',');
+            }
+            else
+            {
+                dataParts = new string[0];
+            }
+        }
+        if (dataParts.Length >= 3)
+        {
+            arduinoData = true;
+            usingKeyboardInput = false;
 
-                StartCoroutine(ShowCooldown());
+            // Parse steering input
+            if (float.TryParse(dataParts[0], out float parsedSteering))
+            {
+                steeringInput = -parsedSteering;
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("Steering data could not be parsed to a float.");
+            }
+
+            // Parse horn input and fire bullet if cooldown has passed
+            if (float.TryParse(dataParts[1], out float horn))
+            {
+                if (horn == 1 && (Time.time - lastFireTime) >= 2f)
+                {
+                    gun.FireBullet();
+                    lastFireTime = Time.time;
+
+                    StartCoroutine(ShowCooldown());
+                }
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("Horn data could not be parsed to a float.");
+            }
+
+            // Parse speed input
+            if (float.TryParse(dataParts[2], out float parsedSpeed))
+            {
+                float newSpeed = parsedSpeed / 8f;
+                verticalInput = Mathf.Clamp(newSpeed, 0f, 50f);
+            }
+            else
+            {
+                verticalInput = Input.GetAxis("Vertical"); // Fallback for speed when serial data is incomplete
+                UnityEngine.Debug.LogWarning("Speed data could not be parsed.");
+            }
+
+            // Parse Button input
+            if (int.TryParse(dataParts[3], out int parsedButton))
+            {
+                buttonPressed = parsedButton;
+                
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("Button data could not be parsed to an integer.");
             }
         }
         else
         {
-            UnityEngine.Debug.LogWarning("Horn data could not be parsed to a float.");
-        }
+            // Fallback to keyboard input if data from Arduino is incomplete
+            arduinoData = false;
+            usingKeyboardInput = true;
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
 
-        // Parse speed input
-        if (float.TryParse(dataParts[2], out float parsedSpeed))
-        {
-            float newSpeed = parsedSpeed / 8f;
-            verticalInput = Mathf.Clamp(newSpeed, 0f, 50f);
-        }
-        else
-        {
-            verticalInput = Input.GetAxis("Vertical"); // Fallback for speed when serial data is incomplete
-            UnityEngine.Debug.LogWarning("Speed data could not be parsed.");
-        }
-
-        // Parse Button input
-        if (int.TryParse(dataParts[3], out int parsedButton))
-        {
-            buttonPressed = parsedButton;
-            
-        }
-        else
-        {
-            UnityEngine.Debug.LogWarning("Button data could not be parsed to an integer.");
-        }
-    }
-    else
-    {
-        // Fallback to keyboard input if data from Arduino is incomplete
-        arduinoData = false;
-        usingKeyboardInput = true;
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
-
-        // Detect "B" key press for fallback action
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            gun.ReloadBullets();
-            if (enemy != null && enemy.NearPlayer)
+            // Detect "B" key press for fallback action
+            if (Input.GetKeyDown(KeyCode.B))
             {
-                enemy.TriggerCutscene();
+                gun.ReloadBullets();
+                if (enemy != null && enemy.NearPlayer)
+                {
+                    enemy.TriggerCutscene();
+                }
             }
+
+            UnityEngine.Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
+        }
+            braking = Input.GetKey(KeyCode.Space);
         }
 
-        UnityEngine.Debug.LogWarning($"Incomplete data received: '{lastReceivedData}'");
-    }
-        braking = Input.GetKey(KeyCode.Space);
-    }
+        private float currentSpeed = 0f;
+        private float bleedOffSpeed = 1f;
 
-    private float currentSpeed = 0f;
-    private float bleedOffSpeed = 1f;
-
-    public void HandleEngine()
-{
-    float targetSpeed = verticalInput * movementSpeed * Time.deltaTime;
-
-    if (braking)
+        public void HandleEngine()
     {
-        targetSpeed = Mathf.Max(targetSpeed - brakeSpeed * Time.deltaTime, 0);
-    }
+        float targetSpeed = verticalInput * movementSpeed * Time.deltaTime;
 
-    if (Mathf.Abs(verticalInput) < 0.01f && currentSpeed > 0)
-    {
-        currentSpeed = Mathf.Max(currentSpeed - bleedOffSpeed * Time.deltaTime, 0);
-    }
-    else
-    {
-        currentSpeed = targetSpeed;
-    }
+        if (braking)
+        {
+            targetSpeed = Mathf.Max(targetSpeed - brakeSpeed * Time.deltaTime, 0);
+        }
 
-    transform.Translate(Vector3.forward * currentSpeed);
-}
+        if (Mathf.Abs(verticalInput) < 0.01f && currentSpeed > 0)
+        {
+            currentSpeed = Mathf.Max(currentSpeed - bleedOffSpeed * Time.deltaTime, 0);
+        }
+        else
+        {
+            currentSpeed = targetSpeed;
+        }
+
+        transform.Translate(Vector3.forward * currentSpeed);
+    }
 
     public void HandleSteering()
     {
@@ -377,16 +376,13 @@ public class BicycleVehicle : MonoBehaviour
         wheelTransform.localRotation = Quaternion.Euler(new Vector3(0, currentSteeringAngle, 0));
     } 
 
-    public Transform rayOriginObject;  // Reference to the empty GameObject that will act as the ray origin
-    public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); // Size of the box (width, height, depth)
-    public Color boxColor = Color.red; // Color for the box visualization
 
     private IEnumerator ShowCooldown()
     {
         if (reloadBar != null)
         {
-            reloadBar.gameObject.SetActive(true); // Show the slider
-            reloadBar.value = 0;                 // Reset the slider to 0
+            reloadBar.gameObject.SetActive(true); 
+            reloadBar.value = 0;                 
 
             float cooldownDuration = 2f;         // Same as the cooldown time
             float elapsedTime = 0f;
@@ -398,7 +394,7 @@ public class BicycleVehicle : MonoBehaviour
                 yield return null;
             }
 
-            reloadBar.gameObject.SetActive(false); // Hide the slider after cooldown
+            reloadBar.gameObject.SetActive(false);
         }
     }
 
@@ -407,16 +403,15 @@ public class BicycleVehicle : MonoBehaviour
     private void CheckForCollision()
     {
         Vector3 rayOrigin = rayOriginObject.position;
-
-        // Overlap Box
         Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
+
         if (hitColliders.Length > 0 && !isColliding)
         {
             foreach (Collider hitCollider in hitColliders)
             {
-                if (hitCollider.CompareTag("enemy"))  // Replace "YourTagName" with the actual tag you want to check for
+                if (hitCollider.CompareTag("enemy")) 
                 {
-                    break; // Exit the loop after handling the first valid collision
+                    break; 
                 }
                 else if(hitCollider.CompareTag("portal"))
                 {
@@ -445,7 +440,7 @@ public class BicycleVehicle : MonoBehaviour
 
                     PlayCollisionSound();
                     StartCoroutine(CameraShake());
-                    break; // Exit the loop after handling the first valid collision
+                    break;
                 }
             }
         }
@@ -488,7 +483,6 @@ public class BicycleVehicle : MonoBehaviour
         {
             if (mainCamera != null)
             {
-                // Add shake to the camera's local position
                 Vector3 randomOffset = new Vector3(Random.Range(-shakeMagnitude, shakeMagnitude), 0f, 0f);
                 mainCamera.transform.localPosition += randomOffset;
             }
@@ -496,8 +490,6 @@ public class BicycleVehicle : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-
-        // Ensure the camera's position stabilizes (handled by Smooth Follow)
     }
 
 
@@ -512,17 +504,14 @@ public class BicycleVehicle : MonoBehaviour
     }
 
     private void CaptureEnemy()
-    {      
-        
-    if (buttonPressed == 1)
-    {
-        //gun.ReloadBullets();
-
-        if (enemy != null && enemy.NearPlayer)
+    {          
+        if (buttonPressed == 1)
         {
-            enemy.enemyhit();
+            if (enemy != null && enemy.NearPlayer)
+            {
+                enemy.enemyhit();
+            }
         }
-    }
     }
 
     void TryOpenSerialPort()
