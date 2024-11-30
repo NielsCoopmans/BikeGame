@@ -5,6 +5,7 @@ using System.IO.Ports;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BicycleVehicle : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class BicycleVehicle : MonoBehaviour
     public float VerticalInput;
     public float verticalInput;
     float steeringInput;
+
+    public TextMeshProUGUI InfoGun; 
+    public TextMeshProUGUI InfoButton; 
 
     private readonly object lockObject = new object(); // For thread-safe access to data
     private bool arduinoData;
@@ -417,11 +421,11 @@ public class BicycleVehicle : MonoBehaviour
                 else if(hitCollider.CompareTag("portal"))
                 {
                     UnityEngine.Debug.Log("Portal activated for " + hitCollider.gameObject.name);
-                    // Find the RampPortal script on the portal object
+                    
                     RampPortal portalScript = hitCollider.GetComponent<RampPortal>();
                     if (portalScript != null)
                     {
-                        portalScript.ActivatePortal(); // Pass the collider to ActivatePortal                       
+                        portalScript.ActivatePortal();              
                     }
                 }
                 else if (hitCollider.CompareTag("startEnemy"))
@@ -430,9 +434,9 @@ public class BicycleVehicle : MonoBehaviour
                     if(!calledCountdown){
                       countdown.startMissionTimeCountdown();
                       calledCountdown = true;
+                      InfoButton.enabled = false;
+                      InfoGun.enabled = false;
                     }
-
-
                 }
                 else
                 {
@@ -501,10 +505,10 @@ public class BicycleVehicle : MonoBehaviour
     {
         isSerialRunning = false;
         Thread.Sleep(100);
-        if (serialPort.IsOpen)
-        {
-            serialPort.Close();
-        }
+        //if (serialPort.IsOpen)
+        //{
+        //    serialPort.Close();
+        //}
     }
 
     private void CaptureEnemy()

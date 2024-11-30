@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
     public float turnSpeed = 100f;          
     public float health = 100f;             
     public float detectionRange = 6f;
-    public GameObject cutsceneObject;
+    
     public GameObject VFX_EasyExplosion;
     public Transform playerTransform;  
 
@@ -60,8 +60,7 @@ public class EnemyController : MonoBehaviour
         if (navigationController == null)
             navigationController = GetComponent<EnemyNavigationController>();
 
-        if (cutsceneObject != null)
-            cutsceneObject.SetActive(false);
+    
 
         if (playerTransform == null)
         {
@@ -129,10 +128,7 @@ public class EnemyController : MonoBehaviour
         GameStateManager.currentLevel = 2;
         SceneManager.LoadScene("cutsceneCuffing");
 
-        // Show the cutscene UI or camera changes
-        if (cutsceneObject != null)
-            cutsceneObject.SetActive(true);
-
+        
         // Start the coroutine to wait and then change scenes
         //StartCoroutine(WaitAndChangeScene(5f)); // Wait for 5 seconds
 
