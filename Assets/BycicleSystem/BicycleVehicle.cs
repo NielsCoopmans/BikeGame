@@ -30,6 +30,7 @@ public class BicycleVehicle : MonoBehaviour
 
     public TextMeshProUGUI InfoGun; 
     public TextMeshProUGUI InfoButton; 
+    public TextMeshProUGUI TimeLeft;
 
     private readonly object lockObject = new object();
     private bool arduinoData;
@@ -431,6 +432,7 @@ public class BicycleVehicle : MonoBehaviour
                       calledCountdown = true;
                       InfoButton.enabled = false;
                       InfoGun.enabled = false;
+                      TimeLeft.enabled = true;
                     }
                 }
                 else

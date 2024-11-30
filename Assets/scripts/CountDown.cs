@@ -10,6 +10,8 @@ public class CountDown : MonoBehaviour
     public TextMeshProUGUI countdownDisplay; 
     public TextMeshProUGUI countdownMessage; 
     public TextMeshProUGUI MissionTimeDisplay; 
+    public TextMeshProUGUI TimeLeft;
+
     public TextMeshProUGUI MissionTimeCounter; 
     public TextMeshProUGUI GameOver; 
     public EnemyController enemyController;  
@@ -24,6 +26,7 @@ public class CountDown : MonoBehaviour
 
     private void Start()
     {
+        TimeLeft.enabled = false;
         bicycleVehicleScript = FindObjectOfType<BicycleVehicle>();
         if (bicycleVehicleScript != null)
         {
