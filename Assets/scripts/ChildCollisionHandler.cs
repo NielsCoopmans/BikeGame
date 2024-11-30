@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ChildCollisionHandler : MonoBehaviour
 {
-    public BikeCollision parentScript; // Reference to the parent's script
+    public BikeCollision parentScript; 
 
     void OnCollisionEnter(Collision collision)
     {

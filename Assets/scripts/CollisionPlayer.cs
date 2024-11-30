@@ -32,7 +32,7 @@ public class CollisionPlayer : MonoBehaviour
         BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
 
         //float baseSpeed = bicycle.movementSpeed;
-        float baseSpeed = 10f; //problem with the stacking of these penalties
+        float baseSpeed = 10f; 
         float currentSpeed = bicycle.movementSpeed;
         float penalty = 5f;
 
@@ -45,7 +45,7 @@ public class CollisionPlayer : MonoBehaviour
         }
         GetComponent<Collider>().enabled = false;
         
-        float duration = 2f; // Total time for the speed limit effect
+        float duration = 2f; 
         
         //bicycle.movementSpeed = currentSpeed - penalty < 0 ? 0 : currentSpeed - penalty;
         bicycle.movementSpeed = penalty;

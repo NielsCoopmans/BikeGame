@@ -9,7 +9,7 @@ public class CharacterNavigationController : MonoBehaviour
     public float stopDistance = 2.5f;
     public bool reachedDestination = false;
     public Vector3 destination = new Vector3(51.8f, 0.215f, 31.87f);
-    //public GameObject VFX_EasyExplosion;
+    public GameObject BloodSplash;
 
     private Vector3 lastPosition;
     private Vector3 velocity;
@@ -72,6 +72,7 @@ public class CharacterNavigationController : MonoBehaviour
     {
         if (other.CompareTag("bullet"))
         {
+            Instantiate(BloodSplash, transform.position, transform.rotation);
             StartCoroutine(Collision(other));
         }
     }
