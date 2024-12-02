@@ -14,6 +14,7 @@ TagManager:
   - startEnemy
   - car
   - AmmoPowerup
+  - explodable
   layers:
   - Default
   - TransparentFX

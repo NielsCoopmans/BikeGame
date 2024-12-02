@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
     public float expansionRate = 2f;     // Rate at which the bullet grows over time
     public GameObject VFX_EasyExplosion;
     public GameObject VFX_EasyExplosion_car;
-    public AudioSource carExplosion;
+    public GameObject VFX_EasyExplosion_pedestrian;
 
     private void Start()
     {
@@ -37,7 +37,6 @@ public class Bullet : MonoBehaviour
             return;
         }
         else if (collision.gameObject.CompareTag("car")){
-            carExplosion.Play();
             if (VFX_EasyExplosion_car != null)
             {
                 Vector3 explosionPosition = collision.gameObject.transform.position;
