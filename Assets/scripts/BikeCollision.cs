@@ -19,7 +19,7 @@ public class BikeCollision : MonoBehaviour
     {
         if (isColliding)
         {
-            // Move the bike backward
+            
             transform.position += moveBackDirection * moveBackSpeed * Time.deltaTime;
 
             // Stop backward movement after covering the distance
@@ -40,7 +40,7 @@ public class BikeCollision : MonoBehaviour
 
         isColliding = true;
 
-        // Disable forward movement temporarily
+        
         bikeVehicle.enabled = false;
 
     }
@@ -50,7 +50,7 @@ public class BikeCollision : MonoBehaviour
   
         isColliding = false;
 
-        // Re-enable forward movement
+        
         bikeVehicle.enabled = true;
    
     }
