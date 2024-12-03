@@ -1848,6 +1848,7 @@ MonoBehaviour:
   stopDistance: 1
   reachedDestination: 0
   destination: {x: 0, y: 16, z: 24}
+  BloodSplash: {fileID: 1362418652685942, guid: b369efb4abe69e044890b664115fab9e, type: 3}
 --- !u!114 &787949612452509688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1896,6 +1897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f740711a05731f4aa9bf113abe36130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BigBloodSplash: {fileID: 1277154925287174, guid: 3b517eddec185dd4a830743a742ad00b, type: 3}
 --- !u!54 &5037174697049935902
 Rigidbody:
   m_ObjectHideFlags: 0
