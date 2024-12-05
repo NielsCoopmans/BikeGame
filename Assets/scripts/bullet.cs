@@ -8,6 +8,9 @@ public class Bullet : MonoBehaviour
     public GameObject VFX_EasyExplosion;
     public GameObject VFX_EasyExplosion_car;
     public GameObject VFX_EasyExplosion_pedestrian;
+    
+    public AudioSource explosionSound;
+    public float volume = 1.0f;
 
     private void Start()
     {
@@ -39,6 +42,7 @@ public class Bullet : MonoBehaviour
         else if (collision.gameObject.CompareTag("car")){
             if (VFX_EasyExplosion_car != null)
             {
+                explosionSound.Play();
                 Vector3 explosionPosition = collision.gameObject.transform.position;
                 explosionPosition.y += 1.0f;
                 GameObject explosion = Instantiate(VFX_EasyExplosion_car, explosionPosition, collision.gameObject.transform.rotation);

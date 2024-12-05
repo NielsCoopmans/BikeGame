@@ -43,6 +43,7 @@ public class BicycleVehicle : MonoBehaviour
     public Vector3 COG;
 
     [SerializeField] internal float movementSpeed = 10f;
+    private float baseSpeed;
     [SerializeField] float brakeSpeed = 10f;
 
     float steeringAngle;
@@ -106,6 +107,7 @@ public class BicycleVehicle : MonoBehaviour
 
     void Start()
     {
+        baseSpeed = movementSpeed;
         if (GameManager.Instance != null)
         {
             UnityEngine.Debug.Log("GameManager.instance is: " + GameManager.Instance.SkipTutorial);
@@ -138,7 +140,7 @@ public class BicycleVehicle : MonoBehaviour
             ReadTimeout = readTimeout
         };
         TryOpenSerialPort();
-}
+    }
 
     void Update()
     {
@@ -157,6 +159,11 @@ public class BicycleVehicle : MonoBehaviour
             CheckForCollision();
             CaptureEnemy();
         }
+    }
+
+    public float getBaseSpeed()
+    {
+        return baseSpeed;
     }
 
     private void SerialReadThread()
