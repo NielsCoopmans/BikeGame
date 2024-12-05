@@ -10,18 +10,25 @@ public class CharacterNavigationController : MonoBehaviour
     public bool reachedDestination = false;
     public Vector3 destination = new Vector3(51.8f, 0.215f, 31.87f);
     public GameObject BloodSplash;
+    private AudioSource audioSource;
+    public AudioClip clip;
 
     private Vector3 lastPosition;
     private Vector3 velocity;
     private bool isSped = false;
     private float originalMovementSpeed;
-
+    
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
         originalMovementSpeed = movementSpeed;
         lastPosition = transform.position; // Initialize lastPosition
     }
@@ -73,6 +80,7 @@ public class CharacterNavigationController : MonoBehaviour
         if (other.CompareTag("bullet"))
         {
             Instantiate(BloodSplash, transform.position, transform.rotation);
+            audioSource.PlayOneShot(clip);
             StartCoroutine(Collision(other));
         }
     }
