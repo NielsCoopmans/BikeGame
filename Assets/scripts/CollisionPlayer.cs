@@ -31,8 +31,8 @@ public class CollisionPlayer : MonoBehaviour
         UnityEngine.Debug.Log("pedestrian collision player");
         BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
 
-        //float baseSpeed = bicycle.movementSpeed;
-        float baseSpeed = 10f; 
+        float baseSpeed = bicycle.getBaseSpeed();
+        //float baseSpeed = 10f; 
         float currentSpeed = bicycle.movementSpeed;
         float penalty = 5f;
 
