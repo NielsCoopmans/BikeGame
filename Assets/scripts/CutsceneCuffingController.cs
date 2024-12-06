@@ -9,13 +9,13 @@ public class CutsceneController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("ForceCloseCutscene", 100f);
+        Invoke("ForceCloseCutscene", 16f);
     }
 
     void ForceCloseCutscene()
     {
         Debug.Log("CutsceneCuffing unloaded. Returning to main menu.");
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("BikeGame 2");
     }
 
 
@@ -27,6 +27,6 @@ public class CutsceneController : MonoBehaviour
 
     public void closeCutscene(){
         Debug.Log("Signal received: Closing CutsceneCuffing");
-        SceneManager.UnloadSceneAsync(2);
+        SceneManager.UnloadSceneAsync("CutsceneCuffing");
     }
 }

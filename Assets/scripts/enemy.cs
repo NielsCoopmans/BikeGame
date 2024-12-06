@@ -82,7 +82,7 @@ public class EnemyController : MonoBehaviour
             {
                 NearPlayer = false;
                 timeNearPlayer = 0f;
-                TimeNearText.text = "Come Closer to Enemy";
+    
             }
         }
     }

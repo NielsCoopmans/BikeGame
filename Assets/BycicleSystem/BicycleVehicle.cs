@@ -31,6 +31,7 @@ public class BicycleVehicle : MonoBehaviour
     public TextMeshProUGUI InfoGun; 
     public TextMeshProUGUI InfoButton; 
     public TextMeshProUGUI TimeLeft;
+    public TextMeshProUGUI NearInfo;
 
     private readonly object lockObject = new object();
     private bool arduinoData;
@@ -110,6 +111,8 @@ public class BicycleVehicle : MonoBehaviour
     void Start()
     {
         GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
+        NearInfo.text = "Leave The Garage!";
+        
         if (highScoreManagerObject != null)
         {
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
@@ -126,15 +129,18 @@ public class BicycleVehicle : MonoBehaviour
             UnityEngine.Debug.Log("PlayStartPosition is: " + playStartPosition);
             UnityEngine.Debug.Log("tutorialStartPosition is: " + tutorialStartPosition);
 
-            if (GameManager.Instance.SkipTutorial){
-                UnityEngine.Debug.Log("skip tutorial instance, play position is: " + playStartPosition.position);
-                bikeTransform.position = playStartPosition.position;
+            if(GameStateManager.currentLevel == 1){
+                if (GameManager.Instance.SkipTutorial){
+                    UnityEngine.Debug.Log("skip tutorial instance, play position is: " + playStartPosition.position);
+                    bikeTransform.position = playStartPosition.position;
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("tutorial instance, tutorial position is: " + tutorialStartPosition.position);
+                    bikeTransform.position = tutorialStartPosition.position;
+                }
             }
-            else
-            {
-                UnityEngine.Debug.Log("tutorial instance, tutorial position is: " + tutorialStartPosition.position);
-                bikeTransform.position = tutorialStartPosition.position;
-            }
+        
         }
         else
         {
@@ -453,6 +459,7 @@ public class BicycleVehicle : MonoBehaviour
                     if(!calledCountdown){
                       countdown.startMissionTimeCountdown();
                       calledCountdown = true;
+                        NearInfo.text = "Get closer to the enemy!";
                       InfoButton.enabled = false;
                       InfoGun.enabled = false;
                       TimeLeft.enabled = true;
