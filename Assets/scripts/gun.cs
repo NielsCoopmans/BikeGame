@@ -98,7 +98,7 @@ public class Gun : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         elapsedTime = 0f;
 
