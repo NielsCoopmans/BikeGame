@@ -75,6 +75,11 @@ public class EnemyNavigationController : MonoBehaviour
             targetPosition = currentWaypoint.GetPosition();
     }
 
+    public void UpdateMoveSpeed(float speed)
+    {
+        movementSpeed = speed;
+    }
+
 
     public void ApplySlow(float duration, float slowFactor)
     {

@@ -42,7 +42,7 @@ public class BicycleVehicle : MonoBehaviour
 
     public Vector3 COG;
 
-    [SerializeField] internal float movementSpeed = 10f;
+    [SerializeField] internal float movementSpeed = 8f;
     private float baseSpeed;
     [SerializeField] float brakeSpeed = 10f;
 
@@ -160,6 +160,9 @@ public class BicycleVehicle : MonoBehaviour
         if (isColliding)
         {
             HandleBackwardMovement();
+            HandleSteering();
+            UpdateWheels();
+            UpdateHandle();
         }
         else if (isCountdownComplete) 
         {

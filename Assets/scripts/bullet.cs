@@ -42,10 +42,15 @@ public class Bullet : MonoBehaviour
         else if (collision.gameObject.CompareTag("car")){
             if (VFX_EasyExplosion_car != null)
             {
-                explosionSound.Play();
+                
                 Vector3 explosionPosition = collision.gameObject.transform.position;
                 explosionPosition.y += 1.0f;
                 GameObject explosion = Instantiate(VFX_EasyExplosion_car, explosionPosition, collision.gameObject.transform.rotation);
+                AudioSource explosionAudio = explosion.GetComponent<AudioSource>();
+                if (explosionAudio != null)
+                {
+                    explosionAudio.Play();
+                }
                 Destroy(explosion, 2f);
             }
             Destroy(collision.gameObject);

@@ -5,11 +5,17 @@ using UnityEngine;
 public class CollisionPlayer : MonoBehaviour
 {
     public GameObject BigBloodSplash;
+    private AudioSource audioSource;
+    public AudioClip clip;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     // Update is called once per frame
@@ -37,7 +43,7 @@ public class CollisionPlayer : MonoBehaviour
         float penalty = 5f;
 
         GameObject splash = Instantiate(BigBloodSplash, transform.position, transform.rotation);
-
+        audioSource.PlayOneShot(clip);
 
         //dissable meshes and collider, so that only once
         foreach (SkinnedMeshRenderer renderer in GetComponentsInChildren<SkinnedMeshRenderer>())
