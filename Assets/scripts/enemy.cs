@@ -117,7 +117,7 @@ public class EnemyController : MonoBehaviour
         bicycleVehicle.OnApplicationQuit();
         isCutsceneTriggered = true;
         GameStateManager.currentLevel = 2;
-        SceneManager.LoadScene("cutsceneCuffing");
+        SceneManager.LoadScene(3);
     }
     public void TriggerGameOverCutscene()
     {
@@ -130,7 +130,7 @@ public class EnemyController : MonoBehaviour
     public void TriggerVictoryCutscene()
     {
         isCutsceneTriggered = true;
-        SceneManager.LoadScene("CutsceneGettingAway");
+        SceneManager.LoadScene(4);
     }
 
     private void OnCollisionEnter(Collision collision)

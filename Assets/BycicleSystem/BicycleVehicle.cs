@@ -71,8 +71,8 @@ public class BicycleVehicle : MonoBehaviour
     [Header("Collision Handling")]
     public float rayDistance = 2f; // Raycast distance for collision detection
     public LayerMask collisionLayer; // Layer for detecting collisions
-    public float backwardSpeed = 5f; // Speed to move backward upon collision
-    public float backwardDuration = 0.2f; // Duration for moving backward
+    public float backwardSpeed = 2f; // Speed to move backward upon collision
+    public float backwardDuration = 0.01f; // Duration for moving backward
     private bool isColliding = false;
     private float collisionTimer = 0f;
 
