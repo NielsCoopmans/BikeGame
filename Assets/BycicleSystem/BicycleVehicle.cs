@@ -104,9 +104,21 @@ public class BicycleVehicle : MonoBehaviour
     public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); // Size of the box (width, height, depth)
     public Color boxColor = Color.red; // Color for the box visualization
 
+    private HighScoreManager highScoreManager;
+
 
     void Start()
     {
+        GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
+        if (highScoreManagerObject != null)
+        {
+            highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
+            if (highScoreManager != null)
+            {
+                UnityEngine.Debug.Log("found higscoremanager in bicycleVehicle");
+            }
+        }
+
         baseSpeed = movementSpeed;
         if (GameManager.Instance != null)
         {
@@ -270,6 +282,7 @@ public class BicycleVehicle : MonoBehaviour
                 gun.ReloadBullets();
                 if (enemy != null && enemy.NearPlayer)
                 {
+                    highScoreManager.GetBadGuy();
                     enemy.TriggerCutscene();
                 }
             }
@@ -518,6 +531,7 @@ public class BicycleVehicle : MonoBehaviour
         {
             if (enemy != null && enemy.NearPlayer)
             {
+                highScoreManager.GetBadGuy();
                 enemy.enemyhit();
             }
         }

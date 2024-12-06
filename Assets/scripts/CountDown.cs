@@ -22,7 +22,7 @@ public class CountDown : MonoBehaviour
 
     public AudioSource backgroundMusic;
 
-    private BicycleVehicle bicycleVehicleScript; 
+    private BicycleVehicle bicycleVehicleScript;
 
     private void Start()
     {
@@ -39,7 +39,7 @@ public class CountDown : MonoBehaviour
         MissionTimeCounter.gameObject.SetActive(false);
        
         StartCoroutine(CountDownToStart());
-    
+
     }
 
     public IEnumerator CountDownToStart()
@@ -95,5 +95,10 @@ public class CountDown : MonoBehaviour
             enemyController.TriggerCutscene();  
             }
 
+    }
+
+    public int getMissionTime()
+    {
+        return missionTime;
     }
 }
