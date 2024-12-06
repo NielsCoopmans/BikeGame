@@ -12,8 +12,19 @@ public class Bullet : MonoBehaviour
     public AudioSource explosionSound;
     public float volume = 1.0f;
 
+    private HighScoreManager highScoreManager;
+
     private void Start()
     {
+        GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
+        if (highScoreManagerObject != null)
+        {
+            highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
+            if (highScoreManager != null)
+            {
+                UnityEngine.Debug.Log("found higscoremanager in bicycleVehicle");
+            }
+        }
         // Destroy the bullet after a certain time to avoid clutter in the scene
         Destroy(gameObject, lifetime);
     }
@@ -36,10 +47,12 @@ public class Bullet : MonoBehaviour
             return;
         }
         else if(collision.gameObject.CompareTag("enemy")) {
+            highScoreManager.hitEnemy();
             Destroy(gameObject);
             return;
         }
         else if (collision.gameObject.CompareTag("car")){
+            highScoreManager.hitCar();
             if (VFX_EasyExplosion_car != null)
             {
                 
