@@ -6,7 +6,7 @@ using TMPro;
 public class CountDown : MonoBehaviour
 {
     public int countdownTime = 3; 
-    public int missionTime = 60;
+    public int missionTime;
     public TextMeshProUGUI countdownDisplay; 
     public TextMeshProUGUI countdownMessage; 
     public TextMeshProUGUI MissionTimeDisplay; 
@@ -22,7 +22,7 @@ public class CountDown : MonoBehaviour
 
     public AudioSource backgroundMusic;
 
-    private BicycleVehicle bicycleVehicleScript; 
+    private BicycleVehicle bicycleVehicleScript;
 
     private void Start()
     {
@@ -39,7 +39,7 @@ public class CountDown : MonoBehaviour
         MissionTimeCounter.gameObject.SetActive(false);
        
         StartCoroutine(CountDownToStart());
-    
+
     }
 
     public IEnumerator CountDownToStart()
@@ -81,7 +81,6 @@ public class CountDown : MonoBehaviour
 
     public IEnumerator MissionTimeCountdown()
     {
-        missionTime = 200;
         while (missionTime > 0)
         {
             MissionTimeCounter.text = missionTime.ToString();
@@ -92,8 +91,13 @@ public class CountDown : MonoBehaviour
         if (MissionTimeCounter != null){
             MissionTimeCounter.text = "Time's Up!";
             GameOver.text = "GAME OVER";
-            enemyController.TriggerCutscene();  
+            enemyController.TriggerGameOverCutscene();  
             }
 
+    }
+
+    public int getMissionTime()
+    {
+        return missionTime;
     }
 }

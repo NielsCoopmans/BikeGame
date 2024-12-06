@@ -1,36 +1,36 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
-    public float moveSpeed = 5f;            
-    public float turnSpeed = 100f;          
-    public float health = 100f;             
-    public float detectionRange = 6f;
-    
+    public float moveSpeed = 5f;             // Default move speed
+    public float turnSpeed = 100f;
+    public float health = 100f;
+    public float detectionRange = 6f;       // Range to detect the player
+
     public GameObject VFX_EasyExplosion;
-    public Transform playerTransform;  
+    public Transform playerTransform;
 
     public int missionTime = 120;
-    public TextMeshProUGUI gameOverText;    
+    public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI TimeNearText;
 
-    public Transform enemyObject;          
+    public Transform enemyObject;
     private Renderer enemyRenderer;
     public Color glowColor = Color.blue;
 
-    private float originalMoveSpeed;           
+    private float originalMoveSpeed;
     private bool isCutsceneTriggered = false;
 
     private Rigidbody rb;
 
-    public float slowFactor = 0.5f;
+    public float slowFactor = 0.5f;         // Factor by which enemy slows down when far
+    public float slowDistance = 30f;       // Distance at which the enemy starts slowing
 
-    private float timeNearPlayer = 0f; 
-    public bool NearPlayer = false;       
-    public float requiredTimeToTriggerCutscene = 4f; 
+    private float timeNearPlayer = 0f;
+    public bool NearPlayer = false;
+    public float requiredTimeToTriggerCutscene = 4f;
 
     public BicycleVehicle bicycleVehicle;
     public AudioSource SoundNear;
@@ -43,16 +43,17 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
+
         if (GameStateManager.currentLevel == 2)
         {
             playerTeleporter.Teleport();
             enemyTeleporter.Teleport();
             navigationController.changeWaypoint(waypointLevel2);
-
         }
+
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        originalMoveSpeed = moveSpeed;
+        originalMoveSpeed = navigationController.movementSpeed;
         enemyRenderer = enemyObject.GetComponent<Renderer>();
         enemyTeleporter = enemyObject.GetComponent<TeleportObject>();
         playerTeleporter = GetComponent<TeleportObject>();
@@ -60,11 +61,9 @@ public class EnemyController : MonoBehaviour
         if (navigationController == null)
             navigationController = GetComponent<EnemyNavigationController>();
 
-    
-
         if (playerTransform == null)
         {
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;  
+            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         }
     }
 
@@ -72,44 +71,38 @@ public class EnemyController : MonoBehaviour
     {
         if (!isCutsceneTriggered)
         {
-            
-            //int buttonPressed = bicycleVehicle.buttonPressed;
-            //if(buttonPressed == 1){
-              //  TimeNearText.text = "ButtonPRESSED";
-            //}
-            
+            AdjustMoveSpeedBasedOnDistance();
 
             if (Vector3.Distance(transform.position, playerTransform.position) < detectionRange)
             {
                 NearPlayer = true;
-                UnityEngine.Debug.Log($"EnemyController: NearPlayer = {NearPlayer}");
                 TimeNearText.text = $"PRESS THE CAPTURE BUTTON";
-
-                /*
-                timeNearPlayer += Time.deltaTime;
-
-                if (TimeNearText != null)
-                    TimeNearText.text = $"Time Near: {timeNearPlayer:F1}s";
-                    SoundNear.Play();
-
-
-                // Win the game if time near player reaches the required time or button is pressed
-                if (timeNearPlayer >= requiredTimeToTriggerCutscene )
-                {
-                    enemyhit();
-                }
-                */
             }
             else
             {
                 NearPlayer = false;
-                // Reset the timer if the player is no longer within range
                 timeNearPlayer = 0f;
-
-                // Reset the display text
-                if (TimeNearText != null)
-                    TimeNearText.text = "Come Closer to Enemy";
+                TimeNearText.text = "Come Closer to Enemy";
             }
+        }
+    }
+
+    private void AdjustMoveSpeedBasedOnDistance()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+
+        if (distanceToPlayer > slowDistance)
+        {
+            moveSpeed = originalMoveSpeed * slowFactor; // Slow down when far
+        }
+        else
+        {
+            moveSpeed = originalMoveSpeed; // Restore original speed when close
+        }
+
+        if (navigationController != null)
+        {
+            navigationController.UpdateMoveSpeed(moveSpeed);
         }
     }
 
@@ -117,37 +110,36 @@ public class EnemyController : MonoBehaviour
     {
         gameOverText.text = "YOU WON";
         TriggerCutscene();
-
     }
 
-        // Trigger cutscene when the player is within detection range for the required time or button is pressed
     public void TriggerCutscene()
     {
         bicycleVehicle.OnApplicationQuit();
         isCutsceneTriggered = true;
         GameStateManager.currentLevel = 2;
         SceneManager.LoadScene(3);
-
-        
-        // Start the coroutine to wait and then change scenes
-        //StartCoroutine(WaitAndChangeScene(5f)); // Wait for 5 seconds
-
     }
+    public void TriggerGameOverCutscene()
+    {
+        bicycleVehicle.OnApplicationQuit();
+        isCutsceneTriggered = true;
+        GameStateManager.currentLevel = 1;
+        SceneManager.LoadScene("cutsceneGettingAway");
+    }
+
     public void TriggerVictoryCutscene()
     {
         isCutsceneTriggered = true;
         SceneManager.LoadScene(4);
     }
 
-    //Take damage if the enemy gets hit by bullets
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("bullet"))
         {
-            // Trigger the slow effect in NavigationController
             if (navigationController != null)
             {
-                navigationController.ApplySlow(3f, slowFactor); // Slow for 3 seconds at 50% speed
+                navigationController.ApplySlow(3f, slowFactor);
             }
 
             Explode();
@@ -159,8 +151,7 @@ public class EnemyController : MonoBehaviour
         if (VFX_EasyExplosion != null)
         {
             GameObject explosion = Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
-            Destroy(explosion, 2f); 
+            Destroy(explosion, 2f);
         }
     }
-}    
-
+}

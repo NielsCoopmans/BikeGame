@@ -13,11 +13,11 @@ public class Gun : MonoBehaviour
     public TextMeshProUGUI bulletCountText;
     public AudioSource shotSound;
 
-    [SerializeField] private Vector3 originalPosition;
-    private Vector3 centerPosition = new(-800, 550, 0);
-    [SerializeField] private Vector3 originalScale = Vector3.one;
-    [SerializeField] private Vector3 enlargedScale = Vector3.one * 5f;
-    [SerializeField] private float animationDuration = 1f;
+    private Vector3 originalPosition;
+    private Vector3 centerPosition = new(-1000, 550, 0);
+    private Vector3 originalScale = Vector3.one;
+    private Vector3 enlargedScale = Vector3.one * 3f;
+    private float animationDuration = 1f;
 
     private Coroutine textAnimationCoroutine;
 
@@ -98,7 +98,7 @@ public class Gun : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         elapsedTime = 0f;
 
