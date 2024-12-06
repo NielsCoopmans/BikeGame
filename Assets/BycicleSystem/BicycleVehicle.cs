@@ -145,20 +145,18 @@ public class BicycleVehicle : MonoBehaviour
     void Update()
     {
         GetInput();
+        HandleEngine();
+        HandleSteering();
         if (isColliding)
         {
             HandleBackwardMovement();
-        }
-        else if (isCountdownComplete) 
-        {
-            HandleEngine();
-            HandleSteering();
-            UpdateWheels();
-            UpdateHandle();
-            LayOnTurn();
-            CheckForCollision();
-            CaptureEnemy();
-        }
+        }   
+        UpdateWheels();
+        UpdateHandle();
+        LayOnTurn();
+        CheckForCollision();
+        CaptureEnemy();
+       
     }
 
     public float getBaseSpeed()
