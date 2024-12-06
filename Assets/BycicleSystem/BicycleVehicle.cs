@@ -9,7 +9,7 @@ using TMPro;
 
 public class BicycleVehicle : MonoBehaviour
 {
-    public string portName = "COM3"	;
+    public string portName = "/dev/tty.usbmodem11101"	;
     public int baudRate = 115200;
     public int readTimeout = 1000;
     private SerialPort serialPort;
@@ -101,9 +101,9 @@ public class BicycleVehicle : MonoBehaviour
     public Transform tutorialStartPosition;
     public CountDown countdown;
 
-    public Transform rayOriginObject;  // Reference to the empty GameObject that will act as the ray origin
-    public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); // Size of the box (width, height, depth)
-    public Color boxColor = Color.red; // Color for the box visualization
+    public Transform rayOriginObject; 
+    public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); 
+    public Color boxColor = Color.red; 
 
     private HighScoreManager highScoreManager;
 
@@ -123,13 +123,14 @@ public class BicycleVehicle : MonoBehaviour
         }
 
         baseSpeed = movementSpeed;
+        if(GameStateManager.currentLevel == 1){
         if (GameManager.Instance != null)
         {
             UnityEngine.Debug.Log("GameManager.instance is: " + GameManager.Instance.SkipTutorial);
             UnityEngine.Debug.Log("PlayStartPosition is: " + playStartPosition);
             UnityEngine.Debug.Log("tutorialStartPosition is: " + tutorialStartPosition);
 
-            if(GameStateManager.currentLevel == 1){
+            
                 if (GameManager.Instance.SkipTutorial){
                     UnityEngine.Debug.Log("skip tutorial instance, play position is: " + playStartPosition.position);
                     bikeTransform.position = playStartPosition.position;
@@ -139,7 +140,6 @@ public class BicycleVehicle : MonoBehaviour
                     UnityEngine.Debug.Log("tutorial instance, tutorial position is: " + tutorialStartPosition.position);
                     bikeTransform.position = tutorialStartPosition.position;
                 }
-            }
         
         }
         else
@@ -147,6 +147,7 @@ public class BicycleVehicle : MonoBehaviour
             UnityEngine.Debug.LogWarning("GameManager.Instance is null! Defaulting to tutorialStartPosition.");
             bikeTransform.position = tutorialStartPosition.position;
         }
+         }
         StopEmitTrail();
         if (enemyController == null)
             enemyController = GetComponent<EnemyController>();
@@ -529,10 +530,10 @@ public class BicycleVehicle : MonoBehaviour
     {
         isSerialRunning = false;
         Thread.Sleep(100);
-        //if (serialPort.IsOpen)
-        //{
-        //    serialPort.Close();
-        //}
+        if (serialPort.IsOpen)
+        {
+            serialPort.Close();
+        }
     }
 
     private void CaptureEnemy()
