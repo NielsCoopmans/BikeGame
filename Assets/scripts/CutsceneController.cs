@@ -8,7 +8,7 @@ public class CutsceneController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("ForceCloseCutscene", 15f);
+        Invoke("ForceCloseCutscene", 147f);
     }
 
     void ForceCloseCutscene()
