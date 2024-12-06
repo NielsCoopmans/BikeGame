@@ -8,9 +8,21 @@ public class CollisionPlayer : MonoBehaviour
     private AudioSource audioSource;
     public AudioClip clip;
 
+    private HighScoreManager highScoreManager;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
+        if (highScoreManagerObject != null)
+        {
+            highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
+            if (highScoreManager != null)
+            {
+                UnityEngine.Debug.Log("found higscoremanager in bicycleVehicle");
+            }
+        }
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -34,6 +46,8 @@ public class CollisionPlayer : MonoBehaviour
 
     IEnumerator Collision(Collider player)
     {
+        highScoreManager.hitPedestrian();
+
         UnityEngine.Debug.Log("pedestrian collision player");
         BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
 

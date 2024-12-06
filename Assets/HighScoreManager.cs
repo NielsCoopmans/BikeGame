@@ -18,6 +18,11 @@ public class HighScoreManager : MonoBehaviour
             //reset score at beginnig of game
             PlayerPrefs.SetInt("score", 0);
         }
+        else if (GameStateManager.currentLevel != 1)
+        {
+            //get score from previous level
+            score = PlayerPrefs.GetInt("score", 0);
+        }
         //UpdateHighScoreText();
         GameObject CanvasGameObject = GameObject.Find("Canvas");
         if (CanvasGameObject != null)
@@ -30,78 +35,6 @@ public class HighScoreManager : MonoBehaviour
                 UpdateHighScoreText();
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //UpdateHighScoreText();
-        UpdateScoreText();
-        if (Input.GetKeyUp(KeyCode.H))
-        {
-            GetBadGuy();
-        }
-    }
-
-    public void GetBadGuy()
-    {
-        UnityEngine.Debug.Log("GetBadGuy called");
-        GameObject CanvasGameObject = GameObject.Find("Canvas");
-        if (countDownScript != null)
-        {
-            int missionTime = countDownScript.getMissionTime();
-            UnityEngine.Debug.Log("Mission Time: " + missionTime);
-            score += missionTime*2;
-        }
-        CheckHighScore();
-        UpdateScoreText();
-        UpdateHighScoreText();
-        PlayerPrefs.SetInt("score", score);
-    }
-
-    public void hitCar()
-    {
-        UnityEngine.Debug.Log("hitCar called");
-        GameObject CanvasGameObject = GameObject.Find("Canvas");
-        score += 10;
-        CheckHighScore();
-        UpdateScoreText();
-        UpdateHighScoreText();
-        PlayerPrefs.SetInt("score", score);
-    }
-
-    public void hitPedestrian()
-    {
-        UnityEngine.Debug.Log("hitPedestrian called");
-        GameObject CanvasGameObject = GameObject.Find("Canvas");
-        score -= 20;
-        CheckHighScore();
-        UpdateScoreText();
-        UpdateHighScoreText();
-        PlayerPrefs.SetInt("score", score);
-    }
-
-    public void hitEnemy()
-    {
-        UnityEngine.Debug.Log("hitEnemy called");
-        GameObject CanvasGameObject = GameObject.Find("Canvas");
-        score += 20;
-        CheckHighScore();
-        UpdateScoreText();
-        UpdateHighScoreText();
-        PlayerPrefs.SetInt("score", score);
-    }
-
-    void CheckHighScore() //update highscore
-    {
-        if (score > PlayerPrefs.GetInt("HighScore", 0))
-        {
-            PlayerPrefs.SetInt("HighScore", score);
-        }
-    }
-
-    void UpdateScoreText()
-    {
         // Attempt to find and assign ScoreText if it's null
         if (ScoreText == null)
         {
@@ -129,18 +62,91 @@ public class HighScoreManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //UpdateHighScoreText();
+        UpdateScoreText();
+        if (Input.GetKeyUp(KeyCode.H))
+        {
+            GetBadGuy();
+        }
+    }
+
+    public void GetBadGuy()
+    {
+        UnityEngine.Debug.Log("GetBadGuy called");
+        GameObject CanvasGameObject = GameObject.Find("Canvas");
+        if (countDownScript != null)
+        {
+            int missionTime = countDownScript.getMissionTime();
+            UnityEngine.Debug.Log("Mission Time: " + missionTime);
+            score += missionTime;
+        }
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        PlayerPrefs.SetInt("score", score);
+    }
+
+    public void hitCar()
+    {
+        UnityEngine.Debug.Log("hitCar called");
+        GameObject CanvasGameObject = GameObject.Find("Canvas");
+        score += 10;
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        PlayerPrefs.SetInt("score", score);
+    }
+
+    public void hitPedestrian()
+    {
+        UnityEngine.Debug.Log("hitPedestrian called");
+        GameObject CanvasGameObject = GameObject.Find("Canvas");
+        score = score - 10;
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        PlayerPrefs.SetInt("score", score);
+    }
+
+    public void hitEnemy()
+    {
+        UnityEngine.Debug.Log("hitEnemy called");
+        GameObject CanvasGameObject = GameObject.Find("Canvas");
+        score += 20;
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        PlayerPrefs.SetInt("score", score);
+    }
+
+    void CheckHighScore() //update highscore
+    {
+        if (score > PlayerPrefs.GetInt("HighScore", 0))
+        {
+            PlayerPrefs.SetInt("HighScore", score);
+        }
+    }
+
+    void UpdateScoreText()
+    {
+        
 
         // Update score text
-        if (score > PlayerPrefs.GetInt("score", 0))
-        {
+        //if (score > PlayerPrefs.GetInt("score", 0))
+        //{
             ScoreText.text = $"Score: {score}";
             PlayerPrefs.SetInt("score", score);
-        }
-        else
-        {
-            ScoreText.text = $"Score: {PlayerPrefs.GetInt("score")}";
-            score = PlayerPrefs.GetInt("score", 0);
-        }
+        //}
+        //else
+        //{
+        //    ScoreText.text = $"Score: {PlayerPrefs.GetInt("score")}";
+        //    score = PlayerPrefs.GetInt("score", 0);
+        //}
     }
 
     void UpdateHighScoreText()
