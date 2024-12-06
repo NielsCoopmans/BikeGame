@@ -43,7 +43,8 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        if (GameStateManager.currentLevel == 2)
+
+            if (GameStateManager.currentLevel == 2)
         {
             playerTeleporter.Teleport();
             enemyTeleporter.Teleport();
@@ -117,6 +118,13 @@ public class EnemyController : MonoBehaviour
         isCutsceneTriggered = true;
         GameStateManager.currentLevel = 2;
         SceneManager.LoadScene("cutsceneCuffing");
+    }
+    public void TriggerGameOverCutscene()
+    {
+        bicycleVehicle.OnApplicationQuit();
+        isCutsceneTriggered = true;
+        GameStateManager.currentLevel = 1;
+        SceneManager.LoadScene("cutsceneGettingAway");
     }
 
     public void TriggerVictoryCutscene()
