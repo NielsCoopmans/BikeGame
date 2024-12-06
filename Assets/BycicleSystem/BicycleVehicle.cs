@@ -9,7 +9,7 @@ using TMPro;
 
 public class BicycleVehicle : MonoBehaviour
 {
-    public string portName = "/dev/tty.usbmodem11201"	;
+    public string portName = "COM3"	;
     public int baudRate = 115200;
     public int readTimeout = 1000;
     private SerialPort serialPort;

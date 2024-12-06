@@ -118,6 +118,13 @@ public class EnemyController : MonoBehaviour
         GameStateManager.currentLevel = 2;
         SceneManager.LoadScene("cutsceneCuffing");
     }
+    public void TriggerGameOverCutscene()
+    {
+        bicycleVehicle.OnApplicationQuit();
+        isCutsceneTriggered = true;
+        GameStateManager.currentLevel = 1;
+        SceneManager.LoadScene("cutsceneGettingAway");
+    }
 
     public void TriggerVictoryCutscene()
     {

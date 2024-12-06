@@ -92,7 +92,7 @@ public class CountDown : MonoBehaviour
         if (MissionTimeCounter != null){
             MissionTimeCounter.text = "Time's Up!";
             GameOver.text = "GAME OVER";
-            enemyController.TriggerCutscene();  
+            enemyController.TriggerGameOverCutscene();  
             }
 
     }
