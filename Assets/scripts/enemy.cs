@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour
     private Rigidbody rb;
 
     public float slowFactor = 0.5f;         // Factor by which enemy slows down when far
-    public float slowDistance = 10f;       // Distance at which the enemy starts slowing
+    public float slowDistance = 30f;       // Distance at which the enemy starts slowing
 
     private float timeNearPlayer = 0f;
     public bool NearPlayer = false;
