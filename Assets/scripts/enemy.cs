@@ -126,7 +126,7 @@ public class EnemyController : MonoBehaviour
         bicycleVehicle.OnApplicationQuit();
         isCutsceneTriggered = true;
         GameStateManager.currentLevel = 2;
-        SceneManager.LoadScene("cutsceneCuffing");
+        SceneManager.LoadScene(3);
 
         
         // Start the coroutine to wait and then change scenes
@@ -136,7 +136,7 @@ public class EnemyController : MonoBehaviour
     public void TriggerVictoryCutscene()
     {
         isCutsceneTriggered = true;
-        SceneManager.LoadScene("CutsceneGettingAway");
+        SceneManager.LoadScene(4);
     }
 
     //Take damage if the enemy gets hit by bullets
