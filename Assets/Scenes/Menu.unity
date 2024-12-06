@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed83060bdb9841458304e4353a26ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkipTutorial: 0
+  SkipTutorial: 1
 --- !u!4 &64590796
 Transform:
   m_ObjectHideFlags: 0
@@ -1225,7 +1225,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1312598888}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: PlayGame
+        m_MethodName: PlayTutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

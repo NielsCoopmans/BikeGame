@@ -5235,7 +5235,7 @@ GameObject:
   - component: {fileID: 501281082}
   - component: {fileID: 501281081}
   - component: {fileID: 501281080}
-  - component: {fileID: 501281079}
+  - component: {fileID: 501281083}
   m_Layer: 0
   m_Name: Timeline
   m_TagString: Untagged
@@ -5243,18 +5243,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &501281079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 501281078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39d03845b7290e74a92117129b1aaa58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &501281080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5273,8 +5261,8 @@ MonoBehaviour:
     m_Events:
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 501281079}
-          m_TargetAssemblyTypeName: CutsceneController, Assembly-CSharp
+        - m_Target: {fileID: 501281083}
+          m_TargetAssemblyTypeName: cutsceneGettingAwayController, Assembly-CSharp
           m_MethodName: closeCutscene
           m_Mode: 1
           m_Arguments:
@@ -5331,6 +5319,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &501281083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501281078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac63a648369e2747a18a516bd3dc12e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &511288183
 PrefabInstance:
   m_ObjectHideFlags: 0
