@@ -6,7 +6,7 @@ using TMPro;
 public class CountDown : MonoBehaviour
 {
     public int countdownTime = 3; 
-    public int missionTime = 60;
+    public int missionTime;
     public TextMeshProUGUI countdownDisplay; 
     public TextMeshProUGUI countdownMessage; 
     public TextMeshProUGUI MissionTimeDisplay; 
