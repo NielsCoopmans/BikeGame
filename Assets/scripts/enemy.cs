@@ -44,7 +44,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
 
-            if (GameStateManager.currentLevel == 2)
+        if (GameStateManager.currentLevel == 2)
         {
             playerTeleporter.Teleport();
             enemyTeleporter.Teleport();
