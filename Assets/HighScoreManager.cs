@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 public class HighScoreManager : MonoBehaviour
 {
-    //[SerializeField] TextMeshProUGUI HighScoreText;
+    [SerializeField] TextMeshProUGUI HighScoreText;
     [SerializeField] TextMeshProUGUI ScoreText;
     static int score;
 
@@ -27,6 +27,7 @@ public class HighScoreManager : MonoBehaviour
             {
                 UnityEngine.Debug.Log("found countdownscript");
                 UpdateScoreText();
+                UpdateHighScoreText();
             }
         }
     }
@@ -34,6 +35,7 @@ public class HighScoreManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //UpdateHighScoreText();
         UpdateScoreText();
         if (Input.GetKeyUp(KeyCode.H))
         {
@@ -49,8 +51,41 @@ public class HighScoreManager : MonoBehaviour
         {
             int missionTime = countDownScript.getMissionTime();
             UnityEngine.Debug.Log("Mission Time: " + missionTime);
-            score += missionTime;
+            score += missionTime*2;
         }
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        PlayerPrefs.SetInt("score", score);
+    }
+
+    public void hitCar()
+    {
+        UnityEngine.Debug.Log("hitCar called");
+        GameObject CanvasGameObject = GameObject.Find("Canvas");
+        score += 10;
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        PlayerPrefs.SetInt("score", score);
+    }
+
+    public void hitPedestrian()
+    {
+        UnityEngine.Debug.Log("hitPedestrian called");
+        GameObject CanvasGameObject = GameObject.Find("Canvas");
+        score -= 20;
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        PlayerPrefs.SetInt("score", score);
+    }
+
+    public void hitEnemy()
+    {
+        UnityEngine.Debug.Log("hitEnemy called");
+        GameObject CanvasGameObject = GameObject.Find("Canvas");
+        score += 20;
         CheckHighScore();
         UpdateScoreText();
         UpdateHighScoreText();
@@ -81,6 +116,19 @@ public class HighScoreManager : MonoBehaviour
                 return;
             }
         }
+        if (HighScoreText == null)
+        {
+            GameObject HighScoreTextObject = GameObject.Find("HighScoreText");
+            if (HighScoreTextObject != null)
+            {
+                HighScoreText = HighScoreTextObject.GetComponent<TextMeshProUGUI>();
+            }
+            else
+            {
+                UnityEngine.Debug.Log("HighScoreText GameObject not found in the scene!");
+                return;
+            }
+        }
 
         // Update score text
         if (score > PlayerPrefs.GetInt("score", 0))
@@ -97,6 +145,6 @@ public class HighScoreManager : MonoBehaviour
 
     void UpdateHighScoreText()
     {
-        //HighScoreText.text = $"HighScore: {PlayerPrefs.GetInt("HighScore", 0)}";
+        HighScoreText.text = $"HighScore: {PlayerPrefs.GetInt("HighScore", 0)}";
     }
 }
