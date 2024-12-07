@@ -80,7 +80,8 @@ public class EnemyController : MonoBehaviour
             else
             {
                 NearPlayer = false;
-                TimeNearText.text = "Come Closer to Enemy";
+                timeNearPlayer = 0f;
+    
             }
         }
     }
@@ -91,11 +92,11 @@ public class EnemyController : MonoBehaviour
 
         if (distanceToPlayer > slowDistance)
         {
-            moveSpeed = originalMoveSpeed * slowFactor; // Slow down when far
+            moveSpeed = originalMoveSpeed * slowFactor; 
         }
         else
         {
-            moveSpeed = originalMoveSpeed; // Restore original speed when close
+            moveSpeed = originalMoveSpeed; 
         }
 
         if (navigationController != null)
@@ -115,7 +116,7 @@ public class EnemyController : MonoBehaviour
         bicycleVehicle.OnApplicationQuit();
         isCutsceneTriggered = true;
         GameStateManager.currentLevel = 2;
-        SceneManager.LoadScene("cutsceneCuffing");
+        SceneManager.LoadScene(3);
     }
     public void TriggerGameOverCutscene()
     {
@@ -128,7 +129,7 @@ public class EnemyController : MonoBehaviour
     public void TriggerVictoryCutscene()
     {
         isCutsceneTriggered = true;
-        SceneManager.LoadScene("CutsceneGettingAway");
+        SceneManager.LoadScene(4);
     }
 
     private void OnCollisionEnter(Collision collision)

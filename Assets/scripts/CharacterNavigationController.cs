@@ -17,13 +17,23 @@ public class CharacterNavigationController : MonoBehaviour
     private Vector3 velocity;
     private bool isSped = false;
     private float originalMovementSpeed;
-    
 
+
+    private HighScoreManager highScoreManager;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
+        if (highScoreManagerObject != null)
+        {
+            highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
+            if (highScoreManager != null)
+            {
+                UnityEngine.Debug.Log("found higscoremanager in bicycleVehicle");
+            }
+        }
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -79,6 +89,7 @@ public class CharacterNavigationController : MonoBehaviour
     {
         if (other.CompareTag("bullet"))
         {
+            highScoreManager.hitPedestrian();
             Instantiate(BloodSplash, transform.position, transform.rotation);
             audioSource.PlayOneShot(clip);
             StartCoroutine(Collision(other));

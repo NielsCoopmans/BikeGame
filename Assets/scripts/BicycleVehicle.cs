@@ -10,8 +10,7 @@ using Debug = UnityEngine.Debug;
 
 public class BicycleVehicle : MonoBehaviour
 {
-    [Header("Serial Handling")]
-    public string portName = "COM3"	;
+    public string portName = "/dev/tty.usbmodem11101"	;
     public int baudRate = 115200;
     public int readTimeout = 1000;
     public int buttonPressed = 0;
@@ -30,6 +29,7 @@ public class BicycleVehicle : MonoBehaviour
     public TextMeshProUGUI InfoGun; 
     public TextMeshProUGUI InfoButton; 
     public TextMeshProUGUI TimeLeft;
+    public TextMeshProUGUI NearInfo;
 
     private readonly object lockObject = new object();
     private bool arduinoData;
@@ -61,28 +61,28 @@ public class BicycleVehicle : MonoBehaviour
     public bool rearGrounded;
 
     [Header("Collision Handling")]
-    public float rayDistance = 2f; // Raycast distance for collision detection
-    public LayerMask collisionLayer; // Layer for detecting collisions
-    public float backwardSpeed = 5f; // Speed to move backward upon collision
-    public float backwardDuration = 0.2f; // Duration for moving backward
+    public float rayDistance = 2f; 
+    public LayerMask collisionLayer; 
+    public float backwardSpeed = 2f; 
+    public float backwardDuration = 0.01f; 
     private bool isColliding = false;
     private float collisionTimer = 0f;
 
     [Header("Camera Shake")]
-    public Camera mainCamera; // Main camera for shake effect
+    public Camera mainCamera; 
     public float shakeDuration = 0.5f;
     public float shakeMagnitude = 0.2f;
     private Vector3 originalCameraPosition;
 
     [Header("Sound Effects")]
-    public AudioSource audioSource; // Audio source for sound effects
+    public AudioSource audioSource; 
     public AudioClip collisionSound;
 
     [Header("Camera Settings")]
-    public Transform bikeTransform; // The bike's transform to follow
-    public Vector3 cameraOffset = new Vector3(0f, 2f, -5f); // Offset from the bike
-    public float smoothFollowSpeed = 0.1f; // Speed of smooth following
-    private Vector3 smoothDampVelocity; // For smooth damp calculations
+    public Transform bikeTransform; 
+    public Vector3 cameraOffset = new Vector3(0f, 2f, -5f); 
+    public float smoothFollowSpeed = 0.1f; 
+    private Vector3 smoothDampVelocity; 
 
     public EnemyController enemyController;
     public EnemyNavigationController navigationController;
@@ -92,9 +92,9 @@ public class BicycleVehicle : MonoBehaviour
     public Transform tutorialStartPosition;
     public CountDown countdown;
 
-    public Transform rayOriginObject;  // Reference to the empty GameObject that will act as the ray origin
-    public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); // Size of the box (width, height, depth)
-    public Color boxColor = Color.red; // Color for the box visualization
+    public Transform rayOriginObject; 
+    public Vector3 boxSize = new Vector3(0.1f, 0.8f, 0.1f); 
+    public Color boxColor = Color.red; 
 
     private HighScoreManager highScoreManager;
 
@@ -102,6 +102,8 @@ public class BicycleVehicle : MonoBehaviour
     void Start()
     {
         GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
+        NearInfo.text = "Leave The Garage!";
+        
         if (highScoreManagerObject != null)
         {
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
@@ -112,21 +114,24 @@ public class BicycleVehicle : MonoBehaviour
         }
 
         baseSpeed = movementSpeed;
+        if(GameStateManager.currentLevel == 1){
         if (GameManager.Instance != null)
         {
             UnityEngine.Debug.Log("GameManager.instance is: " + GameManager.Instance.SkipTutorial);
             UnityEngine.Debug.Log("PlayStartPosition is: " + playStartPosition);
             UnityEngine.Debug.Log("tutorialStartPosition is: " + tutorialStartPosition);
 
-            if (GameManager.Instance.SkipTutorial){
-                UnityEngine.Debug.Log("skip tutorial instance, play position is: " + playStartPosition.position);
-                bikeTransform.position = playStartPosition.position;
-            }
-            else
-            {
-                UnityEngine.Debug.Log("tutorial instance, tutorial position is: " + tutorialStartPosition.position);
-                bikeTransform.position = tutorialStartPosition.position;
-            }
+            
+                if (GameManager.Instance.SkipTutorial){
+                    UnityEngine.Debug.Log("skip tutorial instance, play position is: " + playStartPosition.position);
+                    bikeTransform.position = playStartPosition.position;
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("tutorial instance, tutorial position is: " + tutorialStartPosition.position);
+                    bikeTransform.position = tutorialStartPosition.position;
+                }
+        
         }
         else
         {
@@ -353,6 +358,7 @@ public class BicycleVehicle : MonoBehaviour
                     if(!calledCountdown){
                       countdown.startMissionTimeCountdown();
                       calledCountdown = true;
+                        NearInfo.text = "Get closer to the enemy!";
                       InfoButton.enabled = false;
                       InfoGun.enabled = false;
                       TimeLeft.enabled = true;
