@@ -80,7 +80,6 @@ public class EnemyController : MonoBehaviour
             else
             {
                 NearPlayer = false;
-                timeNearPlayer = 0f;
     
             }
         }

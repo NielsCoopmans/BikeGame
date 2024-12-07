@@ -103,7 +103,7 @@ public class BicycleVehicle : MonoBehaviour
     {
         GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
         NearInfo.text = "Leave The Garage!";
-        
+
         if (highScoreManagerObject != null)
         {
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
@@ -114,15 +114,17 @@ public class BicycleVehicle : MonoBehaviour
         }
 
         baseSpeed = movementSpeed;
-        if(GameStateManager.currentLevel == 1){
-        if (GameManager.Instance != null)
+        if (GameStateManager.currentLevel == 1)
         {
-            UnityEngine.Debug.Log("GameManager.instance is: " + GameManager.Instance.SkipTutorial);
-            UnityEngine.Debug.Log("PlayStartPosition is: " + playStartPosition);
-            UnityEngine.Debug.Log("tutorialStartPosition is: " + tutorialStartPosition);
+            if (GameManager.Instance != null)
+            {
+                UnityEngine.Debug.Log("GameManager.instance is: " + GameManager.Instance.SkipTutorial);
+                UnityEngine.Debug.Log("PlayStartPosition is: " + playStartPosition);
+                UnityEngine.Debug.Log("tutorialStartPosition is: " + tutorialStartPosition);
 
-            
-                if (GameManager.Instance.SkipTutorial){
+
+                if (GameManager.Instance.SkipTutorial)
+                {
                     UnityEngine.Debug.Log("skip tutorial instance, play position is: " + playStartPosition.position);
                     bikeTransform.position = playStartPosition.position;
                 }
@@ -131,19 +133,20 @@ public class BicycleVehicle : MonoBehaviour
                     UnityEngine.Debug.Log("tutorial instance, tutorial position is: " + tutorialStartPosition.position);
                     bikeTransform.position = tutorialStartPosition.position;
                 }
-        
-        }
-        else
-        {
-            UnityEngine.Debug.LogWarning("GameManager.Instance is null! Defaulting to tutorialStartPosition.");
-            bikeTransform.position = tutorialStartPosition.position;
-        }
-        if (enemyController == null)
-            enemyController = GetComponent<EnemyController>();
-        if (navigationController == null)
-            navigationController = GetComponent<EnemyNavigationController>();
 
-        serialManager = new SerialManager(portName, baudRate, readTimeout);
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("GameManager.Instance is null! Defaulting to tutorialStartPosition.");
+                bikeTransform.position = tutorialStartPosition.position;
+            }
+            if (enemyController == null)
+                enemyController = GetComponent<EnemyController>();
+            if (navigationController == null)
+                navigationController = GetComponent<EnemyNavigationController>();
+
+            serialManager = new SerialManager(portName, baudRate, readTimeout);
+        }
     }
 
     void Update()
@@ -156,7 +159,7 @@ public class BicycleVehicle : MonoBehaviour
             UpdateWheels();
             UpdateHandle();
         }
-        else if (isCountdownComplete) 
+        else if (isCountdownComplete)
         {
             HandleEngine();
             HandleSteering();
