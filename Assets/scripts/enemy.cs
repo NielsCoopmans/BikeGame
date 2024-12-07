@@ -28,7 +28,6 @@ public class EnemyController : MonoBehaviour
     public float slowFactor = 0.5f;         // Factor by which enemy slows down when far
     public float slowDistance = 30f;       // Distance at which the enemy starts slowing
 
-    private float timeNearPlayer = 0f;
     public bool NearPlayer = false;
     public float requiredTimeToTriggerCutscene = 4f;
 
@@ -81,7 +80,6 @@ public class EnemyController : MonoBehaviour
             else
             {
                 NearPlayer = false;
-                timeNearPlayer = 0f;
                 TimeNearText.text = "Come Closer to Enemy";
             }
         }
