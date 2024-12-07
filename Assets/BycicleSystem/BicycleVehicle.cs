@@ -70,28 +70,28 @@ public class BicycleVehicle : MonoBehaviour
     private bool usingKeyboardInput = false;
 
     [Header("Collision Handling")]
-    public float rayDistance = 2f; // Raycast distance for collision detection
-    public LayerMask collisionLayer; // Layer for detecting collisions
-    public float backwardSpeed = 2f; // Speed to move backward upon collision
-    public float backwardDuration = 0.01f; // Duration for moving backward
+    public float rayDistance = 2f; 
+    public LayerMask collisionLayer; 
+    public float backwardSpeed = 2f; 
+    public float backwardDuration = 0.01f; 
     private bool isColliding = false;
     private float collisionTimer = 0f;
 
     [Header("Camera Shake")]
-    public Camera mainCamera; // Main camera for shake effect
+    public Camera mainCamera; 
     public float shakeDuration = 0.5f;
     public float shakeMagnitude = 0.2f;
     private Vector3 originalCameraPosition;
 
     [Header("Sound Effects")]
-    public AudioSource audioSource; // Audio source for sound effects
+    public AudioSource audioSource; 
     public AudioClip collisionSound;
 
     [Header("Camera Settings")]
-    public Transform bikeTransform; // The bike's transform to follow
-    public Vector3 cameraOffset = new Vector3(0f, 2f, -5f); // Offset from the bike
-    public float smoothFollowSpeed = 0.1f; // Speed of smooth following
-    private Vector3 smoothDampVelocity; // For smooth damp calculations
+    public Transform bikeTransform; 
+    public Vector3 cameraOffset = new Vector3(0f, 2f, -5f); 
+    public float smoothFollowSpeed = 0.1f; 
+    private Vector3 smoothDampVelocity; 
 
     public EnemyController enemyController;
     public EnemyNavigationController navigationController;

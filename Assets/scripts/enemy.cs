@@ -93,11 +93,11 @@ public class EnemyController : MonoBehaviour
 
         if (distanceToPlayer > slowDistance)
         {
-            moveSpeed = originalMoveSpeed * slowFactor; // Slow down when far
+            moveSpeed = originalMoveSpeed * slowFactor; 
         }
         else
         {
-            moveSpeed = originalMoveSpeed; // Restore original speed when close
+            moveSpeed = originalMoveSpeed; 
         }
 
         if (navigationController != null)
