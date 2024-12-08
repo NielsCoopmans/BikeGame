@@ -1777,6 +1777,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1981389168205530686, guid: cd2f14b089757a8418d7c7d61d907874, type: 3}
+      propertyPath: m_TagString
+      value: pedestrian
+      objectReference: {fileID: 0}
     - target: {fileID: 5103900588920211198, guid: cd2f14b089757a8418d7c7d61d907874, type: 3}
       propertyPath: m_Avatar
       value: 

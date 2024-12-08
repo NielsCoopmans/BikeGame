@@ -89,7 +89,7 @@ public class CharacterNavigationController : MonoBehaviour
     {
         if (other.CompareTag("bullet"))
         {
-            highScoreManager.hitPedestrian();
+            highScoreManager.hitPedestrian(other.transform.position);
             Instantiate(BloodSplash, transform.position, transform.rotation);
             audioSource.PlayOneShot(clip);
             StartCoroutine(Collision(other));

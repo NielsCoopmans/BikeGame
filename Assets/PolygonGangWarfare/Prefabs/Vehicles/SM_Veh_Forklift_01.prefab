@@ -344,6 +344,7 @@ GameObject:
   - component: {fileID: 33970614617363674}
   - component: {fileID: 23840839377070862}
   - component: {fileID: 64295994599427418}
+  - component: {fileID: 5653883377122647070}
   m_Layer: 0
   m_Name: SM_Veh_Forklift_01
   m_TagString: car
@@ -439,11 +440,32 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43681544155075722, guid: 8f140bfddcafa6a4f88df9c52bf0ee0c, type: 2}
+--- !u!65 &5653883377122647070
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360502873245160}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1014436, y: 2.4835327, z: 2.1616626}
+  m_Center: {x: 0, y: 1.3133122, z: 0.08137995}
 --- !u!1 &1547348278641326
 GameObject:
   m_ObjectHideFlags: 0

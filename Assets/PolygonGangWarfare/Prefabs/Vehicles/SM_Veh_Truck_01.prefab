@@ -532,6 +532,7 @@ GameObject:
   - component: {fileID: 33563324769598538}
   - component: {fileID: 23713136569973692}
   - component: {fileID: 64732660485109138}
+  - component: {fileID: 8408946337043553562}
   m_Layer: 0
   m_Name: SM_Veh_Truck_01
   m_TagString: car
@@ -632,11 +633,32 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43036450424502628, guid: bf4a8bdd171a3d545bbbba3a59de397c, type: 2}
+--- !u!65 &8408946337043553562
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407159569313194}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.7483556, y: 2.4441078, z: 7.64297}
+  m_Center: {x: 0, y: 1.5083729, z: 0.0100649595}
 --- !u!1 &1433388929949566
 GameObject:
   m_ObjectHideFlags: 0

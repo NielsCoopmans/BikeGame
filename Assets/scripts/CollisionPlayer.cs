@@ -46,7 +46,7 @@ public class CollisionPlayer : MonoBehaviour
 
     IEnumerator Collision(Collider player)
     {
-        highScoreManager.hitPedestrian();
+        highScoreManager.hitPedestrian(player.transform.position);
 
         UnityEngine.Debug.Log("pedestrian collision player");
         BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();

@@ -47,12 +47,12 @@ public class Bullet : MonoBehaviour
             return;
         }
         else if(collision.gameObject.CompareTag("enemy")) {
-            highScoreManager.hitEnemy();
+            highScoreManager.hitEnemy(collision.contacts[0].point);
             Destroy(gameObject);
             return;
         }
         else if (collision.gameObject.CompareTag("car")){
-            highScoreManager.hitCar();
+            highScoreManager.hitCar(collision.contacts[0].point);
             if (VFX_EasyExplosion_car != null)
             {
                 

@@ -118,7 +118,7 @@ public class BicycleVehicle : MonoBehaviour
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
             if (highScoreManager != null)
             {
-                UnityEngine.Debug.Log("found higscoremanager in bicycleVehicle");
+                UnityEngine.Debug.Log("found highscoremanager in bicycleVehicle");
             }
         }
 

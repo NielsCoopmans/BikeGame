@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class PedestrianSpawner : MonoBehaviour
@@ -34,8 +35,14 @@ public class PedestrianSpawner : MonoBehaviour
             {
                 controller.movementSpeed = UnityEngine.Random.Range(minSpeed, maxSpeed); // Set random speed
             }
+            obj.tag = "pedestrian";
+            //UnityEngine.Debug.Log("Spawned pedestrian with tag: " + obj.tag);
 
             yield return new WaitForEndOfFrame();
+
+            //yield return new WaitForSeconds(0.1f); // Small delay to check if tag changes
+
+            //UnityEngine.Debug.Log("Pedestrian tag after delay: " + obj.tag);
 
             count++;
         }

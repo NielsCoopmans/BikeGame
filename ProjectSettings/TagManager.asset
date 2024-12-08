@@ -15,6 +15,7 @@ TagManager:
   - car
   - AmmoPowerup
   - explodable
+  - pedestrian
   layers:
   - Default
   - TransparentFX
