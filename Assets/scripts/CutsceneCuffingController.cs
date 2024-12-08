@@ -15,7 +15,13 @@ public class CutsceneController : MonoBehaviour
     void ForceCloseCutscene()
     {
         Debug.Log("CutsceneCuffing unloaded. Returning to main menu.");
-        SceneManager.LoadScene("BikeGame 2");
+        if(GameStateManager.currentLevel == 2){
+            SceneManager.LoadScene("Menu");
+        }
+        else{
+            GameStateManager.currentLevel = 2;
+            SceneManager.LoadScene("BikeGame 2");
+        }
     }
 
 

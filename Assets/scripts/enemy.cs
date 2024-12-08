@@ -28,7 +28,6 @@ public class EnemyController : MonoBehaviour
     public float slowFactor = 0.5f;         // Factor by which enemy slows down when far
     public float slowDistance = 30f;       // Distance at which the enemy starts slowing
 
-    private float timeNearPlayer = 0f;
     public bool NearPlayer = false;
     public float requiredTimeToTriggerCutscene = 4f;
 
@@ -81,7 +80,6 @@ public class EnemyController : MonoBehaviour
             else
             {
                 NearPlayer = false;
-                timeNearPlayer = 0f;
     
             }
         }
@@ -93,11 +91,11 @@ public class EnemyController : MonoBehaviour
 
         if (distanceToPlayer > slowDistance)
         {
-            moveSpeed = originalMoveSpeed * slowFactor; // Slow down when far
+            moveSpeed = originalMoveSpeed * slowFactor; 
         }
         else
         {
-            moveSpeed = originalMoveSpeed; // Restore original speed when close
+            moveSpeed = originalMoveSpeed; 
         }
 
         if (navigationController != null)
@@ -116,7 +114,7 @@ public class EnemyController : MonoBehaviour
     {
         bicycleVehicle.OnApplicationQuit();
         isCutsceneTriggered = true;
-        GameStateManager.currentLevel = 2;
+        
         SceneManager.LoadScene(3);
     }
     public void TriggerGameOverCutscene()

@@ -7,7 +7,7 @@ using UnityEngine.Playables;
 public class cutsceneIntroController : MonoBehaviour
 {
     public PlayableDirector playableDirector;
-    public float playbackSpeed = 1.5f; // 2x speed
+    public float playbackSpeed = 1f; // 2x speed
 
     // Start is called before the first frame update
     void Start()
