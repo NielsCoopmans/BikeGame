@@ -6,10 +6,21 @@ using UnityEngine.Playables;
 
 public class cutsceneGettingAwayController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public AudioSource audioSource;
+
     void Start()
     {
-        Invoke("ForceCloseCutscene", 100f);
+        
+        Invoke("ForceCloseCutscene", 20f);
+        
+        // Start playing the audio after 3 seconds
+        StartCoroutine(PlayAudioAfterDelay(3f));
+    }
+
+    IEnumerator PlayAudioAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        audioSource.Play();
     }
 
     void ForceCloseCutscene()
@@ -24,7 +35,8 @@ public class cutsceneGettingAwayController : MonoBehaviour
         
     }
 
-    public void closeCutscene(){
+    public void closeCutscene()
+    {
         Debug.Log("Signal received: Closing CutsceneGettingAway");
         SceneManager.UnloadSceneAsync(4);
     }

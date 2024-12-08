@@ -250,11 +250,11 @@ public class BicycleVehicle : MonoBehaviour
     {
         if (arduinoData)
         {
-            currentSteeringAngle = steeringInput * 1.25f;
+            currentSteeringAngle = steeringInput;
 
             targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
 
-            transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime);
+            transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime * 1.60f);
         }
         else
         {
@@ -273,7 +273,7 @@ public class BicycleVehicle : MonoBehaviour
 
             targetlayingAngle = maxlayingAngle * -horizontalInput / maxSteeringAngle;
 
-            transform.Rotate(currentSteeringAngle * Time.deltaTime * Vector3.up);
+            transform.Rotate(currentSteeringAngle * Time.deltaTime * Vector3.up * 1.60f);
         }
     }
     private void LayOnTurn()
