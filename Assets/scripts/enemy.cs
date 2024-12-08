@@ -114,7 +114,7 @@ public class EnemyController : MonoBehaviour
     {
         bicycleVehicle.OnApplicationQuit();
         isCutsceneTriggered = true;
-        GameStateManager.currentLevel = 2;
+        
         SceneManager.LoadScene(3);
     }
     public void TriggerGameOverCutscene()

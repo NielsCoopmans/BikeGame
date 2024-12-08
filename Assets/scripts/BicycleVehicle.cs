@@ -144,9 +144,11 @@ public class BicycleVehicle : MonoBehaviour
                 enemyController = GetComponent<EnemyController>();
             if (navigationController == null)
                 navigationController = GetComponent<EnemyNavigationController>();
-
+            serialManager = new SerialManager(portName, baudRate, readTimeout);
+        }else{
             serialManager = new SerialManager(portName, baudRate, readTimeout);
         }
+        
     }
 
     void Update()
@@ -273,7 +275,7 @@ public class BicycleVehicle : MonoBehaviour
 
             targetlayingAngle = maxlayingAngle * -horizontalInput / maxSteeringAngle;
 
-            transform.Rotate(currentSteeringAngle * Time.deltaTime * Vector3.up * 1.60f);
+            transform.Rotate(currentSteeringAngle * Time.deltaTime * Vector3.up * 1.80f);
         }
     }
     private void LayOnTurn()

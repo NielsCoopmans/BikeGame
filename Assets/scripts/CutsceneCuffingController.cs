@@ -19,6 +19,7 @@ public class CutsceneController : MonoBehaviour
             SceneManager.LoadScene("Menu");
         }
         else{
+            GameStateManager.currentLevel = 2;
             SceneManager.LoadScene("BikeGame 2");
         }
     }
