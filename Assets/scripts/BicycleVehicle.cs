@@ -415,7 +415,7 @@ public class BicycleVehicle : MonoBehaviour
                 audioSource.PlayOneShot(bushCollisionSound);
             }
         }
-        if (hitCollider.CompareTag("Pole"))
+        else if (hitCollider.CompareTag("Pole"))
         {
             if (bushCollisionSound != null)
             {
