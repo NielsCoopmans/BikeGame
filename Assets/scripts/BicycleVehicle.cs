@@ -77,6 +77,7 @@ public class BicycleVehicle : MonoBehaviour
     [Header("Sound Effects")]
     public AudioSource audioSource; 
     public AudioClip collisionSound;
+    public AudioClip bushCollisionSound;
 
     [Header("Camera Settings")]
     public Transform bikeTransform; 
@@ -335,53 +336,53 @@ public class BicycleVehicle : MonoBehaviour
     public bool calledCountdown = false;
 
     private void CheckForCollision()
+{
+    Vector3 rayOrigin = rayOriginObject.position;
+    Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
+
+    if (hitColliders.Length > 0 && !isColliding)
     {
-        Vector3 rayOrigin = rayOriginObject.position;
-        Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
-
-        if (hitColliders.Length > 0 && !isColliding)
+        foreach (Collider hitCollider in hitColliders)
         {
-            foreach (Collider hitCollider in hitColliders)
+            if (hitCollider.CompareTag("enemy"))
             {
-                if (hitCollider.CompareTag("enemy")) 
-                {
-                    break; 
-                }
-                else if(hitCollider.CompareTag("portal"))
-                {
-                    UnityEngine.Debug.Log("Portal activated for " + hitCollider.gameObject.name);
-                    
-                    RampPortal portalScript = hitCollider.GetComponent<RampPortal>();
-                    if (portalScript != null)
-                    {
-                        portalScript.ActivatePortal();              
-                    }
-                }
-                else if (hitCollider.CompareTag("startEnemy"))
-                {
-                    navigationController.StartMoving();
-                    if(!calledCountdown){
-                      countdown.startMissionTimeCountdown();
-                      calledCountdown = true;
-                        NearInfo.text = "Get closer to the enemy!";
-                      InfoButton.enabled = false;
-                      InfoGun.enabled = false;
-                      TimeLeft.enabled = true;
-                    }
-                }
-                else
-                {
-                    collisionTimer = backwardDuration;
-                    isColliding = true;
+                break; 
+            }
+            else if (hitCollider.CompareTag("portal"))
+            {
+                UnityEngine.Debug.Log("Portal activated for " + hitCollider.gameObject.name);
 
-                    PlayCollisionSound();
-                    StartCoroutine(CameraShake());
-                    break;
+                RampPortal portalScript = hitCollider.GetComponent<RampPortal>();
+                if (portalScript != null)
+                {
+                    portalScript.ActivatePortal();
                 }
+            }
+            else if (hitCollider.CompareTag("startEnemy"))
+            {
+                navigationController.StartMoving();
+                if (!calledCountdown)
+                {
+                    countdown.startMissionTimeCountdown();
+                    calledCountdown = true;
+                    NearInfo.text = "Get closer to the enemy!";
+                    InfoButton.enabled = false;
+                    InfoGun.enabled = false;
+                    TimeLeft.enabled = true;
+                }
+            }
+            else
+            {
+                collisionTimer = backwardDuration;
+                isColliding = true;
+
+                PlayCollisionSound(hitCollider); 
+                StartCoroutine(CameraShake());
+                break;
             }
         }
     }
-
+}
 
     private void OnDrawGizmos()
     {
@@ -402,12 +403,25 @@ public class BicycleVehicle : MonoBehaviour
             isColliding = false;
         }
     }
-    private void PlayCollisionSound()
+    private void PlayCollisionSound(Collider hitCollider)
     {
-        if (audioSource != null && collisionSound != null)
+    if (audioSource != null)
+    {
+        if (hitCollider.CompareTag("Bush"))
         {
-            audioSource.PlayOneShot(collisionSound);
+            if (bushCollisionSound != null)
+            {
+                audioSource.PlayOneShot(bushCollisionSound);
+            }
         }
+        else
+        {
+            if (collisionSound != null)
+            {
+                audioSource.PlayOneShot(collisionSound);
+            }
+        }
+    }
     }
     private IEnumerator CameraShake()
     {
