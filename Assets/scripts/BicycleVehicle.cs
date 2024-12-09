@@ -78,6 +78,7 @@ public class BicycleVehicle : MonoBehaviour
     public AudioSource audioSource; 
     public AudioClip collisionSound;
     public AudioClip bushCollisionSound;
+    public AudioClip poleCollisionSound;
 
     [Header("Camera Settings")]
     public Transform bikeTransform; 
@@ -412,6 +413,13 @@ public class BicycleVehicle : MonoBehaviour
             if (bushCollisionSound != null)
             {
                 audioSource.PlayOneShot(bushCollisionSound);
+            }
+        }
+        if (hitCollider.CompareTag("Pole"))
+        {
+            if (bushCollisionSound != null)
+            {
+                audioSource.PlayOneShot(poleCollisionSound);
             }
         }
         else
