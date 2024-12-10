@@ -79,6 +79,7 @@ public class BicycleVehicle : MonoBehaviour
     public AudioClip collisionSound;
     public AudioClip bushCollisionSound;
     public AudioClip poleCollisionSound;
+    public AudioClip carAlarmSound;
 
     [Header("Camera Settings")]
     public Transform bikeTransform; 
@@ -427,6 +428,17 @@ public class BicycleVehicle : MonoBehaviour
             if (collisionSound != null)
             {
                 audioSource.PlayOneShot(collisionSound);
+                 if (hitCollider.CompareTag("car")){
+                    AudioSource tempAudioSource = hitCollider.gameObject.AddComponent<AudioSource>();
+                    tempAudioSource.spatialBlend = 1.0f;          
+                    tempAudioSource.rolloffMode = AudioRolloffMode.Logarithmic;
+                    tempAudioSource.minDistance = 1f;            
+                    tempAudioSource.maxDistance = 50f;           
+                    tempAudioSource.playOnAwake = false;         
+                    tempAudioSource.PlayOneShot(carAlarmSound);
+                    tempAudioSource.Play();
+                    
+                }
             }
         }
     }
