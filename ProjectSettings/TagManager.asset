@@ -16,6 +16,8 @@ TagManager:
   - AmmoPowerup
   - explodable
   - pedestrian
+  - Bush
+  - Pole
   layers:
   - Default
   - TransparentFX

@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float lifetime = 5f;          // Time before the bullet is destroyed
-    public float maxSize = 5f;           // Maximum size of the bullet
-    public float expansionRate = 2f;     // Rate at which the bullet grows over time
+    public float lifetime = 5f;          
+    public float maxSize = 5f;           
+    public float expansionRate = 2f;     
     public GameObject VFX_EasyExplosion;
     public GameObject VFX_EasyExplosion_car;
     public GameObject VFX_EasyExplosion_pedestrian;
@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
                 UnityEngine.Debug.Log("found higscoremanager in bicycleVehicle");
             }
         }
-        // Destroy the bullet after a certain time to avoid clutter in the scene
+       
         Destroy(gameObject, lifetime);
     }
 
@@ -51,7 +51,7 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        else if (collision.gameObject.CompareTag("car")){
+        else if (collision.gameObject.CompareTag("car") || collision.gameObject.CompareTag("explodable")){
             highScoreManager.hitCar(collision.contacts[0].point);
             if (VFX_EasyExplosion_car != null)
             {
