@@ -52,8 +52,6 @@ public class CollisionPlayer : MonoBehaviour
         BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
 
         float baseSpeed = bicycle.getBaseSpeed();
-        //float baseSpeed = 10f; 
-        float currentSpeed = bicycle.movementSpeed;
         float penalty = 5f;
 
         GameObject splash = Instantiate(BigBloodSplash, transform.position, transform.rotation);
@@ -68,7 +66,6 @@ public class CollisionPlayer : MonoBehaviour
         
         float duration = 2f; 
         
-        //bicycle.movementSpeed = currentSpeed - penalty < 0 ? 0 : currentSpeed - penalty;
         bicycle.movementSpeed = penalty;
         
         yield return new WaitForSeconds(duration);

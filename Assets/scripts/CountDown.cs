@@ -14,19 +14,26 @@ public class CountDown : MonoBehaviour
 
     public TextMeshProUGUI MissionTimeCounter; 
     public TextMeshProUGUI GameOver; 
-    public EnemyController enemyController;  
+    public EnemyController enemyController;
+
+    public Color normalColor = Color.white;
+    public Color warningColor = Color.red;
+    public AudioSource warningSound;
+
+    private bool warningTriggered = false;
 
     public AudioSource Sound;
     public AudioClip go;
     public AudioClip count;
 
-    public AudioSource backgroundMusic;
+    private float orginalFontSize;
 
     private BicycleVehicle bicycleVehicleScript;
 
     private void Start()
     {
         TimeLeft.enabled = false;
+        orginalFontSize = MissionTimeCounter.fontSize;
         bicycleVehicleScript = FindObjectOfType<BicycleVehicle>();
         if (bicycleVehicleScript != null)
         {
@@ -64,15 +71,12 @@ public class CountDown : MonoBehaviour
         enemyController.enabled = true;
     
 
-        MissionTimeDisplay.gameObject.SetActive(true);
         MissionTimeCounter.gameObject.SetActive(true);
 
         if (bicycleVehicleScript != null)
         {
             bicycleVehicleScript.isCountdownComplete = true; 
         }
-
-        backgroundMusic.Play();
     }
 
     public void startMissionTimeCountdown(){
@@ -81,19 +85,52 @@ public class CountDown : MonoBehaviour
 
     public IEnumerator MissionTimeCountdown()
     {
+        MissionTimeDisplay.gameObject.SetActive(true);
         while (missionTime > 0)
         {
             MissionTimeCounter.text = missionTime.ToString();
             yield return new WaitForSeconds(1f);
-            missionTime--; 
+            missionTime--;
+            if (missionTime < 20)
+                timeAlmostUp();
         }
-
         if (MissionTimeCounter != null){
             MissionTimeCounter.text = "Time's Up!";
             GameOver.text = "GAME OVER";
             enemyController.TriggerGameOverCutscene();  
-            }
+        }
+    }
 
+    void timeAlmostUp()
+    {
+        warningTriggered = true;
+        MissionTimeCounter.color = warningColor;
+        StartCoroutine(BlinkWarningSound());
+    
+        StartCoroutine(ScaleWarningText());
+    }
+
+    private IEnumerator ScaleWarningText()
+    {
+        while (true)
+        {
+            MissionTimeCounter.fontSize = orginalFontSize * 1.5f;
+            yield return new WaitForSeconds(0.5f);
+            MissionTimeCounter.fontSize = orginalFontSize;
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+
+    private IEnumerator BlinkWarningSound()
+    {
+        while (true)
+        {
+            if (warningSound != null)
+                warningSound.Play();
+
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     public int getMissionTime()

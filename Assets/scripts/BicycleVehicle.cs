@@ -31,28 +31,18 @@ public class BicycleVehicle : MonoBehaviour
     public TextMeshProUGUI TimeLeft;
     public TextMeshProUGUI NearInfo;
 
-    private readonly object lockObject = new object();
     private bool arduinoData;
 
     public Transform handle;
 
     public Gun gun;
 
-    public Vector3 COG;
-
     [SerializeField] internal float movementSpeed = 8f;
     private float baseSpeed;
 
     float steeringAngle;
     [SerializeField] float currentSteeringAngle;
-    [Range(0f, 0.1f)][SerializeField] float speedteercontrolTime;
     [SerializeField] float maxSteeringAngle;
-    [Range(0.000001f, 1)][SerializeField] float turnSmoothing;
-
-    [SerializeField] float maxlayingAngle = 45f;
-    public float targetlayingAngle;
-    [Range(-40, 40)] public float layingammount;
-    [Range(0.000001f, 1)][SerializeField] float leanSmoothing;
 
     [SerializeField] Transform frontWheeltransform;
     [SerializeField] Transform backWheeltransform;
@@ -72,7 +62,6 @@ public class BicycleVehicle : MonoBehaviour
     public Camera mainCamera; 
     public float shakeDuration = 0.5f;
     public float shakeMagnitude = 0.2f;
-    private Vector3 originalCameraPosition;
 
     [Header("Sound Effects")]
     public AudioSource audioSource; 
@@ -85,7 +74,6 @@ public class BicycleVehicle : MonoBehaviour
     public Transform bikeTransform; 
     public Vector3 cameraOffset = new Vector3(0f, 2f, -5f); 
     public float smoothFollowSpeed = 0.1f; 
-    private Vector3 smoothDampVelocity; 
 
     public EnemyController enemyController;
     public EnemyNavigationController navigationController;
@@ -108,47 +96,14 @@ public class BicycleVehicle : MonoBehaviour
         NearInfo.text = "Leave The Garage!";
 
         if (highScoreManagerObject != null)
-        {
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
-            if (highScoreManager != null)
-            {
-                UnityEngine.Debug.Log("found highscoremanager in bicycleVehicle");
-            }
-        }
+        if (enemyController == null)
+            enemyController = GetComponent<EnemyController>();
+        if (navigationController == null)
+            navigationController = GetComponent<EnemyNavigationController>();
 
         baseSpeed = movementSpeed;
-        if (GameStateManager.currentLevel == 1)
-        {
-            if (GameManager.Instance != null)
-            {
-                UnityEngine.Debug.Log("GameManager.instance is: " + GameManager.Instance.SkipTutorial);
-                UnityEngine.Debug.Log("PlayStartPosition is: " + playStartPosition);
-                UnityEngine.Debug.Log("tutorialStartPosition is: " + tutorialStartPosition);
-
-
-                if (GameManager.Instance.SkipTutorial)
-                {
-                    UnityEngine.Debug.Log("skip tutorial instance, play position is: " + playStartPosition.position);
-                    bikeTransform.position = playStartPosition.position;
-                }
-                else
-                {
-                    UnityEngine.Debug.Log("tutorial instance, tutorial position is: " + tutorialStartPosition.position);
-                    bikeTransform.position = tutorialStartPosition.position;
-                }
-
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning("GameManager.Instance is null! Defaulting to tutorialStartPosition.");
-                bikeTransform.position = tutorialStartPosition.position;
-            }
-            if (enemyController == null)
-                enemyController = GetComponent<EnemyController>();
-            if (navigationController == null)
-                navigationController = GetComponent<EnemyNavigationController>();
-        }
-        
+        InitializeVehiclePosition();
         serialManager = new SerialManager(portName, baudRate, readTimeout);
     }
 
@@ -168,9 +123,30 @@ public class BicycleVehicle : MonoBehaviour
             HandleSteering();
             UpdateWheels();
             UpdateHandle();
-            LayOnTurn();
             CheckForCollision();
             CaptureEnemy();
+        }
+    }
+
+    private void InitializeVehiclePosition()
+    {
+        if (GameStateManager.currentLevel == 1)
+        {
+            if (GameManager.Instance != null)
+            {
+                if (GameManager.Instance.SkipTutorial)
+                {
+                    bikeTransform.position = playStartPosition.position;
+                }
+                else
+                {
+                    bikeTransform.position = tutorialStartPosition.position;
+                }
+            }
+            else
+            {
+                bikeTransform.position = tutorialStartPosition.position;
+            }
         }
     }
 
@@ -230,22 +206,11 @@ public class BicycleVehicle : MonoBehaviour
     }
 
     private float currentSpeed = 0f;
-    private float bleedOffSpeed = 1f;
 
     public void HandleEngine()
     {
         float targetSpeed = verticalInput * movementSpeed * Time.deltaTime;
-
-
-        if (Mathf.Abs(verticalInput) < 0.01f && currentSpeed > 0)
-        {
-            currentSpeed = Mathf.Max(currentSpeed - bleedOffSpeed * Time.deltaTime, 0);
-        }
-        else
-        {
-            currentSpeed = targetSpeed;
-        }
-
+        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, 0.1f);
         transform.Translate(Vector3.forward * currentSpeed);
     }
 
@@ -254,10 +219,7 @@ public class BicycleVehicle : MonoBehaviour
         if (arduinoData)
         {
             currentSteeringAngle = steeringInput;
-
-            targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
-
-            transform.Rotate(Vector3.up * currentSteeringAngle * Time.deltaTime * 1.60f);
+            transform.Rotate(1.60f * currentSteeringAngle * Time.deltaTime * Vector3.up);
         }
         else
         {
@@ -274,25 +236,8 @@ public class BicycleVehicle : MonoBehaviour
                 currentSteeringAngle = 0f;
             }
 
-            targetlayingAngle = maxlayingAngle * -horizontalInput / maxSteeringAngle;
-
             transform.Rotate(currentSteeringAngle * Time.deltaTime * Vector3.up * 1.80f);
         }
-    }
-    private void LayOnTurn()
-    {
-        Vector3 currentRot = transform.rotation.eulerAngles;
-
-        if (Mathf.Abs(currentSteeringAngle) < 0.5f)
-        {
-            layingammount = Mathf.LerpAngle(layingammount, 0f, leanSmoothing);
-        }
-        else
-        {
-            layingammount = Mathf.LerpAngle(layingammount, targetlayingAngle, leanSmoothing);
-        }
-
-        transform.rotation = Quaternion.Euler(currentRot.x, currentRot.y, layingammount);
     }
 
     public void UpdateWheels()
@@ -302,7 +247,6 @@ public class BicycleVehicle : MonoBehaviour
 
     public void UpdateHandle()
     {
-        Quaternion sethandleRot = frontWheeltransform.rotation;
         handle.localRotation = Quaternion.Euler(handle.localRotation.eulerAngles.x, currentSteeringAngle, handle.localRotation.eulerAngles.z);
     }
 
@@ -336,53 +280,53 @@ public class BicycleVehicle : MonoBehaviour
     public bool calledCountdown = false;
 
     private void CheckForCollision()
-{
-    Vector3 rayOrigin = rayOriginObject.position;
-    Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
-
-    if (hitColliders.Length > 0 && !isColliding)
     {
-        foreach (Collider hitCollider in hitColliders)
+        Vector3 rayOrigin = rayOriginObject.position;
+        Collider[] hitColliders = Physics.OverlapBox(rayOrigin, boxSize / 2f, transform.rotation, collisionLayer);
+
+        if (hitColliders.Length > 0 && !isColliding)
         {
-            if (hitCollider.CompareTag("enemy"))
+            foreach (Collider hitCollider in hitColliders)
             {
-                break; 
-            }
-            else if (hitCollider.CompareTag("portal"))
-            {
-                UnityEngine.Debug.Log("Portal activated for " + hitCollider.gameObject.name);
-
-                RampPortal portalScript = hitCollider.GetComponent<RampPortal>();
-                if (portalScript != null)
+                if (hitCollider.CompareTag("enemy"))
                 {
-                    portalScript.ActivatePortal();
+                    break; 
                 }
-            }
-            else if (hitCollider.CompareTag("startEnemy"))
-            {
-                navigationController.StartMoving();
-                if (!calledCountdown)
+                else if (hitCollider.CompareTag("portal"))
                 {
-                    countdown.startMissionTimeCountdown();
-                    calledCountdown = true;
-                    NearInfo.text = "Get closer to the enemy!";
-                    InfoButton.enabled = false;
-                    InfoGun.enabled = false;
-                    TimeLeft.enabled = true;
-                }
-            }
-            else
-            {
-                collisionTimer = backwardDuration;
-                isColliding = true;
+                    UnityEngine.Debug.Log("Portal activated for " + hitCollider.gameObject.name);
 
-                PlayCollisionSound(hitCollider); 
-                StartCoroutine(CameraShake());
-                break;
+                    RampPortal portalScript = hitCollider.GetComponent<RampPortal>();
+                    if (portalScript != null)
+                    {
+                        portalScript.ActivatePortal();
+                    }
+                }
+                else if (hitCollider.CompareTag("startEnemy"))
+                {
+                    navigationController.StartMoving();
+                    if (!calledCountdown)
+                    {
+                        countdown.startMissionTimeCountdown();
+                        calledCountdown = true;
+                        NearInfo.text = "Get closer to the enemy!";
+                        InfoButton.enabled = false;
+                        InfoGun.enabled = false;
+                        TimeLeft.enabled = true;
+                    }
+                }
+                else
+                {
+                    collisionTimer = backwardDuration;
+                    isColliding = true;
+
+                    PlayCollisionSound(hitCollider); 
+                    StartCoroutine(CameraShake());
+                    break;
+                }
             }
         }
     }
-}
 
     private void OnDrawGizmos()
     {
@@ -405,41 +349,40 @@ public class BicycleVehicle : MonoBehaviour
     }
     private void PlayCollisionSound(Collider hitCollider)
     {
-    if (audioSource != null)
-    {
-        if (hitCollider.CompareTag("Bush"))
+        if (audioSource != null)
         {
-            if (bushCollisionSound != null)
+            if (hitCollider.CompareTag("Bush"))
             {
-                audioSource.PlayOneShot(bushCollisionSound);
+                if (bushCollisionSound != null)
+                {
+                    audioSource.PlayOneShot(bushCollisionSound);
+                }
             }
-        }
-        else if (hitCollider.CompareTag("Pole"))
-        {
-            if (bushCollisionSound != null)
+            else if (hitCollider.CompareTag("Pole"))
             {
-                audioSource.PlayOneShot(poleCollisionSound);
+                if (bushCollisionSound != null)
+                {
+                    audioSource.PlayOneShot(poleCollisionSound);
+                }
             }
-        }
-        else
-        {
-            if (collisionSound != null)
+            else
             {
-                audioSource.PlayOneShot(collisionSound);
-                 if (hitCollider.CompareTag("car")){
-                    AudioSource tempAudioSource = hitCollider.gameObject.AddComponent<AudioSource>();
-                    tempAudioSource.spatialBlend = 1.0f;          
-                    tempAudioSource.rolloffMode = AudioRolloffMode.Logarithmic;
-                    tempAudioSource.minDistance = 1f;            
-                    tempAudioSource.maxDistance = 50f;           
-                    tempAudioSource.playOnAwake = false;         
-                    tempAudioSource.PlayOneShot(carAlarmSound);
-                    tempAudioSource.Play();
-                    
+                if (collisionSound != null)
+                {
+                    audioSource.PlayOneShot(collisionSound);
+                     if (hitCollider.CompareTag("car")){
+                        AudioSource tempAudioSource = hitCollider.gameObject.AddComponent<AudioSource>();
+                        tempAudioSource.spatialBlend = 1.0f;          
+                        tempAudioSource.rolloffMode = AudioRolloffMode.Logarithmic;
+                        tempAudioSource.minDistance = 1f;            
+                        tempAudioSource.maxDistance = 50f;           
+                        tempAudioSource.playOnAwake = false;         
+                        tempAudioSource.PlayOneShot(carAlarmSound);
+                        tempAudioSource.Play();
+                    }
                 }
             }
         }
-    }
     }
     private IEnumerator CameraShake()
     {
