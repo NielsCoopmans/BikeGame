@@ -19,6 +19,7 @@ namespace VK.BikeLab
         private bool slow = false;
         private bool soundOn = true;
 
+        [System.Obsolete]
         void Start()
         {
             Screen.SetResolution(1280, 720, false, 60);

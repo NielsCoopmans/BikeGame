@@ -31,7 +31,6 @@ namespace VK.BikeLab
         
         private float steerAngle;
         private float steerTime;
-        private TurnPhase turnPhase = TurnPhase.Entry;
         void Start()
         {
             bike = GetComponent<Bike>();

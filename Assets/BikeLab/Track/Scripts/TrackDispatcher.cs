@@ -33,6 +33,8 @@ namespace VK.BikeLab
         private int userIndex;
         private float updateTime;
         private bool slow = false;
+
+        [System.Obsolete]
         void Start()
         {
             Screen.SetResolution(1280, 720, false, 60);

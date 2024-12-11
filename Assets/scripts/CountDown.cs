@@ -20,6 +20,8 @@ public class CountDown : MonoBehaviour
     public Color warningColor = Color.red;
     public AudioSource warningSound;
 
+    private bool warningTriggered = false;
+
     public AudioSource Sound;
     public AudioClip go;
     public AudioClip count;
@@ -89,7 +91,7 @@ public class CountDown : MonoBehaviour
             MissionTimeCounter.text = missionTime.ToString();
             yield return new WaitForSeconds(1f);
             missionTime--;
-            if (missionTime < 20)
+            if (missionTime <= 20 && !warningTriggered)
                 timeAlmostUp();
         }
         if (MissionTimeCounter != null){
@@ -101,6 +103,7 @@ public class CountDown : MonoBehaviour
 
     void timeAlmostUp()
     {
+        warningTriggered = true;
         MissionTimeCounter.color = warningColor;
         StartCoroutine(BlinkWarningSound());
     
