@@ -144,11 +144,9 @@ public class BicycleVehicle : MonoBehaviour
                 enemyController = GetComponent<EnemyController>();
             if (navigationController == null)
                 navigationController = GetComponent<EnemyNavigationController>();
-            serialManager = new SerialManager(portName, baudRate, readTimeout);
-        }else{
-            serialManager = new SerialManager(portName, baudRate, readTimeout);
         }
         
+        serialManager = new SerialManager(portName, baudRate, readTimeout);
     }
 
     void Update()
