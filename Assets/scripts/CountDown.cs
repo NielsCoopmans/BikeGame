@@ -20,8 +20,6 @@ public class CountDown : MonoBehaviour
     public Color warningColor = Color.red;
     public AudioSource warningSound;
 
-    private bool warningTriggered = false;
-
     public AudioSource Sound;
     public AudioClip go;
     public AudioClip count;
@@ -103,7 +101,6 @@ public class CountDown : MonoBehaviour
 
     void timeAlmostUp()
     {
-        warningTriggered = true;
         MissionTimeCounter.color = warningColor;
         StartCoroutine(BlinkWarningSound());
     
