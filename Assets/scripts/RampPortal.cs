@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class RampPortal : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class RampPortal : MonoBehaviour
 
     private bool isTransitioning = false; // Prevent multiple transitions
     private static bool isInCooldown = false; // Tracks whether the portal is in cooldown
+
+    public TextMeshProUGUI NearInfo;
 
     public void ActivatePortal()
     {
@@ -50,6 +53,7 @@ public class RampPortal : MonoBehaviour
 
         bike.transform.position = endPosition; // Ensure final position is exact
         UnityEngine.Debug.Log("Transition complete. Bike at " + bike.transform.position);
+        NearInfo.text = "Succes!";
         isTransitioning = false;
 
         StartCoroutine(PortalCooldown());

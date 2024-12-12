@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyNavigationController : MonoBehaviour
 {
-    public float movementSpeed = 2f;    // Movement speed
+
+    [SerializeField] public float movementSpeed = 6f;
     public float rotationSpeed = 120f;   // Rotation speed
     public float stopDistance = 2.5f;   // Distance threshold to stop moving
     public bool reachedDestination = false; // Whether the destination is reached
@@ -15,13 +17,29 @@ public class EnemyNavigationController : MonoBehaviour
     private Vector3 velocity;
 
     private bool isSlowed = false;
-    private float originalSpeed;
+    public float originalSpeed;
 
     private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
+        switch (GameStateManager.difficulty)
+        {
+            case GameStateManager.Difficulty.Easy:
+                movementSpeed = 6f;
+                break;
+            case GameStateManager.Difficulty.Medium:
+                movementSpeed = 14f;
+                break;
+            case GameStateManager.Difficulty.Hard:
+                movementSpeed = 18f;
+                break;
+            case GameStateManager.Difficulty.Nightmare:
+                movementSpeed = 25f;
+                break;
+        }
+        Debug.Log(movementSpeed);
         lastPosition = transform.position; // Initialize last position
         rb = GetComponent<Rigidbody>();    // Get the Rigidbody component if available
 
