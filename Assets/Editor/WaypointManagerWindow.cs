@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using UnityEditor;
 using UnityEngine;
 
@@ -74,7 +76,7 @@ public class NewBehaviourScript : EditorWindow
     {
         if (waypointRoot == null)
         {
-            Debug.LogWarning("Waypoint Root is not assigned.");
+            UnityEngine.Debug.LogWarning("Waypoint Root is not assigned.");
             return;
         }
 
@@ -168,18 +170,50 @@ public class NewBehaviourScript : EditorWindow
 
     void CreateBranch()
     {
+        // Check if waypointRoot is assigned
+        if (waypointRoot == null)
+        {
+            UnityEngine.Debug.LogError("waypointRoot is null! Assign it before calling CreateBranch.");
+            return;
+        }
+
+        // Check if an active GameObject is selected
+        if (Selection.activeGameObject == null)
+        {
+            UnityEngine.Debug.LogError("No active GameObject selected in the Scene!");
+            return;
+        }
+
+        // Check if the selected GameObject has a Waypoint component
+        Waypoint branchedFrom = Selection.activeGameObject.GetComponent<Waypoint>();
+        if (branchedFrom == null)
+        {
+            UnityEngine.Debug.LogError("The selected GameObject does not have a Waypoint component!");
+            return;
+        }
+
+        //create a new Waypoint GameObject
         GameObject waypointObject = new GameObject("Waypoint " + waypointRoot.childCount, typeof(Waypoint));
         waypointObject.transform.SetParent(waypointRoot, false);
 
+        //get the Waypoint component of the new GameObject
         Waypoint waypoint = waypointObject.GetComponent<Waypoint>();
 
-        Waypoint branchedFrom = Selection.activeGameObject.GetComponent<Waypoint>();
+        //ensure the 'branches' list is initialized
+        if (branchedFrom.branches == null)
+        {
+            branchedFrom.branches = new List<Waypoint>();
+        }
+
+        //add the new Waypoint to the branches of the selected Waypoint
         branchedFrom.branches.Add(waypoint);
 
+        //set the position and forward direction of the new Waypoint
         waypoint.transform.position = branchedFrom.transform.position;
         waypoint.transform.forward = branchedFrom.transform.forward;
 
+        //set the new Waypoint as the active GameObject
         Selection.activeGameObject = waypoint.gameObject;
-
     }
+
 }
