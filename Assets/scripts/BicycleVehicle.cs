@@ -157,6 +157,7 @@ public class BicycleVehicle : MonoBehaviour
         if (dataParts.Length >= 4)
         {
             ParseInputData(dataParts);
+            arduinoData = true;
         }
         else
         {
@@ -181,6 +182,7 @@ public class BicycleVehicle : MonoBehaviour
         {
             steeringInput = -parsedSteering;
         }
+
         if (float.TryParse(dataParts[1], out float horn))
         {
             if (horn == 1 && (Time.time - lastFireTime) >= 2f)
@@ -190,6 +192,7 @@ public class BicycleVehicle : MonoBehaviour
                 StartCoroutine(ShowCooldown());
             }
         }
+        
         if (float.TryParse(dataParts[2], out float parsedSpeed))
         {
             verticalInput = Mathf.Clamp(parsedSpeed / 8f, 0f, 50f);
@@ -218,8 +221,8 @@ public class BicycleVehicle : MonoBehaviour
     {
         if (arduinoData)
         {
-            currentSteeringAngle = steeringInput;
-            transform.Rotate(1.60f * currentSteeringAngle * Time.deltaTime * Vector3.up);
+            Debug.Log(steeringInput);
+            transform.Rotate(1.60f * steeringInput * Time.deltaTime * Vector3.up);
         }
         else
         {
@@ -236,7 +239,7 @@ public class BicycleVehicle : MonoBehaviour
                 currentSteeringAngle = 0f;
             }
 
-            transform.Rotate(currentSteeringAngle * Time.deltaTime * Vector3.up * 1.80f);
+            transform.Rotate(currentSteeringAngle * Time.deltaTime * Vector3.up);
         }
     }
 
