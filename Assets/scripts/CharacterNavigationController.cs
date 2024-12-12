@@ -29,10 +29,7 @@ public class CharacterNavigationController : MonoBehaviour
         if (highScoreManagerObject != null)
         {
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
-            if (highScoreManager != null)
-            {
-                UnityEngine.Debug.Log("found higscoremanager in bicycleVehicle");
-            }
+            
         }
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
