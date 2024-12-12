@@ -17,6 +17,7 @@ public class CutsceneController : MonoBehaviour
         Debug.Log("CutsceneCuffing unloaded. Returning to main menu.");
         if(GameStateManager.currentLevel == 2){
             SceneManager.LoadScene("Menu");
+            GameStateManager.currentLevel = 1;
         }
         else{
             GameStateManager.currentLevel = 2;

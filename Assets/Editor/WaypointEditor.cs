@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Diagnostics;
 
 [InitializeOnLoad]
 public static class WaypointEditor
@@ -54,13 +55,29 @@ public static class WaypointEditor
         }
 
         // Draw branches if they exist
-        if (waypoint.branches != null)
+        if (waypoint != null && waypoint.branches != null)
         {
             foreach (Waypoint branch in waypoint.branches)
             {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawLine(waypoint.transform.position, branch.transform.position);
+                // Check if the branch itself is null before accessing it
+                if (branch != null)
+                {
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawLine(waypoint.transform.position, branch.transform.position);
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning("A branch in waypoint.branches is null.");
+                }
             }
         }
+        else
+        {
+            if (waypoint == null)
+                UnityEngine.Debug.LogError("Waypoint is null in OnDrawSceneGizmo.");
+            else
+                UnityEngine.Debug.LogWarning("waypoint.branches is null.");
+        }
+
     }
 }
