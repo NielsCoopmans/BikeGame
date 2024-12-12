@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
     public GameObject VFX_EasyExplosion;
     public GameObject VFX_EasyExplosion_car;
     public GameObject VFX_EasyExplosion_pedestrian;
+    public GameObject VFX_EasyExplosion_money;
     
     public AudioSource explosionSound;
     public float volume = 1.0f;
@@ -46,11 +47,19 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
-        else if(collision.gameObject.CompareTag("enemy")) {
-            highScoreManager.hitEnemy(collision.contacts[0].point);
-            Destroy(gameObject);
-            return;
+        else if (collision.gameObject.CompareTag("enemy"))
+    {
+        highScoreManager.hitEnemy(collision.contacts[0].point);
+        if (VFX_EasyExplosion_money != null)
+        {
+            Vector3 explosionPosition = collision.contacts[0].point;
+            GameObject moneyExplosion = Instantiate(VFX_EasyExplosion_money, explosionPosition, Quaternion.identity);
+            Destroy(moneyExplosion, 2f);
         }
+
+        Destroy(gameObject);
+        return;
+    }
         else if (collision.gameObject.CompareTag("car") || collision.gameObject.CompareTag("explodable")){
             highScoreManager.hitCar(collision.contacts[0].point);
             if (VFX_EasyExplosion_car != null)
