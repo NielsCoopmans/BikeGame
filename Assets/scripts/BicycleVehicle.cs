@@ -158,6 +158,9 @@ public class BicycleVehicle : MonoBehaviour
                 bikeTransform.position = tutorialStartPosition.position;
             }
         }
+        if (GameStateManager.currentLevel == 2){
+            NearInfo.text = "Welcome To Level 2!";
+        }
     }
 
     private void HandleSerialInput()
