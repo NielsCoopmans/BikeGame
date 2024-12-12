@@ -84,7 +84,7 @@ public class Bullet : MonoBehaviour
         //Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
         Explode();
         // Destroy the bullet upon collision
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 
     void Explode()
