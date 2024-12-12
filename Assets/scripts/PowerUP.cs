@@ -52,7 +52,8 @@ public class PowerUp : MonoBehaviour
 
             BicycleVehicle bicycle = player.GetComponent<BicycleVehicle>();
 
-            float baseSpeed = bicycle.movementSpeed;
+            float baseSpeed = bicycle.getBaseSpeed();
+            float movementSpeed = bicycle.movementSpeed;
 
             // Notify the spawner to remove this power-up from the list
             spawner.RemoveObject(gameObject);
@@ -86,13 +87,13 @@ public class PowerUp : MonoBehaviour
 
                 float speedBoost = peakBoost * timeFactor; // Apply parabola
 
-                bicycle.movementSpeed = baseSpeed + speedBoost; // Update speed
+                bicycle.movementSpeed = movementSpeed + speedBoost; // Update speed
 
                 yield return null; // Wait for the next frame
             }
 
             // Restore the speed to its base value
-            bicycle.movementSpeed = 10;
+            bicycle.movementSpeed = baseSpeed;
 
             Destroy(gameObject);
         }
