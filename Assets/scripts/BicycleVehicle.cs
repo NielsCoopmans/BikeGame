@@ -100,7 +100,6 @@ public class BicycleVehicle : MonoBehaviour
     void Start()
     {
         GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
-        NearInfo.text = "Leave The Garage!";
 
         if (highScoreManagerObject != null)
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
@@ -144,10 +143,12 @@ public class BicycleVehicle : MonoBehaviour
             {
                 if (GameManager.Instance.SkipTutorial)
                 {
+                    NearInfo.text = "Get closer to the enemy!";
                     bikeTransform.position = playStartPosition.position;
                 }
                 else
                 {
+                    NearInfo.text = "Leave The Garage!";
                     bikeTransform.position = tutorialStartPosition.position;
                 }
             }
@@ -231,9 +232,6 @@ public class BicycleVehicle : MonoBehaviour
         {
             currentSteeringAngle = steeringInput;
             transform.Rotate(1.60f * currentSteeringAngle * Time.deltaTime * Vector3.up);
-            targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
-            Debug.Log(steeringInput);
-            transform.Rotate(1.60f * steeringInput * Time.deltaTime * Vector3.up);
         }
         else
         {
@@ -277,7 +275,6 @@ public class BicycleVehicle : MonoBehaviour
 
     public void UpdateHandle()
     {
-        Quaternion sethandleRot = frontWheeltransform.rotation;
         handle.localRotation = Quaternion.Euler(handle.localRotation.eulerAngles.x, currentSteeringAngle, handle.localRotation.eulerAngles.z);
     }
 
