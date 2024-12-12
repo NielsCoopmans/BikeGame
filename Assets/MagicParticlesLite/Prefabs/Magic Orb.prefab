@@ -23949,6 +23949,7 @@ MonoBehaviour:
   VFX_EasyExplosion: {fileID: 9000549209036312635, guid: ce55029dd1da5834e905355e2c932e5c, type: 3}
   VFX_EasyExplosion_car: {fileID: 1809022330002312, guid: ed511b7776af6174e9b1255c7a81e59c, type: 3}
   VFX_EasyExplosion_pedestrian: {fileID: 1362418652685942, guid: b369efb4abe69e044890b664115fab9e, type: 3}
+  VFX_EasyExplosion_money: {fileID: 1589019458639318, guid: fb2dbd343895b6c47888986bf91da33c, type: 3}
   explosionSound: {fileID: 4675733430387588077}
   volume: 1
 --- !u!135 &8740203918548037141
