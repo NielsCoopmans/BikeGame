@@ -93,6 +93,10 @@ public class EnemyController : MonoBehaviour
         {
             moveSpeed = originalMoveSpeed * slowFactor; 
         }
+        else if (navigationController.isSlowed)
+        {
+            moveSpeed = originalMoveSpeed * slowFactor;
+        }
         else
         {
             moveSpeed = originalMoveSpeed; 
