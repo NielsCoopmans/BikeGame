@@ -30,6 +30,7 @@ public class BicycleVehicle : MonoBehaviour
     public TextMeshProUGUI InfoButton; 
     public TextMeshProUGUI TimeLeft;
     public TextMeshProUGUI NearInfo;
+    public GameObject arrow;
 
     private bool arduinoData;
 
@@ -341,6 +342,7 @@ public class BicycleVehicle : MonoBehaviour
                         InfoButton.enabled = false;
                         InfoGun.enabled = false;
                         TimeLeft.enabled = true;
+                        arrow.SetActive(true);
                     }
                 }
                 else
