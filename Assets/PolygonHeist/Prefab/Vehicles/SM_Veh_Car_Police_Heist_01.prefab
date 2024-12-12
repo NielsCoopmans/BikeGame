@@ -306,6 +306,7 @@ GameObject:
   - component: {fileID: 2315506}
   - component: {fileID: 64499198304884510}
   - component: {fileID: 64859862202806244}
+  - component: {fileID: 5549560941884577234}
   m_Layer: 0
   m_Name: SM_Veh_Car_Police_Heist_01
   m_TagString: car
@@ -402,7 +403,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -424,11 +425,32 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43969891585865750, guid: d62722bbc8ecf154aaf3982e78511903, type: 2}
+--- !u!65 &5549560941884577234
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117480}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.187236, y: 2.0098457, z: 5.313204}
+  m_Center: {x: 0, y: 1.2110262, z: 0.09058523}
 --- !u!1 &126056
 GameObject:
   m_ObjectHideFlags: 0
