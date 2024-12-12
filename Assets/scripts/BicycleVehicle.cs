@@ -76,6 +76,15 @@ public class BicycleVehicle : MonoBehaviour
     public AudioClip bushCollisionSound;
     public AudioClip poleCollisionSound;
     public AudioClip carAlarmSound;
+    public AudioClip shootCar;
+    public AudioClip followArrow;
+    public AudioClip captureClown;
+    public AudioClip goOutside;
+
+    private bool shootatcarcollided = false;
+    private bool getclowncollided = false;
+    private bool goOutsidecollided = false;
+    private bool followArrowSpoken = false;
 
     [Header("Camera Settings")]
     public Transform bikeTransform; 
@@ -100,6 +109,7 @@ public class BicycleVehicle : MonoBehaviour
     void Start()
     {
         GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
+        NearInfo.text = "                   ";
 
         if (highScoreManagerObject != null)
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
@@ -125,6 +135,7 @@ public class BicycleVehicle : MonoBehaviour
         }
         else if (isCountdownComplete)
         {
+            NearInfo.text = "Leave the garage!";
             HandleEngine();
             HandleSteering();
             UpdateWheels();
@@ -148,7 +159,7 @@ public class BicycleVehicle : MonoBehaviour
                 }
                 else
                 {
-                    NearInfo.text = "Leave The Garage!";
+                    //NearInfo.text = "Go Down!";
                     bikeTransform.position = tutorialStartPosition.position;
                 }
             }
@@ -325,7 +336,7 @@ public class BicycleVehicle : MonoBehaviour
                 }
                 else if (hitCollider.CompareTag("portal"))
                 {
-                    UnityEngine.Debug.Log("Portal activated for " + hitCollider.gameObject.name);
+                    //UnityEngine.Debug.Log("Portal activated for " + hitCollider.gameObject.name);
 
                     RampPortal portalScript = hitCollider.GetComponent<RampPortal>();
                     if (portalScript != null)
@@ -346,6 +357,45 @@ public class BicycleVehicle : MonoBehaviour
                         TimeLeft.enabled = true;
                         arrow.SetActive(true);
                     }
+                    if (!followArrowSpoken)
+                    {
+                        audioSource.PlayOneShot(followArrow);
+                        followArrowSpoken = true;
+                    }
+                    
+                }
+                else if (hitCollider.CompareTag("carblock"))
+                {
+                    NearInfo.text = "Shoot at the blue car!";
+                    if (!shootatcarcollided)
+                    {
+                        AudioSource tempAudioSource2 = hitCollider.gameObject.AddComponent<AudioSource>();
+                        tempAudioSource2.PlayOneShot(shootCar);
+                        shootatcarcollided = true;
+                    }     
+
+                }
+                else if (hitCollider.CompareTag("clownblock"))
+                {
+                    NearInfo.text = "Capture the clown!";
+                    if (!getclowncollided)
+                    {
+                        AudioSource tempAudioSource3 = hitCollider.gameObject.AddComponent<AudioSource>();
+                        tempAudioSource3.PlayOneShot(captureClown);
+                        getclowncollided = true;
+                    }
+
+                }
+                else if (hitCollider.CompareTag("goOutsideblock"))
+                {
+                    NearInfo.text = "Go Outside!";
+                    if (!goOutsidecollided)
+                    {
+                        AudioSource tempAudioSource3 = hitCollider.gameObject.AddComponent<AudioSource>();
+                        tempAudioSource3.PlayOneShot(goOutside);
+                        goOutsidecollided = true;
+                    }
+
                 }
                 else
                 {
