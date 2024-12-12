@@ -17,7 +17,7 @@ public class cutsceneIntroController : MonoBehaviour
                 PlayableGraph graph = playableDirector.playableGraph;
                 graph.GetRootPlayable(0).SetSpeed(playbackSpeed);
             }
-        Invoke("ForceCloseCutscene", 100f);
+        Invoke("ForceCloseCutscene", 60f);
     }
 
     void ForceCloseCutscene()
