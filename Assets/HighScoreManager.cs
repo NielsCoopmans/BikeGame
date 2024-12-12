@@ -15,7 +15,7 @@ public class HighScoreManager : MonoBehaviour
 
     private CountDown countDownScript;
 
-    private Color originalColor;
+    private Color originalColor = Color.black;
     private Color greenColor = Color.green;
     private Color redColor = Color.red;
 
