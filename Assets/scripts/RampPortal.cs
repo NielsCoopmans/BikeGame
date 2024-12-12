@@ -36,10 +36,10 @@ public class RampPortal : MonoBehaviour
         Vector3 startPosition = bike.transform.position;
         Vector3 endPosition = targetPosition.position;
 
-        UnityEngine.Debug.Log("Bike root object: " + bike.transform.root.name);
-        UnityEngine.Debug.Log("Bike position: " + bike.transform.position);
-        UnityEngine.Debug.Log("startPosition: " + startPosition);
-        UnityEngine.Debug.Log("endPosition " + endPosition);
+        //UnityEngine.Debug.Log("Bike root object: " + bike.transform.root.name);
+        //UnityEngine.Debug.Log("Bike position: " + bike.transform.position);
+        //UnityEngine.Debug.Log("startPosition: " + startPosition);
+        //UnityEngine.Debug.Log("endPosition " + endPosition);
 
         float elapsedTime = 0f;
 
@@ -53,7 +53,6 @@ public class RampPortal : MonoBehaviour
 
         bike.transform.position = endPosition; // Ensure final position is exact
         UnityEngine.Debug.Log("Transition complete. Bike at " + bike.transform.position);
-        NearInfo.text = "Succes!";
         isTransitioning = false;
 
         StartCoroutine(PortalCooldown());

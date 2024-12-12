@@ -21,10 +21,6 @@ public class Bullet : MonoBehaviour
         if (highScoreManagerObject != null)
         {
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
-            if (highScoreManager != null)
-            {
-                UnityEngine.Debug.Log("found higscoremanager in bicycleVehicle");
-            }
         }
        
         Destroy(gameObject, lifetime);

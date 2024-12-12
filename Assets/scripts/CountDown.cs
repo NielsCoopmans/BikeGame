@@ -19,13 +19,14 @@ public class CountDown : MonoBehaviour
 
     public Color normalColor = Color.white;
     public Color warningColor = Color.red;
-    public AudioSource warningSound;
+    public AudioSource warningSound;  
 
     private bool warningTriggered = false;
 
     public AudioSource Sound;
     public AudioClip go;
     public AudioClip count;
+    public AudioClip goDown;
 
     private float orginalFontSize;
 
@@ -71,7 +72,8 @@ public class CountDown : MonoBehaviour
         countdownMessage.gameObject.SetActive(false);
         bicycleVehicleScript.enabled = true;
         enemyController.enabled = true;
-        NearInfo.text = "Go Down!";
+        //NearInfo.text = "Go Down!";
+        Sound.PlayOneShot(goDown);
 
 
         MissionTimeCounter.gameObject.SetActive(true);

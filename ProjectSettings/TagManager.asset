@@ -18,6 +18,10 @@ TagManager:
   - pedestrian
   - Bush
   - Pole
+  - garageblock
+  - clownblock
+  - carblock
+  - goOutsideblock
   layers:
   - Default
   - TransparentFX
