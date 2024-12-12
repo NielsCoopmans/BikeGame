@@ -50,7 +50,6 @@ public class BicycleVehicle : MonoBehaviour
 
     [Range(0.000001f, 1)][SerializeField] float turnSmoothing;
 
-    [SerializeField] float maxlayingAngle = 45f;
     public float targetlayingAngle;
     [Range(-40, 40)] public float layingammount;
     [Range(0.000001f, 1)][SerializeField] float leanSmoothing;
