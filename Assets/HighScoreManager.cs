@@ -19,6 +19,10 @@ public class HighScoreManager : MonoBehaviour
     private Color greenColor = Color.green;
     private Color redColor = Color.red;
 
+    private int penalty1 = 0;
+    private int bonus1 = 0;
+    private int bonus2 = 0;
+
 
 
     // Start is called before the first frame update
@@ -76,6 +80,42 @@ public class HighScoreManager : MonoBehaviour
         }
         //store original text color
         originalColor = ScoreText.color;
+
+
+
+        switch (GameStateManager.difficulty)
+        {
+            case GameStateManager.Difficulty.Easy:
+                penalty1 = -10;
+                bonus1 = 10;
+                bonus2 = 20;
+                break;
+
+            case GameStateManager.Difficulty.Medium:
+                penalty1 = -15;
+                bonus1 = 15;
+                bonus2 = 25;
+                break;
+
+            case GameStateManager.Difficulty.Hard:
+                penalty1 = -20;
+                bonus1 = 20;
+                bonus2 = 30;
+                break;
+
+            case GameStateManager.Difficulty.Nightmare:
+                penalty1 = -25;
+                bonus1 = 25;
+                bonus2 = 35;
+                break;
+
+            default:
+                penalty1 = -10;
+                bonus1 = 10;
+                bonus2 = 20;
+                break;
+        }
+
     }
 
     // Update is called once per frame
@@ -97,7 +137,30 @@ public class HighScoreManager : MonoBehaviour
         {
             int missionTime = countDownScript.getMissionTime();
             UnityEngine.Debug.Log("Mission Time: " + missionTime);
-            score += missionTime;
+            int bonusScore = 0;
+            switch (GameStateManager.difficulty)
+            {
+                case GameStateManager.Difficulty.Easy:
+                    bonusScore = missionTime;
+                    break;
+
+                case GameStateManager.Difficulty.Medium:
+                    bonusScore = (int)Math.Round((double)(missionTime * 1.25));
+                    break;
+
+                case GameStateManager.Difficulty.Hard:
+                    bonusScore = (int)Math.Round((double)(missionTime * 1.5));
+                    break;
+
+                case GameStateManager.Difficulty.Nightmare:
+                    bonusScore = (int)Math.Round((double)(missionTime * 2));
+                    break;
+
+                default:
+                    bonusScore = missionTime; // Fallback, if needed
+                    break;
+            }
+            score += bonusScore;
         }
         CheckHighScore();
         UpdateScoreText();
@@ -159,42 +222,37 @@ public class HighScoreManager : MonoBehaviour
         Destroy(textTransform.gameObject);
     }
 
-
-    int penalty = 0;
     public void hitCar(Vector3 hitPosition)
     {
-        penalty = 10;
         UnityEngine.Debug.Log("hitCar called");
         GameObject CanvasGameObject = GameObject.Find("Canvas");
-        score += penalty;
+        score += bonus1;
         CheckHighScore();
         UpdateScoreText();
         UpdateHighScoreText();
-        ShowHitText(hitPosition, penalty);
+        ShowHitText(hitPosition, bonus1);
     }
 
     public void hitPedestrian(Vector3 hitPosition)
     {
-        penalty = -10;
         UnityEngine.Debug.Log("hitPedestrian called");
         GameObject CanvasGameObject = GameObject.Find("Canvas");
-        score = score + penalty;
+        score = score + penalty1;
         CheckHighScore();
         UpdateScoreText();
         UpdateHighScoreText();
-        ShowHitText(hitPosition, penalty);
+        ShowHitText(hitPosition, penalty1);
     }
 
     public void hitEnemy(Vector3 hitPosition)
     {
-        penalty = 20;
         UnityEngine.Debug.Log("hitEnemy called");
         GameObject CanvasGameObject = GameObject.Find("Canvas");
-        score += penalty;
+        score += bonus2;
         CheckHighScore();
         UpdateScoreText();
         UpdateHighScoreText();
-        ShowHitText(hitPosition, penalty);
+        ShowHitText(hitPosition, bonus2);
     }
 
     void CheckHighScore() //update highscore
