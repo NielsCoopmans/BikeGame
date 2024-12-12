@@ -1,10 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+
 public class MainMenu : MonoBehaviour
 {
+    public TextMeshProUGUI playGame;
+    void Start()
+    {
+        if (GameStateManager.currentLevel == 2)
+            playGame.text = "Level 2";
+    }
    public void PlayGame(){
         GameManager.Instance.SkipTutorial = true;
         Debug.Log("play instance is passed on)");
