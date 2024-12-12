@@ -47,19 +47,23 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
-        else if (collision.gameObject.CompareTag("enemy"))
-    {
-        highScoreManager.hitEnemy(collision.contacts[0].point);
-        if (VFX_EasyExplosion_money != null)
+        else if (collision.gameObject.CompareTag("Player"))
         {
-            Vector3 explosionPosition = collision.contacts[0].point;
-            GameObject moneyExplosion = Instantiate(VFX_EasyExplosion_money, explosionPosition, Quaternion.identity);
-            Destroy(moneyExplosion, 2f);
+            return;
         }
+        else if (collision.gameObject.CompareTag("enemy"))
+        {
+            highScoreManager.hitEnemy(collision.contacts[0].point);
+            if (VFX_EasyExplosion_money != null)
+            {
+                Vector3 explosionPosition = collision.contacts[0].point;
+                GameObject moneyExplosion = Instantiate(VFX_EasyExplosion_money, explosionPosition, Quaternion.identity);
+                Destroy(moneyExplosion, 2f);
+            }
 
-        Destroy(gameObject);
-        return;
-    }
+            Destroy(gameObject);
+            return;
+        }
         else if (collision.gameObject.CompareTag("car") || collision.gameObject.CompareTag("explodable")){
             highScoreManager.hitCar(collision.contacts[0].point);
             if (VFX_EasyExplosion_car != null)
@@ -84,7 +88,7 @@ public class Bullet : MonoBehaviour
         //Instantiate(VFX_EasyExplosion, transform.position, transform.rotation);
         Explode();
         // Destroy the bullet upon collision
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     void Explode()
