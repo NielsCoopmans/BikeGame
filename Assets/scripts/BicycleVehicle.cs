@@ -47,6 +47,13 @@ public class BicycleVehicle : MonoBehaviour
     [SerializeField] Transform frontWheeltransform;
     [SerializeField] Transform backWheeltransform;
 
+    [Range(0.000001f, 1)][SerializeField] float turnSmoothing;
+
+    [SerializeField] float maxlayingAngle = 45f;
+    public float targetlayingAngle;
+    [Range(-40, 40)] public float layingammount;
+    [Range(0.000001f, 1)][SerializeField] float leanSmoothing;
+
     public bool frontGrounded;
     public bool rearGrounded;
 
@@ -123,6 +130,7 @@ public class BicycleVehicle : MonoBehaviour
             HandleSteering();
             UpdateWheels();
             UpdateHandle();
+            LayOnTurn();
             CheckForCollision();
             CaptureEnemy();
         }
@@ -157,6 +165,7 @@ public class BicycleVehicle : MonoBehaviour
         if (dataParts.Length >= 4)
         {
             ParseInputData(dataParts);
+            arduinoData = true;
         }
         else
         {
@@ -181,6 +190,7 @@ public class BicycleVehicle : MonoBehaviour
         {
             steeringInput = -parsedSteering;
         }
+
         if (float.TryParse(dataParts[1], out float horn))
         {
             if (horn == 1 && (Time.time - lastFireTime) >= 2f)
@@ -190,6 +200,7 @@ public class BicycleVehicle : MonoBehaviour
                 StartCoroutine(ShowCooldown());
             }
         }
+        
         if (float.TryParse(dataParts[2], out float parsedSpeed))
         {
             verticalInput = Mathf.Clamp(parsedSpeed / 8f, 0f, 50f);
@@ -220,6 +231,9 @@ public class BicycleVehicle : MonoBehaviour
         {
             currentSteeringAngle = steeringInput;
             transform.Rotate(1.60f * currentSteeringAngle * Time.deltaTime * Vector3.up);
+            targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
+            Debug.Log(steeringInput);
+            transform.Rotate(1.60f * steeringInput * Time.deltaTime * Vector3.up);
         }
         else
         {
@@ -236,8 +250,24 @@ public class BicycleVehicle : MonoBehaviour
                 currentSteeringAngle = 0f;
             }
 
-            transform.Rotate(currentSteeringAngle * Time.deltaTime * Vector3.up * 1.80f);
+            transform.Rotate(currentSteeringAngle * Time.deltaTime * Vector3.up);
         }
+    }
+
+    private void LayOnTurn()
+    {
+        Vector3 currentRot = transform.rotation.eulerAngles;
+
+        if (Mathf.Abs(currentSteeringAngle) < 0.5f)
+        {
+            layingammount = Mathf.LerpAngle(layingammount, 0f, leanSmoothing);
+        }
+        else
+        {
+            layingammount = Mathf.LerpAngle(layingammount, targetlayingAngle, leanSmoothing);
+        }
+
+        transform.rotation = Quaternion.Euler(currentRot.x, currentRot.y, layingammount);
     }
 
     public void UpdateWheels()
@@ -247,6 +277,7 @@ public class BicycleVehicle : MonoBehaviour
 
     public void UpdateHandle()
     {
+        Quaternion sethandleRot = frontWheeltransform.rotation;
         handle.localRotation = Quaternion.Euler(handle.localRotation.eulerAngles.x, currentSteeringAngle, handle.localRotation.eulerAngles.z);
     }
 
