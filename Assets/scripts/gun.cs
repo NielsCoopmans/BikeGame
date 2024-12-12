@@ -1,12 +1,13 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Diagnostics;
 
 public class Gun : MonoBehaviour
 {
     public Transform bulletSpawnPoint;
     public GameObject bulletPrefab;
-    public float bulletSpeed = 10f;
+    public float bulletSpeed = 15f;
     public int maxBullets = 10;
     private int currentBullets;
 
@@ -41,10 +42,19 @@ public class Gun : MonoBehaviour
 
     public void FireBullet()
     {
+        BicycleVehicle bicycle = FindObjectOfType<BicycleVehicle>();
+
+        if (bicycle == null)
+        {
+            UnityEngine.Debug.LogError("BicycleVehicle not found in the scene!");
+        }
+        float movementSpeed = bicycle.movementSpeed;
+        UnityEngine.Debug.Log("Bicycle movement speed: " + movementSpeed);
+        //change speed of bullet to add the speed of the bike to the basespeed
         if (currentBullets <= 0) return;
 
         var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
+        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * (bulletSpeed + movementSpeed);
 
         shotSound.Play();
         currentBullets--;
