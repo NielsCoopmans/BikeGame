@@ -30,6 +30,12 @@ public class ShowTextAfterDelay : MonoBehaviour
         // Show the TextMeshPro object
         if (textMeshProObject != null)
         {
+            if(GameStateManager.currentLevel == 1){
+                textMeshProObject.text = "Level One Complete";
+            }
+            else if(GameStateManager.currentLevel == 2){
+                textMeshProObject.text = "You Win!";
+            }
             textMeshProObject.gameObject.SetActive(true);
         }
     }

@@ -11,6 +11,7 @@ public class CountDown : MonoBehaviour
     public TextMeshProUGUI countdownMessage; 
     public TextMeshProUGUI MissionTimeDisplay; 
     public TextMeshProUGUI TimeLeft;
+    public TextMeshProUGUI NearInfo;
 
     public TextMeshProUGUI MissionTimeCounter; 
     public TextMeshProUGUI GameOver; 
@@ -44,14 +45,15 @@ public class CountDown : MonoBehaviour
         
         MissionTimeDisplay.gameObject.SetActive(false);
         MissionTimeCounter.gameObject.SetActive(false);
-       
+        
+
         StartCoroutine(CountDownToStart());
 
     }
 
     public IEnumerator CountDownToStart()
     {
-    
+        
         while (countdownTime > 0)
         {
             countdownDisplay.text = countdownTime.ToString();
@@ -59,17 +61,18 @@ public class CountDown : MonoBehaviour
             yield return new WaitForSeconds(1f);
             countdownTime--;
         }
-        
-        Sound.PlayOneShot(go);
-        countdownDisplay.text = "GO!";
-        
-        yield return new WaitForSeconds(1f);
 
         countdownDisplay.gameObject.SetActive(false);
+        Sound.PlayOneShot(go);
+        countdownMessage.text = "GO!";
+
+        yield return new WaitForSeconds(1f);
+
         countdownMessage.gameObject.SetActive(false);
         bicycleVehicleScript.enabled = true;
         enemyController.enabled = true;
-    
+        NearInfo.text = "Go Down!";
+
 
         MissionTimeCounter.gameObject.SetActive(true);
 

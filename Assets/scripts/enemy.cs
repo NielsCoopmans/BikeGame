@@ -88,10 +88,14 @@ public class EnemyController : MonoBehaviour
     private void AdjustMoveSpeedBasedOnDistance()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-
+        originalMoveSpeed = navigationController.originalSpeed;
         if (distanceToPlayer > slowDistance)
         {
             moveSpeed = originalMoveSpeed * slowFactor; 
+        }
+        else if (navigationController.isSlowed)
+        {
+            moveSpeed = originalMoveSpeed * slowFactor;
         }
         else
         {
