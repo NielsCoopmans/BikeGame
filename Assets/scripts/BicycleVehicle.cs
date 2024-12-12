@@ -47,6 +47,13 @@ public class BicycleVehicle : MonoBehaviour
     [SerializeField] Transform frontWheeltransform;
     [SerializeField] Transform backWheeltransform;
 
+    [Range(0.000001f, 1)][SerializeField] float turnSmoothing;
+
+    [SerializeField] float maxlayingAngle = 45f;
+    public float targetlayingAngle;
+    [Range(-40, 40)] public float layingammount;
+    [Range(0.000001f, 1)][SerializeField] float leanSmoothing;
+
     public bool frontGrounded;
     public bool rearGrounded;
 
@@ -123,6 +130,7 @@ public class BicycleVehicle : MonoBehaviour
             HandleSteering();
             UpdateWheels();
             UpdateHandle();
+            LayOnTurn();
             CheckForCollision();
             CaptureEnemy();
         }
@@ -218,8 +226,8 @@ public class BicycleVehicle : MonoBehaviour
     {
         if (arduinoData)
         {
-            currentSteeringAngle = steeringInput;
-            transform.Rotate(1.60f * currentSteeringAngle * Time.deltaTime * Vector3.up);
+            targetlayingAngle = maxlayingAngle * -steeringInput / maxSteeringAngle;
+            transform.Rotate(1.60f * steeringInput * Time.deltaTime * Vector3.up);
         }
         else
         {
@@ -240,6 +248,22 @@ public class BicycleVehicle : MonoBehaviour
         }
     }
 
+    private void LayOnTurn()
+    {
+        Vector3 currentRot = transform.rotation.eulerAngles;
+
+        if (Mathf.Abs(currentSteeringAngle) < 0.5f)
+        {
+            layingammount = Mathf.LerpAngle(layingammount, 0f, leanSmoothing);
+        }
+        else
+        {
+            layingammount = Mathf.LerpAngle(layingammount, targetlayingAngle, leanSmoothing);
+        }
+
+        transform.rotation = Quaternion.Euler(currentRot.x, currentRot.y, layingammount);
+    }
+
     public void UpdateWheels()
     {
         UpdateSingleWheel(frontWheeltransform);
@@ -247,6 +271,7 @@ public class BicycleVehicle : MonoBehaviour
 
     public void UpdateHandle()
     {
+        Quaternion sethandleRot = frontWheeltransform.rotation;
         handle.localRotation = Quaternion.Euler(handle.localRotation.eulerAngles.x, currentSteeringAngle, handle.localRotation.eulerAngles.z);
     }
 
