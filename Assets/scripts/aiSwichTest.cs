@@ -17,7 +17,7 @@ public class EnemyNavigationController : MonoBehaviour
     private Vector3 velocity;
 
     private bool isSlowed = false;
-    private float originalSpeed;
+    public float originalSpeed;
 
     private Rigidbody rb;
 
