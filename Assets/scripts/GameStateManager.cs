@@ -2,5 +2,14 @@
 
 public static class GameStateManager 
 {
-    public static int currentLevel = 1; // Global variable to track the level
+    public enum Difficulty
+    {
+        Easy,
+        Medium,
+        Hard,
+        Nightmare
+    }
+
+    public static int currentLevel = 1;
+    public static Difficulty difficulty = Difficulty.Easy;
 }

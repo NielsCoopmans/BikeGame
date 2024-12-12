@@ -100,7 +100,7 @@ public class EnemyController : MonoBehaviour
 
         if (navigationController != null)
         {
-            navigationController.UpdateMoveSpeed(moveSpeed);
+            //navigationController.UpdateMoveSpeed(moveSpeed);
         }
     }
 
