@@ -94,7 +94,6 @@ public class BicycleVehicle : MonoBehaviour
     public Vector3 cameraOffset = new Vector3(0f, 2f, -5f); 
     public float smoothFollowSpeed = 0.1f; 
 
-    public EnemyController enemyController;
     public EnemyNavigationController navigationController;
 
     public Slider reloadBar;
@@ -116,8 +115,7 @@ public class BicycleVehicle : MonoBehaviour
 
         if (highScoreManagerObject != null)
             highScoreManager = highScoreManagerObject.GetComponent<HighScoreManager>();
-        if (enemyController == null)
-            enemyController = GetComponent<EnemyController>();
+        
         if (navigationController == null)
             navigationController = GetComponent<EnemyNavigationController>();
 
@@ -501,7 +499,7 @@ public class BicycleVehicle : MonoBehaviour
             }
             else if (clown != null && clown.NearPlayer)
             {
-                clown.capture();
+                clown.Capture();
             }
         }
     }
