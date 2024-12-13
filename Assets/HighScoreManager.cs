@@ -29,7 +29,7 @@ public class HighScoreManager : MonoBehaviour
     void Start()
     {
         //PlayerPrefs.SetInt("HighScore", 0);
-        if (GameStateManager.currentLevel == 1 || GameStateManager.currentLevel == 2) {
+        if (GameStateManager.currentLevel == 1) {
             //reset score at beginnig of game
             PlayerPrefs.SetInt("score", 0);
             previousScore = 0;
@@ -168,6 +168,8 @@ public class HighScoreManager : MonoBehaviour
 
     public void ResetScore()
     {
+        PlayerPrefs.SetInt("score", 0);
+        previousScore = 0;
         score = 0;
     }
 
