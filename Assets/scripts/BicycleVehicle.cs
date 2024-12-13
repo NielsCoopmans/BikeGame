@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading;
@@ -127,6 +128,7 @@ public class BicycleVehicle : MonoBehaviour
     void Update()
     {
         HandleSerialInput();
+        
         if (isColliding)
         {
             HandleBackwardMovement();
@@ -474,6 +476,7 @@ public class BicycleVehicle : MonoBehaviour
             }
         }
     }
+
     private IEnumerator CameraShake()
     {
         float elapsed = 0f;
@@ -488,6 +491,7 @@ public class BicycleVehicle : MonoBehaviour
             yield return null;
         }
     }
+
     private void CaptureEnemy()
     {          
         if (buttonPressed == 1)
@@ -503,8 +507,10 @@ public class BicycleVehicle : MonoBehaviour
             }
         }
     }
+
     public void OnApplicationQuit()
     {
         serialManager.ClosePort();
+        SceneManager.UnloadSceneAsync("BikeGame 2");
     }
 }
