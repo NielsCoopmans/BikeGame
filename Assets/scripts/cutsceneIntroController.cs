@@ -23,7 +23,7 @@ public class cutsceneIntroController : MonoBehaviour
     void ForceCloseCutscene()
     {
         Debug.Log("CutsceneIntro unloaded. Going to main game");
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("BikeGame 2");
     }
 
     // Update is called once per frame
