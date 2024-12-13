@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour
     public Transform playerTransform;
 
     public int missionTime = 120;
-    public TextMeshProUGUI gameOverText;
+    
     public TextMeshProUGUI TimeNearText;
 
     public Transform enemyObject;
@@ -110,7 +110,7 @@ public class EnemyController : MonoBehaviour
 
     public void enemyhit()
     {
-        gameOverText.text = "YOU WON";
+        
         TriggerCutscene();
     }
 
