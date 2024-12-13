@@ -81,11 +81,13 @@ public class BicycleVehicle : MonoBehaviour
     public AudioClip followArrow;
     public AudioClip captureClown;
     public AudioClip goOutside;
+    public AudioClip goDown;
 
     private bool shootatcarcollided = false;
     private bool getclowncollided = false;
     private bool goOutsidecollided = false;
     private bool followArrowSpoken = false;
+    private bool godowncollided = false;
 
     [Header("Camera Settings")]
     public Transform bikeTransform; 
@@ -134,7 +136,6 @@ public class BicycleVehicle : MonoBehaviour
         }
         else if (isCountdownComplete)
         {
-            NearInfo.text = "Leave the garage!";
             HandleEngine();
             HandleSteering();
             UpdateWheels();
@@ -153,12 +154,10 @@ public class BicycleVehicle : MonoBehaviour
             {
                 if (GameManager.Instance.SkipTutorial)
                 {
-                    NearInfo.text = "Get closer to the enemy!";
                     bikeTransform.position = playStartPosition.position;
                 }
                 else
                 {
-                    //NearInfo.text = "Go Down!";
                     bikeTransform.position = tutorialStartPosition.position;
                 }
             }
@@ -365,11 +364,11 @@ public class BicycleVehicle : MonoBehaviour
                 }
                 else if (hitCollider.CompareTag("carblock"))
                 {
-                    NearInfo.text = "Shoot at the blue car!";
+                    NearInfo.text = "Shoot at the pink car!";
                     if (!shootatcarcollided)
                     {
-                        AudioSource tempAudioSource2 = hitCollider.gameObject.AddComponent<AudioSource>();
-                        tempAudioSource2.PlayOneShot(shootCar);
+                        AudioSource tempAudioSource = hitCollider.gameObject.AddComponent<AudioSource>();
+                        tempAudioSource.PlayOneShot(shootCar);
                         shootatcarcollided = true;
                     }     
 
@@ -379,8 +378,8 @@ public class BicycleVehicle : MonoBehaviour
                     NearInfo.text = "Capture the clown!";
                     if (!getclowncollided)
                     {
-                        AudioSource tempAudioSource3 = hitCollider.gameObject.AddComponent<AudioSource>();
-                        tempAudioSource3.PlayOneShot(captureClown);
+                        AudioSource tempAudioSource = hitCollider.gameObject.AddComponent<AudioSource>();
+                        tempAudioSource.PlayOneShot(captureClown);
                         getclowncollided = true;
                     }
 
@@ -390,11 +389,21 @@ public class BicycleVehicle : MonoBehaviour
                     NearInfo.text = "Go Outside!";
                     if (!goOutsidecollided)
                     {
-                        AudioSource tempAudioSource3 = hitCollider.gameObject.AddComponent<AudioSource>();
-                        tempAudioSource3.PlayOneShot(goOutside);
+                        AudioSource tempAudioSource = hitCollider.gameObject.AddComponent<AudioSource>();
+                        tempAudioSource.PlayOneShot(goOutside);
                         goOutsidecollided = true;
                     }
 
+                }
+                else if (hitCollider.CompareTag("goDownblock"))
+                {
+                    NearInfo.text = "Go Down!";
+                    if (!godowncollided)
+                    {
+                        AudioSource tempAudioSource = hitCollider.gameObject.AddComponent<AudioSource>();
+                        tempAudioSource.PlayOneShot(goDown);
+                        godowncollided = true;
+                    }
                 }
                 else
                 {
