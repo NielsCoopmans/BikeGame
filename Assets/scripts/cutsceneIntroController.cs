@@ -22,7 +22,7 @@ public class cutsceneIntroController : MonoBehaviour
 
     void ForceCloseCutscene()
     {
-        Debug.Log("CutsceneIntro unloaded. Goind to main game");
+        Debug.Log("CutsceneIntro unloaded. Going to main game");
         SceneManager.LoadScene(2);
     }
 
