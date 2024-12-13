@@ -112,6 +112,7 @@ public class BicycleVehicle : MonoBehaviour
 
     void Start()
     {
+
         GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
         NearInfo.text = "                   ";
 
