@@ -33,7 +33,7 @@ public class EnemyNavigationController : MonoBehaviour
                 movementSpeed = 14f;
                 break;
             case GameStateManager.Difficulty.Hard:
-                movementSpeed = 18f;
+                movementSpeed = 20f;
                 break;
             case GameStateManager.Difficulty.Nightmare:
                 movementSpeed = 25f;

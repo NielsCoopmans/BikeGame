@@ -12,6 +12,7 @@ public class PowerUp : MonoBehaviour
     public float duration = 4f;
     public Spawner spawner; // Reference to the spawner
     public AudioSource audioSource;
+    public AudioClip reloadSound;
 
     void Start()
     {
@@ -97,8 +98,10 @@ public class PowerUp : MonoBehaviour
 
             Destroy(gameObject);
         }
-        else
+        else if (gameObject.CompareTag("AmmoPowerup"))
         {
+            //audioSource.Play();
+            AudioSource.PlayClipAtPoint(reloadSound, transform.position);
             UnityEngine.Debug.Log("Ammo Picked Up");
 
             // Notify the spawner to remove this power-up from the list
