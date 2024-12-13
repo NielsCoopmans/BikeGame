@@ -13,8 +13,7 @@ public class CountDown : MonoBehaviour
     public TextMeshProUGUI TimeLeft;
     public TextMeshProUGUI NearInfo;
 
-    public TextMeshProUGUI MissionTimeCounter; 
-    public TextMeshProUGUI GameOver; 
+    public TextMeshProUGUI MissionTimeCounter;
     public EnemyController enemyController;
 
     public Color normalColor = Color.white;
@@ -96,12 +95,11 @@ public class CountDown : MonoBehaviour
             MissionTimeCounter.text = missionTime.ToString();
             yield return new WaitForSeconds(1f);
             missionTime--;
-            if (missionTime <= 20 && !warningTriggered)
+            if (missionTime <= 10 && !warningTriggered)
                 timeAlmostUp();
         }
         if (MissionTimeCounter != null){
             MissionTimeCounter.text = "Time's Up!";
-            GameOver.text = "GAME OVER";
             enemyController.TriggerGameOverCutscene();  
         }
     }
