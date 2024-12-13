@@ -17,6 +17,7 @@ public class BicycleVehicle : MonoBehaviour
     private SerialManager serialManager;
 
     public EnemyController enemy;
+    public ClownController clown;
     public bool isCountdownComplete = false;
 
     private float lastFireTime = -5f;
@@ -488,6 +489,10 @@ public class BicycleVehicle : MonoBehaviour
             {
                 highScoreManager.GetBadGuy();
                 enemy.enemyhit();
+            }
+            else if (clown != null && clown.NearPlayer)
+            {
+                clown.capture();
             }
         }
     }
