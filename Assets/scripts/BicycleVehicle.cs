@@ -50,7 +50,6 @@ public class BicycleVehicle : MonoBehaviour
     [SerializeField] Transform backWheeltransform;
 
     [Range(0.000001f, 1)][SerializeField] float turnSmoothing;
-    [Range(1f, 3)][SerializeField] float steeringSensitivity;
 
     public float targetlayingAngle;
     [Range(-40, 40)] public float layingammount;
@@ -110,8 +109,6 @@ public class BicycleVehicle : MonoBehaviour
 
     void Start()
     {
-        serialManager = new SerialManager(portName, baudRate, readTimeout);
-        
         GameObject highScoreManagerObject = GameObject.Find("HighScoreManager");
         NearInfo.text = "                   ";
 
@@ -124,7 +121,7 @@ public class BicycleVehicle : MonoBehaviour
 
         baseSpeed = movementSpeed;
         InitializeVehiclePosition();
-        
+        serialManager = new SerialManager(portName, baudRate, readTimeout);
     }
 
     void Update()
@@ -249,7 +246,7 @@ public class BicycleVehicle : MonoBehaviour
         if (arduinoData)
         {
             currentSteeringAngle = steeringInput;
-            transform.Rotate(steeringSensitivity * currentSteeringAngle * Time.deltaTime * Vector3.up);
+            transform.Rotate(1.60f * currentSteeringAngle * Time.deltaTime * Vector3.up);
         }
         else
         {
