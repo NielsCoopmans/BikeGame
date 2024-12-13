@@ -26,7 +26,7 @@ public class CountDown : MonoBehaviour
     public AudioSource Sound;
     public AudioClip go;
     public AudioClip count;
-    public AudioClip goDown;
+    
 
     private float orginalFontSize;
 
@@ -72,8 +72,7 @@ public class CountDown : MonoBehaviour
         countdownMessage.gameObject.SetActive(false);
         bicycleVehicleScript.enabled = true;
         enemyController.enabled = true;
-        //NearInfo.text = "Go Down!";
-        Sound.PlayOneShot(goDown);
+        NearInfo.text = "Leave the garage!";
 
 
         MissionTimeCounter.gameObject.SetActive(true);

@@ -23,6 +23,7 @@ TagManager:
   - carblock
   - goOutsideblock
   - PlayerPartBike
+  - goDownblock
   layers:
   - Default
   - TransparentFX
