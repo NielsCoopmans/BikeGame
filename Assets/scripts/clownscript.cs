@@ -10,7 +10,7 @@ public class ClownController : MonoBehaviour
     public Transform playerTransform;
     public bool NearPlayer;
     public GameObject BloodSplash;
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     public AudioClip clip;
 
     private void Start()
@@ -33,7 +33,7 @@ public class ClownController : MonoBehaviour
         }
     }
 
-    public void capture()
+    public void Capture()
     {
         // Create a blood splash effect
         Instantiate(BloodSplash, transform.position, transform.rotation);
