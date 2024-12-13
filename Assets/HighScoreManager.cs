@@ -28,10 +28,11 @@ public class HighScoreManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (GameStateManager.currentLevel == 1) {
+        if (GameStateManager.currentLevel == 1 || GameStateManager.currentLevel == 2) {
             //reset score at beginnig of game
             PlayerPrefs.SetInt("score", 0);
             previousScore = 0;
+            score = 0;
         }
         else if (GameStateManager.currentLevel != 1)
         {
@@ -79,7 +80,7 @@ public class HighScoreManager : MonoBehaviour
             }
         }
         //store original text color
-        originalColor = ScoreText.color;
+        //originalColor = ScoreText.color;
 
 
 
@@ -123,10 +124,6 @@ public class HighScoreManager : MonoBehaviour
     {
         //UpdateHighScoreText();
         UpdateScoreText();
-        if (Input.GetKeyUp(KeyCode.H))
-        {
-            GetBadGuy();
-        }
     }
 
     public void GetBadGuy()
@@ -166,6 +163,11 @@ public class HighScoreManager : MonoBehaviour
         UpdateScoreText();
         UpdateHighScoreText();
         //PlayerPrefs.SetInt("score", score);
+    }
+
+    public void ResetScore()
+    {
+        score = 0;
     }
 
     public void ShowHitText(Vector3 position, int number)
