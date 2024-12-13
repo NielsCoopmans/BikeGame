@@ -43,7 +43,7 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
-        else if (collision.gameObject.CompareTag("Player"))
+        else if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("PlayerPartBike"))
         {
             return;
         }
