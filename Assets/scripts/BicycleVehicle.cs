@@ -369,7 +369,7 @@ public class BicycleVehicle : MonoBehaviour
                 }
                 else if (hitCollider.CompareTag("carblock"))
                 {
-                    NearInfo.text = "Shoot at the pink car!";
+                    NearInfo.text = "Clear the car to go down!";
                     if (!shootatcarcollided)
                     {
                         AudioSource tempAudioSource = hitCollider.gameObject.AddComponent<AudioSource>();
@@ -386,6 +386,7 @@ public class BicycleVehicle : MonoBehaviour
                         AudioSource tempAudioSource = hitCollider.gameObject.AddComponent<AudioSource>();
                         tempAudioSource.PlayOneShot(captureClown);
                         getclowncollided = true;
+                        godowncollided = false;
                     }
 
                 }
