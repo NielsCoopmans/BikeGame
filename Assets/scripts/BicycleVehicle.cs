@@ -58,6 +58,7 @@ public class BicycleVehicle : MonoBehaviour
 
     public bool frontGrounded;
     public bool rearGrounded;
+    public bool enemyStarted =false;
 
     [Header("Collision Handling")]
     public float rayDistance = 2f; 
@@ -245,7 +246,7 @@ public class BicycleVehicle : MonoBehaviour
         if (arduinoData)
         {
             currentSteeringAngle = steeringInput;
-            transform.Rotate(1.60f * currentSteeringAngle * Time.deltaTime * Vector3.up);
+            transform.Rotate(1.8f * currentSteeringAngle * Time.deltaTime * Vector3.up);
         }
         else
         {
@@ -346,12 +347,13 @@ public class BicycleVehicle : MonoBehaviour
                 }
                 else if (hitCollider.CompareTag("startEnemy"))
                 {
+                    enemyStarted = true;
                     navigationController.StartMoving();
                     if (!calledCountdown)
                     {
                         countdown.startMissionTimeCountdown();
                         calledCountdown = true;
-                        NearInfo.text = "Get closer to the enemy!";
+                        
                         InfoButton.enabled = false;
                         InfoGun.enabled = false;
                         TimeLeft.enabled = true;
@@ -362,7 +364,7 @@ public class BicycleVehicle : MonoBehaviour
                         audioSource.PlayOneShot(followArrow);
                         followArrowSpoken = true;
                     }
-                    
+                    NearInfo.text = "Get closer to the enemy!";
                 }
                 else if (hitCollider.CompareTag("carblock"))
                 {
@@ -511,6 +513,6 @@ public class BicycleVehicle : MonoBehaviour
     public void OnApplicationQuit()
     {
         serialManager.ClosePort();
-        SceneManager.UnloadSceneAsync("BikeGame 2");
+        
     }
 }
