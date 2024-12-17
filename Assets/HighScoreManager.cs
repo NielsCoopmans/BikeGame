@@ -2,88 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System.Diagnostics;
-using System;
+using System.Linq;
 
 public class HighScoreManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI HighScoreText;
     [SerializeField] TextMeshProUGUI ScoreText;
     [SerializeField] GameObject textPrefab;
+    [SerializeField] TextMeshProUGUI leaderboardNotificationText; // Text to display live leaderboard notifications
+
     static int score;
-    private int previousScore; // To track the score change
+    private int previousScore;
 
     private CountDown countDownScript;
+    private List<LeaderboardEntry> leaderboard;
+    private const int maxLeaderboardEntries = 10;
 
     private Color originalColor = Color.black;
     private Color greenColor = Color.green;
     private Color redColor = Color.red;
 
-    private int penalty1 = 0;
-    private int bonus1 = 0;
-    private int bonus2 = 0;
+    private int penalty1 = -10;
+    private int bonus1 = 10;
+    private int bonus2 = 20;
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
-        //PlayerPrefs.SetInt("HighScore", 0);
-        if (GameStateManager.currentLevel == 1) {
-            //reset score at beginnig of game
+        if (GameStateManager.currentLevel == 1)
+        {
             PlayerPrefs.SetInt("score", 0);
             previousScore = 0;
             score = 0;
         }
         else if (GameStateManager.currentLevel != 1)
         {
-            //get score from previous level
             score = PlayerPrefs.GetInt("score", 0);
             previousScore = score;
         }
-        //UpdateHighScoreText();
-        GameObject CanvasGameObject = GameObject.Find("Canvas");
-        if (CanvasGameObject != null)
-        {
-            countDownScript = CanvasGameObject.GetComponent<CountDown>();
-            if (countDownScript != null)
-            {
-                UnityEngine.Debug.Log("found countdownscript");
-                UpdateScoreText();
-                UpdateHighScoreText();
-            }
-        }
-        // Attempt to find and assign ScoreText if it's null
-        if (ScoreText == null)
-        {
-            GameObject scoreTextObject = GameObject.Find("ScoreText");
-            if (scoreTextObject != null)
-            {
-                ScoreText = scoreTextObject.GetComponent<TextMeshProUGUI>();
-            }
-            else
-            {
-                UnityEngine.Debug.Log("ScoreText GameObject not found in the scene!");
-                return;
-            }
-        }
-        if (HighScoreText == null)
-        {
-            GameObject HighScoreTextObject = GameObject.Find("HighScoreText");
-            if (HighScoreTextObject != null)
-            {
-                HighScoreText = HighScoreTextObject.GetComponent<TextMeshProUGUI>();
-            }
-            else
-            {
-                UnityEngine.Debug.Log("HighScoreText GameObject not found in the scene!");
-                return;
-            }
-        }
-        //store original text color
-        //originalColor = ScoreText.color;
-
-
 
         switch (GameStateManager.difficulty)
         {
@@ -118,59 +73,61 @@ public class HighScoreManager : MonoBehaviour
                 break;
         }
 
+
+        leaderboard = LoadLeaderboard();
+        UpdateHighScoreText();
+        UpdateScoreText();
+
+        GameObject canvas = GameObject.Find("Canvas");
+        if (canvas != null)
+        {
+            countDownScript = canvas.GetComponent<CountDown>();
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //UpdateHighScoreText();
         UpdateScoreText();
     }
 
     public void GetBadGuy()
     {
-        UnityEngine.Debug.Log("GetBadGuy called");
-        GameObject CanvasGameObject = GameObject.Find("Canvas");
         if (countDownScript != null)
         {
             int missionTime = countDownScript.getMissionTime();
-            UnityEngine.Debug.Log("Mission Time: " + missionTime);
-            int bonusScore = 0;
-            switch (GameStateManager.difficulty)
-            {
-                case GameStateManager.Difficulty.Easy:
-                    bonusScore = missionTime;
-                    break;
-
-                case GameStateManager.Difficulty.Medium:
-                    bonusScore = (int)Math.Round((double)(missionTime * 1.25));
-                    break;
-
-                case GameStateManager.Difficulty.Hard:
-                    bonusScore = (int)Math.Round((double)(missionTime * 1.5));
-                    break;
-
-                case GameStateManager.Difficulty.Nightmare:
-                    bonusScore = (int)Math.Round((double)(missionTime * 2));
-                    break;
-
-                default:
-                    bonusScore = missionTime; // Fallback, if needed
-                    break;
-            }
+            int bonusScore = (int) Mathf.Round(missionTime * GetDifficultyMultiplier());
             score += bonusScore;
         }
         CheckHighScore();
         UpdateScoreText();
         UpdateHighScoreText();
-        //PlayerPrefs.SetInt("score", score);
     }
 
-    public void ResetScore()
+    public void hitCar(Vector3 hitPosition)
     {
-        PlayerPrefs.SetInt("score", 0);
-        previousScore = 0;
-        score = 0;
+        score += bonus1;
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        ShowHitText(hitPosition, bonus1);
+    }
+
+    public void hitPedestrian(Vector3 hitPosition)
+    {
+        score += penalty1;
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        ShowHitText(hitPosition, penalty1);
+    }
+
+    public void hitEnemy(Vector3 hitPosition)
+    {
+        score += bonus2;
+        CheckHighScore();
+        UpdateScoreText();
+        UpdateHighScoreText();
+        ShowHitText(hitPosition, bonus2);
     }
 
     public void ShowHitText(Vector3 position, int number)
@@ -227,82 +184,108 @@ public class HighScoreManager : MonoBehaviour
         Destroy(textTransform.gameObject);
     }
 
-    public void hitCar(Vector3 hitPosition)
+    void CheckHighScore()
     {
-        UnityEngine.Debug.Log("hitCar called");
-        GameObject CanvasGameObject = GameObject.Find("Canvas");
-        score += bonus1;
-        CheckHighScore();
-        UpdateScoreText();
-        UpdateHighScoreText();
-        ShowHitText(hitPosition, bonus1);
+        // Update the leaderboard if the player's score is higher than someone else's
+        UpdateLeaderboard("Player", score);
     }
 
-    public void hitPedestrian(Vector3 hitPosition)
+    void UpdateLeaderboard(string playerName, int newScore)
     {
-        UnityEngine.Debug.Log("hitPedestrian called");
-        GameObject CanvasGameObject = GameObject.Find("Canvas");
-        score = score + penalty1;
-        CheckHighScore();
-        UpdateScoreText();
-        UpdateHighScoreText();
-        ShowHitText(hitPosition, penalty1);
-    }
-
-    public void hitEnemy(Vector3 hitPosition)
-    {
-        UnityEngine.Debug.Log("hitEnemy called");
-        GameObject CanvasGameObject = GameObject.Find("Canvas");
-        score += bonus2;
-        CheckHighScore();
-        UpdateScoreText();
-        UpdateHighScoreText();
-        ShowHitText(hitPosition, bonus2);
-    }
-
-    void CheckHighScore() //update highscore
-    {
-        if (score > PlayerPrefs.GetInt("HighScore", 0))
+        for (int i = 0; i < leaderboard.Count; i++)
         {
-            PlayerPrefs.SetInt("HighScore", score);
+            if (newScore > leaderboard[i].score)
+            {
+                // Notify the player that they surpassed someone
+                string beatenPlayerName = leaderboard[i].playerName;
+                StartCoroutine(ShowLeaderboardNotification($"You passed {beatenPlayerName}!"));
+
+                // Insert the player into the leaderboard
+                leaderboard.Insert(i, new LeaderboardEntry(playerName, newScore));
+
+                // Remove excess entries to keep only the top N scores
+                if (leaderboard.Count > maxLeaderboardEntries)
+                {
+                    leaderboard.RemoveAt(leaderboard.Count - 1);
+                }
+
+                SaveLeaderboard();
+                break;
+            }
         }
     }
 
     void UpdateScoreText()
     {
-        int scoreChange = score - previousScore;
-
         ScoreText.text = $"Score: {score}";
         PlayerPrefs.SetInt("score", score);
-
-        // Start the blink coroutine based on score change
-        if (scoreChange > 0)
-        {
-            StartCoroutine(BlinkTextColor(greenColor));
-        }
-        else if (scoreChange < 0)
-        {
-            StartCoroutine(BlinkTextColor(redColor));
-        }
-
-        // Update previous score
-        previousScore = score;
     }
 
     void UpdateHighScoreText()
     {
-        HighScoreText.text = $"HighScore: {PlayerPrefs.GetInt("HighScore", 0)}";
+        if (leaderboard.Count > 0)
+        {
+            HighScoreText.text = $"HighScore: {leaderboard[0].score}";
+        }
+        else
+        {
+            HighScoreText.text = "HighScore: 0";
+        }
     }
 
-    IEnumerator BlinkTextColor(Color targetColor)
+    void SaveLeaderboard()
     {
-        // Change to the target color
-        ScoreText.color = targetColor;
+        string json = JsonUtility.ToJson(new LeaderboardWrapper { entries = leaderboard });
+        PlayerPrefs.SetString("Leaderboard", json);
+    }
 
-        // Wait for a short duration
-        yield return new WaitForSeconds(0.25f);
+    List<LeaderboardEntry> LoadLeaderboard()
+    {
+        string json = PlayerPrefs.GetString("Leaderboard", string.Empty);
+        if (!string.IsNullOrEmpty(json))
+        {
+            LeaderboardWrapper wrapper = JsonUtility.FromJson<LeaderboardWrapper>(json);
+            return wrapper.entries;
+        }
+        return new List<LeaderboardEntry>();
+    }
 
-        // Revert to the original color
-        ScoreText.color = originalColor;
+    IEnumerator ShowLeaderboardNotification(string message)
+    {
+        leaderboardNotificationText.text = message;
+        leaderboardNotificationText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f); // Show for 3 seconds
+        leaderboardNotificationText.gameObject.SetActive(false);
+    }
+
+    float GetDifficultyMultiplier()
+    {
+        switch (GameStateManager.difficulty)
+        {
+            case GameStateManager.Difficulty.Easy: return 1f;
+            case GameStateManager.Difficulty.Medium: return 1.25f;
+            case GameStateManager.Difficulty.Hard: return 1.5f;
+            case GameStateManager.Difficulty.Nightmare: return 2;
+            default: return 1;
+        }
+    }
+
+    [System.Serializable]
+    public class LeaderboardEntry
+    {
+        public string playerName;
+        public int score;
+
+        public LeaderboardEntry(string name, int score)
+        {
+            this.playerName = name;
+            this.score = score;
+        }
+    }
+
+    [System.Serializable]
+    public class LeaderboardWrapper
+    {
+        public List<LeaderboardEntry> entries;
     }
 }
