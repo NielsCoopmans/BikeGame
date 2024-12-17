@@ -195,44 +195,42 @@ public class HighScoreManager : MonoBehaviour
     void UpdateLeaderboard(string playerName, int newScore)
     {
         bool playerExists = false;
-
-        // Check if the player already exists in the leaderboard
+        int previousRank = -1;
         for (int i = 0; i < leaderboard.Count; i++)
         {
             if (leaderboard[i].playerName == playerName)
             {
                 playerExists = true;
-
-                // If the new score is higher, update the score
+                previousRank = i;
                 if (newScore > leaderboard[i].score)
                 {
                     leaderboard[i].score = newScore;
-
-                    // Notify the player that their score was updated
-                    StartCoroutine(ShowLeaderboardNotification($"Your score has been updated!"));
-
-                    // No need to insert; just update the score
                     SaveLeaderboard();
                 }
                 break;
             }
         }
 
-        // If the player does not exist, add them to the leaderboard
         if (!playerExists && leaderboard.Count < maxLeaderboardEntries)
         {
             leaderboard.Add(new LeaderboardEntry(playerName, newScore));
             SaveLeaderboard();
         }
 
-        // After checking and possibly adding a new player, sort the leaderboard if needed
         leaderboard.Sort((entry1, entry2) => entry2.score.CompareTo(entry1.score));
 
-        // Remove excess entries to keep only the top N scores
         if (leaderboard.Count > maxLeaderboardEntries)
         {
             leaderboard.RemoveAt(leaderboard.Count - 1);
             SaveLeaderboard();
+        }
+
+        int newRank = leaderboard.FindIndex(entry => entry.playerName == playerName);
+
+        if (newRank < previousRank)
+        {
+            string beatenPlayerName = leaderboard[previousRank].playerName;
+            StartCoroutine(ShowLeaderboardNotification($"You passed {beatenPlayerName}!"));
         }
     }
 
