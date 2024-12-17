@@ -9,10 +9,11 @@ public class HighScoreManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI HighScoreText;
     [SerializeField] TextMeshProUGUI ScoreText;
     [SerializeField] GameObject textPrefab;
-    [SerializeField] TextMeshProUGUI leaderboardNotificationText; // Text to display live leaderboard notifications
+    [SerializeField] TextMeshProUGUI leaderboardNotificationText;
 
     static int score;
     private int previousScore;
+    string playerName;
 
     private CountDown countDownScript;
     private List<LeaderboardEntry> leaderboard;
@@ -39,6 +40,7 @@ public class HighScoreManager : MonoBehaviour
             score = PlayerPrefs.GetInt("score", 0);
             previousScore = score;
         }
+        playerName = PlayerPrefs.GetString("playerName", "Guest");
 
         switch (GameStateManager.difficulty)
         {
@@ -187,33 +189,53 @@ public class HighScoreManager : MonoBehaviour
     void CheckHighScore()
     {
         // Update the leaderboard if the player's score is higher than someone else's
-        UpdateLeaderboard("Player", score);
+        UpdateLeaderboard(playerName, score);
     }
 
     void UpdateLeaderboard(string playerName, int newScore)
     {
+        bool playerExists = false;
+
+        // Check if the player already exists in the leaderboard
         for (int i = 0; i < leaderboard.Count; i++)
         {
-            if (newScore > leaderboard[i].score)
+            if (leaderboard[i].playerName == playerName)
             {
-                // Notify the player that they surpassed someone
-                string beatenPlayerName = leaderboard[i].playerName;
-                StartCoroutine(ShowLeaderboardNotification($"You passed {beatenPlayerName}!"));
+                playerExists = true;
 
-                // Insert the player into the leaderboard
-                leaderboard.Insert(i, new LeaderboardEntry(playerName, newScore));
-
-                // Remove excess entries to keep only the top N scores
-                if (leaderboard.Count > maxLeaderboardEntries)
+                // If the new score is higher, update the score
+                if (newScore > leaderboard[i].score)
                 {
-                    leaderboard.RemoveAt(leaderboard.Count - 1);
-                }
+                    leaderboard[i].score = newScore;
 
-                SaveLeaderboard();
+                    // Notify the player that their score was updated
+                    StartCoroutine(ShowLeaderboardNotification($"Your score has been updated!"));
+
+                    // No need to insert; just update the score
+                    SaveLeaderboard();
+                }
                 break;
             }
         }
+
+        // If the player does not exist, add them to the leaderboard
+        if (!playerExists && leaderboard.Count < maxLeaderboardEntries)
+        {
+            leaderboard.Add(new LeaderboardEntry(playerName, newScore));
+            SaveLeaderboard();
+        }
+
+        // After checking and possibly adding a new player, sort the leaderboard if needed
+        leaderboard.Sort((entry1, entry2) => entry2.score.CompareTo(entry1.score));
+
+        // Remove excess entries to keep only the top N scores
+        if (leaderboard.Count > maxLeaderboardEntries)
+        {
+            leaderboard.RemoveAt(leaderboard.Count - 1);
+            SaveLeaderboard();
+        }
     }
+
 
     void UpdateScoreText()
     {
