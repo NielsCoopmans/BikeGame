@@ -61,8 +61,9 @@ public class CountDown : MonoBehaviour
             yield return new WaitForSeconds(1f);
             countdownTime--;
         }
-
+        yield return new WaitForSeconds(1f);
         countdownDisplay.gameObject.SetActive(false);
+        
         Sound.PlayOneShot(go);
         countdownMessage.text = "GO!";
 
