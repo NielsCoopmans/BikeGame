@@ -238,9 +238,18 @@ public class BicycleVehicle : MonoBehaviour
     public void HandleEngine()
     {
         float targetSpeed = verticalInput * movementSpeed * Time.deltaTime;
+        float speedDifference = targetSpeed - currentSpeed;
+        currentSpeed += speedDifference * Mathf.Exp(-10f * Time.deltaTime);
+        transform.Translate(Vector3.forward * currentSpeed);
+    }    
+
+    /* old function
+    public void HandleEngine()
+    {
+        float targetSpeed = verticalInput * movementSpeed * Time.deltaTime;
         currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, 0.1f);
         transform.Translate(Vector3.forward * currentSpeed);
-    }
+    } */
 
     public void HandleSteering()
     {
