@@ -26,8 +26,13 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(1);
    }
 
-   public void QuitGame (){
-        Debug.Log("QUIT!)");
-        Application.Quit();
-   }
+   public void QuitGame()
+     {
+     Debug.Log("QUIT!");
+          #if UNITY_EDITOR
+               UnityEditor.EditorApplication.isPlaying = false;
+          #else
+               Application.Quit();
+          #endif
+     }
 }
