@@ -85,6 +85,7 @@ public class BicycleVehicle : MonoBehaviour
     public AudioClip goOutside;
     public AudioClip goDown;
     public AudioClip woodenBoxDestroyCollisionSound;
+    public AudioClip barrelDestroyCollisionSound;
 
     private bool shootatcarcollided = false;
     private bool getclowncollided = false;
@@ -501,6 +502,13 @@ public class BicycleVehicle : MonoBehaviour
                     if (woodenBoxDestroyCollisionSound != null)
                     {
                         audioSource.PlayOneShot(woodenBoxDestroyCollisionSound);
+                    }
+                }
+                else if (hitCollider.gameObject.name.Contains("Barrel"))
+                {
+                    if (barrelDestroyCollisionSound != null)
+                    {
+                        audioSource.PlayOneShot(barrelDestroyCollisionSound);
                     }
                 }
             }

@@ -9825,7 +9825,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 100
   bounceSpeed: 2
-  bounceHeight: 0.5
+  bounceHeight: 0.35
 --- !u!1 &1289803115217724
 GameObject:
   m_ObjectHideFlags: 0
