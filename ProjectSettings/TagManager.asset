@@ -24,6 +24,7 @@ TagManager:
   - goOutsideblock
   - PlayerPartBike
   - goDownblock
+  - explodableAndSmall
   layers:
   - Default
   - TransparentFX

@@ -60,7 +60,8 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        else if (collision.gameObject.CompareTag("car") || collision.gameObject.CompareTag("explodable")){
+        else if (collision.gameObject.CompareTag("car") || collision.gameObject.CompareTag("explodable") || collision.gameObject.CompareTag("explodableAndSmall"))
+        {
             highScoreManager.hitCar(collision.contacts[0].point);
             if (VFX_EasyExplosion_car != null)
             {

@@ -84,6 +84,7 @@ public class BicycleVehicle : MonoBehaviour
     public AudioClip captureClown;
     public AudioClip goOutside;
     public AudioClip goDown;
+    public AudioClip woodenBoxDestroyCollisionSound;
 
     private bool shootatcarcollided = false;
     private bool getclowncollided = false;
@@ -424,6 +425,25 @@ public class BicycleVehicle : MonoBehaviour
                         godowncollided = true;
                     }
                 }
+                else if (hitCollider.CompareTag("explodableAndSmall"))
+                {
+                    PlayCollisionSound(hitCollider);
+                    Transform parent = hitCollider.transform.parent; // Get the parent of the collided object
+
+                    // Check if the parent exists and also has the same tag
+                    if (parent != null && parent.CompareTag("explodableAndSmall"))
+                    {
+                        // Destroy the parent, which will also destroy the child
+                        Destroy(parent.gameObject);
+                    }
+                    else
+                    {
+                        // No valid parent; just destroy the collided object
+                        Destroy(hitCollider.gameObject);
+                    }
+                    //Destroy(hitCollider.gameObject);
+                    break;
+                }
                 else
                 {
                     collisionTimer = backwardDuration;
@@ -469,9 +489,19 @@ public class BicycleVehicle : MonoBehaviour
             }
             else if (hitCollider.CompareTag("Pole"))
             {
-                if (bushCollisionSound != null)
+                if (poleCollisionSound != null)
                 {
                     audioSource.PlayOneShot(poleCollisionSound);
+                }
+            }
+            else if (hitCollider.CompareTag("explodableAndSmall"))
+            {
+                if (hitCollider.gameObject.name.Contains("Wood") || hitCollider.gameObject.name.Contains("Palet"))
+                {
+                    if (woodenBoxDestroyCollisionSound != null)
+                    {
+                        audioSource.PlayOneShot(woodenBoxDestroyCollisionSound);
+                    }
                 }
             }
             else

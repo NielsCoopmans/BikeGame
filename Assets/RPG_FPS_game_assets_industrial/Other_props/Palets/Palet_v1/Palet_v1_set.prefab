@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 64000011041005592}
   m_Layer: 0
   m_Name: Palet_v1_set
-  m_TagString: explodable
+  m_TagString: explodableAndSmall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
