@@ -130,7 +130,11 @@ public class BicycleVehicle : MonoBehaviour
     void Update()
     {
         HandleSerialInput();
-        
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            OnApplicationQuit();
+            SceneManager.LoadScene("Menu");
+        }
         if (isColliding)
         {
             HandleBackwardMovement();
@@ -524,6 +528,5 @@ public class BicycleVehicle : MonoBehaviour
     public void OnApplicationQuit()
     {
         serialManager.ClosePort();
-        
     }
 }
