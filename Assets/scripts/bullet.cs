@@ -76,7 +76,25 @@ public class Bullet : MonoBehaviour
                 }
                 Destroy(explosion, 2f);
             }
-            Destroy(collision.gameObject);
+            if (collision.gameObject.CompareTag("explodableAndSmall"))//stacked boxes
+            {
+                // Check if the parent exists and also has the same tag
+                Transform parent = collision.gameObject.transform.parent;
+                if (parent != null && parent.CompareTag("explodableAndSmall") && collision.gameObject.name.Contains("Wood"))
+                {
+                    // Destroy the parent, which will also destroy the child
+                    Destroy(parent.gameObject);
+                }
+                else
+                {
+                    // No valid parent; just destroy the collided object
+                    Destroy(collision.gameObject);
+                }
+            }
+            else
+            {
+                Destroy(collision.gameObject);
+            }
             Destroy(gameObject);
             return;
         }
