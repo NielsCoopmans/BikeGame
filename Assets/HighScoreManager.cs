@@ -228,8 +228,23 @@ public class HighScoreManager : MonoBehaviour
 
     void UpdateScoreText()
     {
+        int scoreChange = score - previousScore;
+
         ScoreText.text = $"Score: {score}";
         PlayerPrefs.SetInt("score", score);
+
+        // Start the blink coroutine based on score change
+        if (scoreChange > 0)
+        {
+            StartCoroutine(BlinkTextColor(greenColor));
+        }
+        else if (scoreChange < 0)
+        {
+            StartCoroutine(BlinkTextColor(redColor));
+        }
+
+        // Update previous score
+        previousScore = score;
     }
 
     void UpdateHighScoreText()
@@ -298,5 +313,17 @@ public class HighScoreManager : MonoBehaviour
     public class LeaderboardWrapper
     {
         public List<LeaderboardEntry> entries;
+    }
+
+    IEnumerator BlinkTextColor(Color targetColor)
+    {
+        // Change to the target color
+        ScoreText.color = targetColor;
+
+        // Wait for a short duration
+        yield return new WaitForSeconds(0.25f);
+
+        // Revert to the original color
+        ScoreText.color = originalColor;
     }
 }
