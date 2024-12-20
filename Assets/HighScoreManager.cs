@@ -221,7 +221,7 @@ public class HighScoreManager : MonoBehaviour
         if (newRank < previousRank)
         {
             string beatenPlayerName = leaderboard[previousRank].playerName;
-            StartCoroutine(ShowLeaderboardNotification($"You passed {beatenPlayerName}!"));
+            StartCoroutine(ShowLeaderboardNotification($"You passed {beatenPlayerName} on the leaderboard!"));
         }
     }
 
