@@ -12,6 +12,7 @@ public class ClownController : MonoBehaviour
     public GameObject BloodSplash;
     public AudioSource audioSource;
     public AudioClip clip;
+    private bool captured= false;
 
     private void Start()
     {
@@ -35,17 +36,20 @@ public class ClownController : MonoBehaviour
 
     public void Capture()
     {
-        // Create a blood splash effect
-        Instantiate(BloodSplash, transform.position, transform.rotation);
+        if(!captured){
+            captured = true;
+            // Create a blood splash effect
+            Instantiate(BloodSplash, transform.position, transform.rotation);
 
-        // Play the capture sound
-        if (audioSource != null && clip != null)
-        {
-            audioSource.PlayOneShot(clip);
+            // Play the capture sound
+            if (audioSource != null && clip != null)
+            {
+                audioSource.PlayOneShot(clip);
+            }
+
+            // Destroy the GameObject after a delay (if you want to wait for the audio to finish playing)
+            Destroy(gameObject, clip.length); // Destroys the clown after the clip finishes playing
         }
-
-        // Destroy the GameObject after a delay (if you want to wait for the audio to finish playing)
-        Destroy(gameObject, clip.length); // Destroys the clown after the clip finishes playing
     }
 
 
