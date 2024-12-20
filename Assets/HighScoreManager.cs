@@ -280,6 +280,13 @@ public class HighScoreManager : MonoBehaviour
     {
         leaderboardNotificationText.text = message;
         leaderboardNotificationText.gameObject.SetActive(true);
+        ScoreText.color = Color.red;
+
+        // Wait for a short duration
+        yield return new WaitForSeconds(1.5f);
+
+        // Revert to the original color
+        ScoreText.color = originalColor;
         yield return new WaitForSeconds(3f); // Show for 3 seconds
         leaderboardNotificationText.gameObject.SetActive(false);
     }
