@@ -24,6 +24,7 @@ TagManager:
   - goOutsideblock
   - PlayerPartBike
   - goDownblock
+  - explodableAndSmall
   layers:
   - Default
   - TransparentFX
@@ -41,7 +42,7 @@ TagManager:
   - GlowLayer
   - 'pedestrianLayer '
   - skyline
-  - 
+  - distanceBuilding
   - 
   - 
   - 

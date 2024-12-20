@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 65000011434576292}
   m_Layer: 0
   m_Name: Wooden_box_v1_LD1square
-  m_TagString: explodable
+  m_TagString: explodableAndSmall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
