@@ -135,14 +135,11 @@ public class HighScoreManager : MonoBehaviour
     public void ShowHitText(Vector3 position, int number)
     {
         string text = number.ToString();
-        //instantiate the text prefab at the hit position
         GameObject hitText = Instantiate(textPrefab, position, Quaternion.identity);
 
-        //set the text value
         TextMeshPro textMeshPro = hitText.GetComponent<TextMeshPro>();
         textMeshPro.text = text;
 
-        //change the color based on the number
         if (number < 0)
         {
             textMeshPro.color = Color.red;
@@ -152,11 +149,8 @@ public class HighScoreManager : MonoBehaviour
             textMeshPro.color = Color.green;
         }
 
-        //make the text face the camera
         hitText.transform.LookAt(Camera.main.transform);
         hitText.transform.Rotate(0, 180, 0);
-
-        //start the coroutine to scale the text
         StartCoroutine(ScaleText(hitText.transform));
     }
 
@@ -181,14 +175,11 @@ public class HighScoreManager : MonoBehaviour
 
         //ensure the final scale is set
         textTransform.localScale = finalScale;
-
-        //destroy the text
         Destroy(textTransform.gameObject);
     }
 
     void CheckHighScore()
     {
-        // Update the leaderboard if the player's score is higher than someone else's
         UpdateLeaderboard(playerName, score);
     }
 
